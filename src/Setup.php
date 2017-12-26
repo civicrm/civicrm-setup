@@ -4,9 +4,12 @@ namespace Civi;
 use Civi\Setup\Event\CheckAuthorizedEvent;
 use Civi\Setup\Event\CheckRequirementsEvent;
 use Civi\Setup\Event\CheckInstalledEvent;
+use Civi\Setup\Event\CreateFormEvent;
 use Civi\Setup\Event\InitEvent;
 use Civi\Setup\Event\InstallSchemaEvent;
 use Civi\Setup\Event\InstallSettingsEvent;
+use Civi\Setup\Event\RemoveSchemaEvent;
+use Civi\Setup\Event\RemoveSettingsEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Setup {
@@ -34,6 +37,9 @@ class Setup {
    * The initialization process loads any `*.civi-setup.php` files and
    * fires the `civi.setup.init` event.
    *
+   * @param array $modelValues
+   *   List of default configuration options.
+   *   Recommended fields: 'srcPath', 'cms'
    * @param array $pluginDirs
    *   Optional list of directories to scan for `*.civi-setup.php` files.
    */
@@ -75,6 +81,9 @@ class Setup {
   // ----- Logic ----
 
   /**
+   * Determine whether the current CMS user is authorized to perform
+   * installation.
+   *
    * @return \Civi\Setup\Event\CheckAuthorizedEvent
    */
   public function checkAuthorized() {
@@ -83,14 +92,8 @@ class Setup {
   }
 
   /**
-   * @return \Civi\Setup\Event\CheckInstalledEvent
-   */
-  public function checkInstalled() {
-    $event = new CheckInstalledEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.checkInstalled', $event);
-  }
-
-  /**
+   * Determine whether the local environment meets system requirements.
+   *
    * @return \Civi\Setup\Event\CheckRequirementsEvent
    */
   public function checkRequirements() {
@@ -99,6 +102,18 @@ class Setup {
   }
 
   /**
+   * Determine whether the setting and/or schema are already installed.
+   *
+   * @return \Civi\Setup\Event\CheckInstalledEvent
+   */
+  public function checkInstalled() {
+    $event = new CheckInstalledEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.checkInstalled', $event);
+  }
+
+  /**
+   * Create the settings file.
+   *
    * @return \Civi\Setup\Event\InstallSettingsEvent
    */
   public function installSettings() {
@@ -107,11 +122,43 @@ class Setup {
   }
 
   /**
+   * Create the database schema.
+   *
    * @return \Civi\Setup\Event\InstallSchemaEvent
    */
   public function installSchema() {
     $event = new InstallSchemaEvent($this->getModel());
     return $this->getDispatcher()->dispatch('civi.setup.installSchema', $event);
+  }
+
+  /**
+   * Remove the settings file.
+   *
+   * @return \Civi\Setup\Event\RemoveSettingsEvent
+   */
+  public function removeSettings() {
+    $event = new RemoveSettingsEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.removeSettings', $event);
+  }
+
+  /**
+   * Remove the database schema.
+   *
+   * @return \Civi\Setup\Event\RemoveSchemaEvent
+   */
+  public function removeSchema() {
+    $event = new RemoveSchemaEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.removeSchema', $event);
+  }
+
+  /**
+   * Create a page-controller for a web-based installation form.
+   *
+   * @return \Civi\Setup\Event\CreateFormEvent
+   */
+  public function createForm() {
+    $event = new CreateFormEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.createForm', $event);
   }
 
   // ----- Accessors -----

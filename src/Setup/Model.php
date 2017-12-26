@@ -8,15 +8,27 @@ namespace Civi\Setup;
  * The `Model` defines the main options and inputs that are used to configure
  * the installer.
  *
- * @property string $civicrmRoot
- * @property string $uf
- *   Ex: 'Drupal', 'WordPress', 'Joomla'.
+ * @property string $srcPath
+ *   Path to CiviCRM source tree.
+ *   Ex: '/var/www/sites/all/modules/civicrm'.'
+ * @property string $cms
+ *   Ex: 'Backdrop', 'Drupal', 'Drupal8', 'Joomla', 'WordPress'.
+ * @property string $settingsPath
+ *   Ex: '/var/www/sites/default/civicrm.settings.php'.'
  * @property array $db
+ *   Ex: ['server'=>'localhost:3306', 'username'=>'admin', 'password'=>'s3cr3t', 'database'=>'mydb']
  * @property array $cmsDb
+ *   Ex: ['server'=>'localhost:3306', 'username'=>'admin', 'password'=>'s3cr3t', 'database'=>'mydb']
  * @property array $components
- *   Ex: array('CiviMail', 'CiviContribute', 'CiviEvent', 'CiviMember', 'CiviReport')
+ *   Ex: ['CiviMail', 'CiviContribute', 'CiviEvent', 'CiviMember', 'CiviReport']
  * @property array $extensions
- *   Ex: array('org.civicrm.flexmailer', 'org.civicrm.shoreditch').
+ *   Ex: ['org.civicrm.flexmailer', 'org.civicrm.shoreditch']
+ * @property array $paths
+ *   List of hard-coded path-overrides.
+ * @property array $defaultSettings
+ *   List of domain settings to apply.
+ * @property array $mandatorySettings
+ *   List of hard-coded setting-overrides.
  */
 class Model {
 
@@ -26,34 +38,62 @@ class Model {
 
   public function __construct() {
     $this->addField(array(
-      'name' => 'civicrmRoot',
+      'description' => 'Local path of the CiviCRM source tree',
+      'name' => 'srcPath',
       'type' => 'string',
     ));
     $this->addField(array(
-      'name' => 'uf',
+      'description' => 'Local path to civicrm.settings.php',
+      'name' => 'settingsPath',
       'type' => 'string',
     ));
     $this->addField(array(
+      'description' => 'Symbolic name of the CMS/user-framework',
+      'name' => 'cms',
+      'type' => 'string',
+    ));
+    $this->addField(array(
+      'description' => 'Locale of the default dataset',
       'name' => 'locale',
       'type' => 'string',
     ));
     $this->addField(array(
+      'description' => 'Credentials for Civi database',
       'name' => 'db',
       'type' => 'dsn',
-      'value' => array('host' => '', 'user' => '', 'pass' => '', 'name' => ''),
     ));
     $this->addField(array(
+      'description' => 'Credentials for CMS database',
       'name' => 'cmsDb',
       'type' => 'dsn',
-      'value' => array('host' => '', 'user' => '', 'pass' => '', 'name' => ''),
     ));
     $this->addField(array(
+      'description' => 'List of CiviCRM components to enable',
       'name' => 'components',
       'type' => 'array',
       'value' => array(),
     ));
     $this->addField(array(
+      'description' => 'List of CiviCRM extensions to enable',
       'name' => 'extensions',
+      'type' => 'array',
+      'value' => array(),
+    ));
+    $this->addField(array(
+      'description' => 'List of mandatory path overrides.',
+      'name' => 'paths',
+      'type' => 'array',
+      'value' => array(),
+    ));
+    $this->addField(array(
+      'description' => 'List of setting overrides.',
+      'name' => 'settings',
+      'type' => 'array',
+      'value' => array(),
+    ));
+    $this->addField(array(
+      'description' => 'List of callbacks to run',
+      'name' => 'callbacks',
       'type' => 'array',
       'value' => array(),
     ));
@@ -100,11 +140,20 @@ class Model {
     return $this->fields;
   }
 
+  public function addCallback($file, $function, $arguments) {
+    $sig = md5(serialize($file, $function, $arguments));
+    $this->values['callbacks'][$sig] = array(
+      'file' => $file,
+      'function' => $function,
+      'arguments' => $arguments,
+    );
+  }
+
   /**
    * Set the values of multiple fields.
    *
    * @param array $values
-   *   Ex: array('civicrmRoot' => '/var/www/sites/default/files/civicrm')
+   *   Ex: array('root' => '/var/www/sites/default/files/civicrm')
    * @return $this
    */
   public function setValues($values) {

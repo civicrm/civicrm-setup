@@ -4,26 +4,36 @@ namespace Civi\Setup\Event;
 class CheckInstalledEvent extends BaseSetupEvent {
 
   /**
-   * @var string
-   *   One of the following:
-   *     - uninstalled
-   *     - installed
-   *     - partial
+   * @var bool
    */
-  private $status = 'uninstalled';
+  private $settingInstalled = NULL, $databaseInstalled = NULL;
 
   /**
-   * @return string
+   * @return bool
    */
-  public function getStatus() {
-    return $this->status;
+  public function isSettingInstalled() {
+    return $this->settingInstalled;
   }
 
   /**
-   * @param string $status
+   * @param bool $settingInstalled
    */
-  public function setStatus($status) {
-    $this->status = $status;
+  public function setSettingInstalled($settingInstalled) {
+    $this->settingInstalled = $settingInstalled;
+  }
+
+  /**
+   * @return bool
+   */
+  public function isDatabaseInstalled() {
+    return $this->databaseInstalled;
+  }
+
+  /**
+   * @param bool $databaseInstalled
+   */
+  public function setDatabaseInstalled($databaseInstalled) {
+    $this->databaseInstalled = $databaseInstalled;
   }
 
 }
