@@ -40,10 +40,13 @@ class Setup {
    * @param array $modelValues
    *   List of default configuration options.
    *   Recommended fields: 'srcPath', 'cms'
-   * @param array $pluginDirs
-   *   Optional list of directories to scan for `*.civi-setup.php` files.
+   * @param callable $pluginCallback
+   *   Function which manipulates the list of plugin files.
+   *   Use this to add, remove, or re-order callbacks.
+   *   function(array $files) => array
+   *   Ex: ['hello' => '/var/www/plugins/hello.civi-setup.php']
    */
-  public static function init($modelValues = array(), $pluginDirs = array()) {
+  public static function init($modelValues = array(), $pluginCallback = NULL) {
     if (!defined('CIVI_SETUP')) {
       define('CIVI_SETUP', 1);
     }
@@ -53,14 +56,19 @@ class Setup {
     self::$instance->model->setValues($modelValues);
     self::$instance->dispatcher = new EventDispatcher();
 
-    $pluginDirs[] = dirname(__DIR__) . '/plugins';
+    $pluginDir = dirname(__DIR__) . '/plugins';
     $pluginFiles = array();
-    foreach ($pluginDirs as $pluginDir) {
-      $pluginFiles = array_merge($pluginFiles, (array) glob("$pluginDir/*.civi-setup.php"));
+    foreach ((array) glob("$pluginDir/*.civi-setup.php") as $file) {
+      $key = preg_replace('/\.civi-setup\.php$/', '', basename($file));
+      $pluginFiles[$key] = $file;
     }
-    usort($pluginFiles, function ($a, $b) {
+    uksort($pluginFiles, function ($a, $b) {
       return strcmp(basename($a), basename($b));
     });
+
+    if ($pluginCallback) {
+      $pluginFiles = $pluginCallback($pluginFiles);
+    }
 
     foreach ($pluginFiles as $pluginFile) {
       require $pluginFile;
