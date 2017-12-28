@@ -9,8 +9,11 @@ namespace Civi\Setup;
  * the installer.
  *
  * @property string $srcPath
- *   Path to CiviCRM source tree.
- *   Ex: '/var/www/sites/all/modules/civicrm'.'
+ *   Path to CiviCRM-core source tree.
+ *   Ex: '/var/www/sites/all/modules/civicrm'.
+ * @property string $setupPath
+ *   Path to CiviCRM-setup source tree.
+ *   Ex: '/var/www/sites/all/modules/civicrm/setup'.
  * @property string $cms
  *   Ex: 'Backdrop', 'Drupal', 'Drupal8', 'Joomla', 'WordPress'.
  * @property string $settingsPath
@@ -38,8 +41,13 @@ class Model {
 
   public function __construct() {
     $this->addField(array(
-      'description' => 'Local path of the CiviCRM source tree',
+      'description' => 'Local path of the CiviCRM-core tree',
       'name' => 'srcPath',
+      'type' => 'string',
+    ));
+    $this->addField(array(
+      'description' => 'Local path of the CiviCRM-setup tree',
+      'name' => 'setupPath',
       'type' => 'string',
     ));
     $this->addField(array(
