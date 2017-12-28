@@ -17,6 +17,7 @@ class Setup {
   const PRIORITY_START = 2000;
   const PRIORITY_PREPARE = 1000;
   const PRIORITY_MAIN = 0;
+  const PRIORITY_LATE = -1000;
   const PRIORITY_END = -2000;
 
   private static $instance;
