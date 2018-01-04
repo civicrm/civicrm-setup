@@ -35,7 +35,7 @@ first need to need to initialize the setup runtime and get a reference to the `$
     * Call `$setup = Civi\Setup::instance()`.
 
 When you have a copy of the `$setup` API, there are a few ways to work with it. For example, you might load
-the pre-built installation form (`$setup->createForm()->run(array $postFields)`).
+the pre-built installation form (`$setup->createForm()->getForm()->run(array $postFields)`).
 
 Alternatively, you might build a custom UI or a headless installer with these functions:
 
@@ -44,7 +44,7 @@ Alternatively, you might build a custom UI or a headless installer with these fu
 * Guard: Check the system requirements (`$setup->checkRequirements()`) and inspect the resulting object.
 * Create the settings file (`$setup->installSettings()`).
 * Create the database schema (`$setup->installSchema()`).
-    * __Tip__: This will fill the database, bootstrap Civi, and perform first-run configuration.
+    * __Tip__: This will create the database tables, bootstrap Civi, and perform first-run configuration.
 
 For uninstallation, you can use the corresponding functions `$setup->removeSchema()` and `$setup->removeSettings()`.
 
@@ -53,20 +53,24 @@ For uninstallation, you can use the corresponding functions `$setup->removeSchem
 A plugin is a PHP file with these characteristics:
 
 * The file's name ends in `*.civi-setup.php`. (Plugins in `civicrm-setup/plugins/*.civi-setup.php` are autodetected.)
-* The file's logic locates the event-dispatcher and registers listeners, e.g. `\Civi\Setup::instance()->getDisptacher()->addListener($event, $callback)`.
+* The file has a guard on (`defined('CIVI_SETUP')`). If this constant is missing, then bail out. This prevents direct execution.
+* The file's logic locates the event-dispatcher and registers listeners, e.g. `\Civi\Setup::instance()->getDisptacher()->addListener($eventName, $callback)`.
 
-The `$event` name and classes correspond to the methods of `Civi\Setup`, e.g.
+Observe that the primary way for a plugin to interact with the system is to register for events (using Symfony's
+`EventDispatcher`).  The `$event` names and classes correspond to the methods of `Civi\Setup`, e.g.
 
-* `Setup::init()` => `civi.setup.init` => `Civi\Setup\InitEvent`
-* `Setup::checkAuthorized()` => `civi.setup.checkAuthorized` => `Civi\Setup\CheckAuthorizedEvent`
-* `Setup::checkInstalled()` => `civi.setup.checkInstalled` => `Civi\Setup\CheckInstalledEvent`
-* `Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\CheckRequirementsEvent`
-* `Setup::installSettings()` => `civi.setup.installSettings` => `Civi\Setup\InstallSettingsEvent`
-* `Setup::installSchema()` => `civi.setup.installSchema` => `Civi\Setup\InstallSchemaEvent`
-* `Setup::createForm()` => `civi.setup.createForm` => `Civi\Setup\CreateFormEvent`
+* `\Civi\Setup::init()` => `civi.setup.init` => `Civi\Setup\InitEvent`
+* `\Civi\Setup::checkAuthorized()` => `civi.setup.checkAuthorized` => `Civi\Setup\CheckAuthorizedEvent`
+* `\Civi\Setup::checkInstalled()` => `civi.setup.checkInstalled` => `Civi\Setup\CheckInstalledEvent`
+* `\Civi\Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\CheckRequirementsEvent`
+* `\Civi\Setup::installSettings()` => `civi.setup.installSettings` => `Civi\Setup\InstallSettingsEvent`
+* `\Civi\Setup::installSchema()` => `civi.setup.installSchema` => `Civi\Setup\InstallSchemaEvent`
+* `\Civi\Setup::createForm()` => `civi.setup.createForm` => `Civi\Setup\CreateFormEvent`
 
-All events provide access to the setup data-model. (Ex: To get the path to the `civicrm.settings.php` file,
-examine `$event->getModel()->settingsPath`.) 
+All events provide access to the setup data-model.
 
-The `check` events provide additional methods for relaying information. (Ex: For `checkAuthorized`,
-use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted.)
+> __Ex__: To get the path to the `civicrm.settings.php` file, read `$event->getModel()->settingsPath`.
+
+The `check*` events provide additional methods for relaying information.
+
+> __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted.
