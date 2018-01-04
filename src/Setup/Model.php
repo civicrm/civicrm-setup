@@ -14,24 +14,33 @@ namespace Civi\Setup;
  * @property string $setupPath
  *   Path to CiviCRM-setup source tree.
  *   Ex: '/var/www/sites/all/modules/civicrm/setup'.
+ * @property string $settingsPath
+ *   Ex: '/var/www/sites/default/civicrm.settings.php'.
+ * @property string $templateCompilePath
+ *   Ex: '/var/www/sites/default/files/civicrm/templates_c'.
  * @property string $cms
  *   Ex: 'Backdrop', 'Drupal', 'Drupal8', 'Joomla', 'WordPress'.
- * @property string $settingsPath
- *   Ex: '/var/www/sites/default/civicrm.settings.php'.'
+ * @property string $cmsBaseUrl
+ *   Ex: 'http://example.org/'.
  * @property array $db
  *   Ex: ['server'=>'localhost:3306', 'username'=>'admin', 'password'=>'s3cr3t', 'database'=>'mydb']
  * @property array $cmsDb
  *   Ex: ['server'=>'localhost:3306', 'username'=>'admin', 'password'=>'s3cr3t', 'database'=>'mydb']
+ * @property string $siteKey
+ *   Ex: 'abcd1234ABCD9876'.
  * @property array $components
  *   Ex: ['CiviMail', 'CiviContribute', 'CiviEvent', 'CiviMember', 'CiviReport']
  * @property array $extensions
- *   Ex: ['org.civicrm.flexmailer', 'org.civicrm.shoreditch']
+ *   Ex: ['org.civicrm.flexmailer', 'org.civicrm.shoreditch'].
  * @property array $paths
  *   List of hard-coded path-overrides.
+ *   Ex: ['wp.frontend.base'=>['url'=>'http://example.org/']].
  * @property array $defaultSettings
  *   List of domain settings to apply.
+ *   Ex: ['ajaxPopupsEnabled' => 0].
  * @property array $mandatorySettings
  *   List of hard-coded setting-overrides.
+ *   Ex: ['ajaxPopupsEnabled' => 0].
  */
 class Model {
 
@@ -56,8 +65,18 @@ class Model {
       'type' => 'string',
     ));
     $this->addField(array(
+      'description' => 'Local path to the PHP compilation cache',
+      'name' => 'templateCompilePath',
+      'type' => 'string',
+    ));
+    $this->addField(array(
       'description' => 'Symbolic name of the CMS/user-framework',
       'name' => 'cms',
+      'type' => 'string',
+    ));
+    $this->addField(array(
+      'description' => 'The CMS base URL',
+      'name' => 'cmsBaseUrl',
       'type' => 'string',
     ));
     $this->addField(array(
@@ -74,6 +93,11 @@ class Model {
       'description' => 'Credentials for CMS database',
       'name' => 'cmsDb',
       'type' => 'dsn',
+    ));
+    $this->addField(array(
+      'description' => 'Site key',
+      'name' => 'siteKey',
+      'type' => 'string',
     ));
     $this->addField(array(
       'description' => 'List of CiviCRM components to enable',
