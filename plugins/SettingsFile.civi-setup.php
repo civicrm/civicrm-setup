@@ -8,6 +8,7 @@ if (!defined('CIVI_SETUP')) {
  */
 \Civi\Setup::instance()->getDispatcher()
   ->addListener('civi.setup.installSettings', function (\Civi\Setup\Event\InstallSettingsEvent $e) {
+    Civi\Setup::log()->info('[SettingsFile] installSettings');
 
     /**
      * @var \Civi\Setup\Model $m
