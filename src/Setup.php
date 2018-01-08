@@ -10,6 +10,8 @@ use Civi\Setup\Event\InstallSchemaEvent;
 use Civi\Setup\Event\InstallSettingsEvent;
 use Civi\Setup\Event\RemoveSchemaEvent;
 use Civi\Setup\Event\RemoveSettingsEvent;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Setup {
@@ -32,6 +34,11 @@ class Setup {
    */
   protected $model;
 
+  /**
+   * @var LoggerInterface
+   */
+  protected $log;
+
   // ----- Static initialization -----
 
   /**
@@ -46,8 +53,9 @@ class Setup {
    *   Use this to add, remove, or re-order callbacks.
    *   function(array $files) => array
    *   Ex: ['hello' => '/var/www/plugins/hello.civi-setup.php']
+   * @param LoggerInterface $log
    */
-  public static function init($modelValues = array(), $pluginCallback = NULL) {
+  public static function init($modelValues = array(), $pluginCallback = NULL, $log = NULL) {
     if (!defined('CIVI_SETUP')) {
       define('CIVI_SETUP', 1);
     }
@@ -56,6 +64,7 @@ class Setup {
     self::$instance->model = new \Civi\Setup\Model();
     self::$instance->model->setValues($modelValues);
     self::$instance->dispatcher = new EventDispatcher();
+    self::$instance->log = $log ? $log : new NullLogger();
 
     $pluginDir = dirname(__DIR__) . '/plugins';
     $pluginFiles = array();
@@ -85,6 +94,13 @@ class Setup {
    */
   public static function instance() {
     return self::$instance;
+  }
+
+  /**
+   * @return \Psr\Log\LoggerInterface
+   */
+  public static function log() {
+    return self::instance()->getLog();
   }
 
   // ----- Logic ----
@@ -184,6 +200,13 @@ class Setup {
    */
   public function getModel() {
     return $this->model;
+  }
+
+  /**
+   * @return \Psr\Log\LoggerInterface
+   */
+  public function getLog() {
+    return $this->log;
   }
 
 }
