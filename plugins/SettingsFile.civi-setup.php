@@ -3,12 +3,26 @@ if (!defined('CIVI_SETUP')) {
   exit();
 }
 
+\Civi\Setup::instance()->getDispatcher()
+  ->addListener('civi.setup.checkRequirements', function(\Civi\Setup\Event\CheckRequirementsEvent $e){
+    /**
+     * @var \Civi\Setup\Model $m
+     */
+    $m = $e->getModel();
+
+    if (empty($m->settingsPath)) {
+      $e->addError('settingsPath', sprintf('The settingsPath is undefined.'));
+    }
+
+    $e->addMessage('settingsWritable', sprintf('The settings file "%s" cannot be created. Ensure the parent folder is writable.', $m->settingsPath), \Civi\Setup\FileUtil::isCreateable($m->settingsPath));
+  });
+
 /**
  * Read the $model and create the "civicrm.settings.php".
  */
 \Civi\Setup::instance()->getDispatcher()
   ->addListener('civi.setup.installSettings', function (\Civi\Setup\Event\InstallSettingsEvent $e) {
-    Civi\Setup::log()->info('[SettingsFile] installSettings');
+    Civi\Setup::log()->info('[SettingsFile] Generate civicrm.settings.php');
 
     /**
      * @var \Civi\Setup\Model $m
@@ -51,6 +65,13 @@ if (!defined('CIVI_SETUP')) {
     }
     else {
       $params['extraSettings'] = "";
+    }
+
+    $parent = dirname($m->settingsPath);
+    if (!file_exists($parent)) {
+      Civi\Setup::log()->info('[SettingsFile] mkdir "{path}"', ['path' => $parent]);
+      mkdir($parent, 0777, TRUE);
+      \Civi\Setup\FileUtil::makeWebWriteable($parent);
     }
 
     // And persist it...
