@@ -72,9 +72,7 @@ class Setup {
       $key = preg_replace('/\.civi-setup\.php$/', '', basename($file));
       $pluginFiles[$key] = $file;
     }
-    uksort($pluginFiles, function ($a, $b) {
-      return strcmp(basename($a), basename($b));
-    });
+    ksort($pluginFiles);
 
     if ($pluginCallback) {
       $pluginFiles = $pluginCallback($pluginFiles);
