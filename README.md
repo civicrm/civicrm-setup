@@ -11,21 +11,28 @@ Some key features:
 * The library can be used by other, higher-level applications -- such as `cv`, `civicrm-drupal`, `civicrm-wordpress` -- to provide an installation process.
 * It is a *leap* -- a separate project/repo which can be deployed optionally (as a a replacement for the default installer).
     * To enable it, add the codebase to your civicrm source tree. (This can be done manually - or as part of a build process.)
-* It has minimal external dependencies. (The most basic parts of Symfony `EventDispatcher`.)
+* It has minimal external dependencies.
+
+There are a small number of external dependencies.  To allow for the variety
+of ways in which different builds manage their dependencies, we leave it up
+to the downstream implementer to satisfy them.
+
+* Symfony `EventDispatcher` (`symfony/event-dispatcher` v2.x or v3.x)
+* PSR-3 (`psr/log` v1.x)
 
 ## Writing an installer
 
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
-first need to need to initialize the setup runtime and get a reference to the `$setup` API:
+first need to initialize the setup runtime and get a reference to the `$setup` API:
 
 * Bootstrap the CMS/host environment
-* Guard: Check if `setup/civicrm-setup-autoload.php` exists.
+* Guard: Check if `civicrm-setup-autoload.php` exists.
     * If it exists, then we'll proceed.
-    * If it doesn't exist, then don't try to setup. Fail or fallback to a different installer.
-* Load `setup/civicrm-setup-autoload.php`.
+    * If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
+* Load `civicrm-setup-autoload.php`.
 * If necessary, add any extra autoloaders.
-    * Ex: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then no steps are required. Your CMS and/or Civi should provide a copy of `EventDispatcher`.
     * Ex: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
+    * Ex: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then no steps are required. Your CMS and/or Civi should provide a copy of `EventDispatcher` and `psr/log`.
 * Initialize the `\Civi\Setup` subystem.
     * Call `\Civi\Setup::init($modelValues = array(), $pluginCallback = NULL)`.
     * The `$modelValues` provides an opportunity to seed the configuration options, such as DSN and file-settings path. See the fields defined for the [Model](src/Setup/Model.php).
@@ -74,3 +81,31 @@ All events provide access to the setup data-model.
 The `check*` events provide additional methods for relaying information.
 
 > __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted.
+
+## Managing plugins
+
+Plugins in `civicrm-setup/plugins/*.civi-setup.php` are automatically
+detected and loaded.  The simplest way to manage plugins is adding and
+removing files from this folder.
+
+However, you may find it useful to manage plugins programmatically.  For
+example, the `civicrm-drupal` integration or the `civicrm-wordpress`
+integration might refine the installation process by:
+
+* Adding a new plugin
+* Removing a default plugin
+
+To programmatically manage plugins, take note of the
+`\Civi\Setup::init(...)` function.  It accepts an argument,
+`$pluginCallback`, which can edit the plugin list. For example:
+
+```php
+<?php
+function myPluginCallback($files) {
+  $files['ExtraWordPressInstallPlugin'] = '/path/to/ExtraWordPressInstallPlugin.php';
+  ksort($files);
+  return $files;
+}
+
+\Civi\Setup::init(..., 'myPluginCallback');
+```
