@@ -35,4 +35,61 @@ class DbUtil {
     return $conn;
   }
 
+  /**
+   * @param array $db
+   * @param string $fileName
+   * @param bool $lineMode
+   *   What does this mean? Seems weird.
+   */
+  public static function sourceSQL($db, $fileName, $lineMode = FALSE) {
+    $conn = self::connect($db);
+    if (mysqli_connect_errno()) {
+      throw new \Exception(sprintf("Connection failed: %s\n", mysqli_connect_error()));
+    }
+
+    mysqli_free_result($conn->query('SET NAMES utf8'));
+
+    if (!$lineMode) {
+      $string = file_get_contents($fileName);
+
+      // change \r\n to fix windows issues
+      $string = str_replace("\r\n", "\n", $string);
+
+      //get rid of comments starting with # and --
+
+      $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
+      $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
+
+      $queries = preg_split('/;\s*$/m', $string);
+      foreach ($queries as $query) {
+        $query = trim($query);
+        if (!empty($query)) {
+          if ($result = $conn->query($query)) {
+            mysqli_free_result($result);
+          }
+          else {
+            throw new \Exception("Cannot execute $query: " . mysqli_error($conn));
+          }
+        }
+      }
+    }
+    else {
+      $fd = fopen($fileName, "r");
+      while ($string = fgets($fd)) {
+        $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
+        $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
+
+        $string = trim($string);
+        if (!empty($string)) {
+          if ($result = $conn->query($string)) {
+            mysqli_free_result($result);
+          }
+          else {
+            throw new \Exception("Cannot execute $string: " . mysqli_error($conn));
+          }
+        }
+      }
+    }
+  }
+
 }
