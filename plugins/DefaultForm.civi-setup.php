@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Generate the default web form.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }

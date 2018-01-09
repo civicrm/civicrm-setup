@@ -1,8 +1,17 @@
 <?php
+/**
+ * @file
+ *
+ * Generate the civicrm.settings.php file.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }
 
+/**
+ * Validate the $model.
+ */
 \Civi\Setup::instance()->getDispatcher()
   ->addListener('civi.setup.checkRequirements', function(\Civi\Setup\Event\CheckRequirementsEvent $e){
     /**

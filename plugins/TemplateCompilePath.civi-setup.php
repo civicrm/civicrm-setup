@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Validate and create the template compile folder.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }

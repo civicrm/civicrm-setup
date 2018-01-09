@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Determine default settings for WordPress.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }

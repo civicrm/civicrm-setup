@@ -1,12 +1,16 @@
 <?php
+/**
+ * @file
+ *
+ * Record a log message at the start and end of each major business operation.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }
 use \Civi\Setup;
 
 $setup = Setup::instance();
-
-// Record a log message at the start and end of each major business operation.
 
 $eventNames = array(
   'civi.setup.init',

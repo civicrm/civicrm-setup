@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Generate the site key.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }

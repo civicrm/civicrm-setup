@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Determine whether Civi has been installed.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }

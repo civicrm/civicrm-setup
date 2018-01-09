@@ -1,4 +1,10 @@
 <?php
+/**
+ * @file
+ *
+ * Determine default settings for Drupal 7.
+ */
+
 if (!defined('CIVI_SETUP')) {
   exit();
 }
