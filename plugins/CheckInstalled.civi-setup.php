@@ -12,12 +12,12 @@ if (!defined('CIVI_SETUP')) {
 \Civi\Setup::instance()->getDispatcher()
   ->addListener('civi.setup.checkInstalled', function (\Civi\Setup\Event\CheckInstalledEvent $e) {
     $model = $e->getModel();
-    if ($model->cms !== 'Drupal') {
-      return;
-    }
 
-    if ($model->settingsPath && file_exists($model->settingsPath)) {
-      $e->setSettingInstalled(TRUE);
+    if ($model->settingsPath) {
+      $e->setSettingInstalled(file_exists($model->settingsPath));
+    }
+    else {
+      throw new \Exception("The \"settingsPath\" is unspecified. Cannot determine whether the settings file exists.");
     }
 
     if ($model->db) {
@@ -28,5 +28,8 @@ if (!defined('CIVI_SETUP')) {
       }
       $conn->close();
       $e->setDatabaseInstalled($found);
+    }
+    else {
+      throw new \Exception("The \"db\" is unspecified. Cannot determine whether the database schema file exists.");
     }
   });
