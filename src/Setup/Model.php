@@ -35,11 +35,13 @@ namespace Civi\Setup;
  * @property array $paths
  *   List of hard-coded path-overrides.
  *   Ex: ['wp.frontend.base'=>['url'=>'http://example.org/']].
- * @property array $defaultSettings
- *   List of domain settings to apply.
+ * @property array $settings
+ *   List of domain settings to apply. (These are defaults during installation;
+ *   they could be changed via GUI by the admin post-install.)
  *   Ex: ['ajaxPopupsEnabled' => 0].
  * @property array $mandatorySettings
- *   List of hard-coded setting-overrides.
+ *   List of hard-coded setting-overrides. (These are mandatory settings which
+ *   are hard-coded into the config file. Changing requires editing the file.)
  *   Ex: ['ajaxPopupsEnabled' => 0].
  */
 class Model {
