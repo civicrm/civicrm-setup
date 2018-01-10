@@ -10,6 +10,7 @@ use Civi\Setup\Event\InstallSchemaEvent;
 use Civi\Setup\Event\InstallSettingsEvent;
 use Civi\Setup\Event\RemoveSchemaEvent;
 use Civi\Setup\Event\RemoveSettingsEvent;
+use Civi\Setup\Exception\InitException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -91,6 +92,9 @@ class Setup {
    * @return Setup
    */
   public static function instance() {
+    if (self::$instance === NULL) {
+      throw new InitException('\Civi\Setup has not been initialized.');
+    }
     return self::$instance;
   }
 
@@ -99,6 +103,13 @@ class Setup {
    */
   public static function log() {
     return self::instance()->getLog();
+  }
+
+  /**
+   * @return \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  public static function dispatcher() {
+    return self::instance()->getDispatcher();
   }
 
   // ----- Logic ----
