@@ -33,7 +33,7 @@ first need to initialize the setup runtime and get a reference to the `$setup` A
 * If necessary, add any extra autoloaders.
     * Ex: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
     * Ex: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then no steps are required. Your CMS and/or Civi should provide a copy of `EventDispatcher` and `psr/log`.
-* Initialize the `\Civi\Setup` subystem.
+* Initialize the `\Civi\Setup` subsystem.
     * Call `\Civi\Setup::init($modelValues = array(), $pluginCallback = NULL)`.
     * The `$modelValues` provides an opportunity to seed the configuration options, such as DSN and file-settings path. See the fields defined for the [Model](src/Setup/Model.php).
     * The `$pluginCallback` (`function(array $files) => array $files`) provides an opportunity to add/remove/override plugin files.
@@ -60,7 +60,7 @@ For uninstallation, you can use the corresponding functions `$setup->removeSchem
 A plugin is a PHP file with these characteristics:
 
 * The file's name ends in `*.civi-setup.php`. (Plugins in `civicrm-setup/plugins/*.civi-setup.php` are autodetected.)
-* The file has a guard on (`defined('CIVI_SETUP')`). If this constant is missing, then bail out. This prevents direct execution.
+* The file has a guard at the top (`defined('CIVI_SETUP')`). If this constant is missing, then bail out. This prevents direct execution.
 * The file's logic locates the event-dispatcher and registers listeners, e.g. `\Civi\Setup::instance()->getDisptacher()->addListener($eventName, $callback)`.
 
 Observe that the primary way for a plugin to interact with the system is to register for events (using Symfony's
@@ -72,6 +72,8 @@ Observe that the primary way for a plugin to interact with the system is to regi
 * `\Civi\Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\CheckRequirementsEvent`
 * `\Civi\Setup::installSettings()` => `civi.setup.installSettings` => `Civi\Setup\InstallSettingsEvent`
 * `\Civi\Setup::installSchema()` => `civi.setup.installSchema` => `Civi\Setup\InstallSchemaEvent`
+* `\Civi\Setup::removeSettings()` => `civi.setup.removeSettings` => `Civi\Setup\RemoveSettingsEvent`
+* `\Civi\Setup::removeSchema()` => `civi.setup.removeSchema` => `Civi\Setup\RemoveSchemaEvent`
 * `\Civi\Setup::createForm()` => `civi.setup.createForm` => `Civi\Setup\CreateFormEvent`
 
 All events provide access to the setup data-model.
@@ -80,7 +82,8 @@ All events provide access to the setup data-model.
 
 The `check*` events provide additional methods for relaying information.
 
-> __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted.
+> __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted,
+> and use `$event->isAuthorized()` to see if authorization has been permitted.
 
 ## Managing plugins
 
