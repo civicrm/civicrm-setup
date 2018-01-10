@@ -9,7 +9,7 @@ if (!defined('CIVI_SETUP')) {
   exit();
 }
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkInstalled', function (\Civi\Setup\Event\CheckInstalledEvent $e) {
     $model = $e->getModel();
 

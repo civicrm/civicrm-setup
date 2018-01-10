@@ -9,7 +9,7 @@ if (!defined('CIVI_SETUP')) {
   exit();
 }
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
     $seedLanguage = $e->getModel()->lang;
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
@@ -36,7 +36,7 @@ if (!defined('CIVI_SETUP')) {
     }
   });
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.installSchema', function (\Civi\Setup\Event\InstallSchemaEvent $e) {
     \Civi\Setup::log()->info('[DatabaseSchema] Install');
     $model = $e->getModel();
@@ -62,7 +62,7 @@ if (!defined('CIVI_SETUP')) {
 
   });
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.removeSchema', function (\Civi\Setup\Event\RemoveSchemaEvent $e) {
     \Civi\Setup::log()->info('[DatabaseSchema] Remove all tables and views (civicrm_* and log_civicrm_*)');
     $model = $e->getModel();

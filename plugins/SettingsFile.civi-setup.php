@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
 /**
  * Validate the $model.
  */
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function(\Civi\Setup\Event\CheckRequirementsEvent $e){
     /**
      * @var \Civi\Setup\Model $m
@@ -29,7 +29,7 @@ if (!defined('CIVI_SETUP')) {
 /**
  * Read the $model and create the "civicrm.settings.php".
  */
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.installSettings', function (\Civi\Setup\Event\InstallSettingsEvent $e) {
     Civi\Setup::log()->info('[SettingsFile] Generate civicrm.settings.php');
 

@@ -9,7 +9,7 @@ if (!defined('CIVI_SETUP')) {
   exit();
 }
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.init', function (\Civi\Setup\Event\InitEvent $e) {
     $model = $e->getModel();
     if ($model->cms !== 'WordPress' || !function_exists('current_user_can')) {
@@ -45,7 +45,7 @@ if (!defined('CIVI_SETUP')) {
     $model->mandatorySettings['userFrameworkResourceURL'] = plugin_dir_url(CIVICRM_PLUGIN_FILE) . 'civicrm';
   });
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
     $model = $e->getModel();
     if ($model->cms !== 'WordPress') {

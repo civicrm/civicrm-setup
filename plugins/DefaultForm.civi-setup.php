@@ -9,7 +9,7 @@ if (!defined('CIVI_SETUP')) {
   exit();
 }
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.createForm', function (\Civi\Setup\Event\CreateFormEvent $e) {
 
     $e->setForm(new \Civi\Setup\Form());

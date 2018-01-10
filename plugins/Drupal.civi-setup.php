@@ -9,7 +9,7 @@ if (!defined('CIVI_SETUP')) {
   exit();
 }
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.init', function (\Civi\Setup\Event\InitEvent $e) {
     $model = $e->getModel();
     if ($model->cms !== 'Drupal' || !function_exists('user_access')) {
@@ -52,7 +52,7 @@ if (!defined('CIVI_SETUP')) {
 
   });
 
-\Civi\Setup::instance()->getDispatcher()
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
     $model = $e->getModel();
     if ($model->cms !== 'Drupal') {
