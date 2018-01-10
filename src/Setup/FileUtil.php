@@ -26,4 +26,8 @@ class FileUtil {
     chmod($path, 0777);
   }
 
+  public static function isDeletable($path) {
+    return is_writable(dirname($path));
+  }
+
 }
