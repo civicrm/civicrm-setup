@@ -10,7 +10,7 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.uninstallSchema', function (\Civi\Setup\Event\UninstallSchemaEvent $e) {
+  ->addListener('civi.setup.uninstallDatabase', function (\Civi\Setup\Event\UninstallDatabaseEvent $e) {
     \Civi\Setup::log()->info('[DatabaseSchema] Remove all tables and views (civicrm_* and log_civicrm_*)');
     $model = $e->getModel();
 

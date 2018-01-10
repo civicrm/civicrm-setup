@@ -10,7 +10,7 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.installSchema', function (\Civi\Setup\Event\InstallSchemaEvent $e) {
+  ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
     \Civi\Setup::log()->info('[BootstrapCivi] Bootstrap CiviCRM');
 
     if (!defined('CIVICRM_SETTINGS_PATH')) {

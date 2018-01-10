@@ -10,7 +10,7 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.installSchema', function (\Civi\Setup\Event\InstallSchemaEvent $e) {
+  ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
     if (!$e->getModel()->extensions) {
       \Civi\Setup::log()->info('[InstallExtensions] No extensions to activate.');
       return;

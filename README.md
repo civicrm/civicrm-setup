@@ -81,10 +81,10 @@ Alternatively, you might build a custom UI or a headless installer with these fu
 * Guard: Check if Civi was previously installed (`$setup->checkInstalled()`) and inspect the resulting object.
 * Guard: Check the system requirements (`$setup->checkRequirements()`) and inspect the resulting object.
 * Create the settings file (`$setup->installFiles()`).
-* Create the database schema (`$setup->installSchema()`).
+* Create the database schema (`$setup->installDatabase()`).
     * __Tip__: This will create the database tables, bootstrap Civi, and perform first-run configuration.
 
-For uninstallation, you can use the corresponding functions `$setup->uninstallSchema()` and `$setup->uninstallFiles()`.
+For uninstallation, you can use the corresponding functions `$setup->uninstallDatabase()` and `$setup->uninstallFiles()`.
 
 
 ## Writing a plugin
@@ -103,9 +103,9 @@ Observe that the primary way for a plugin to interact with the system is to regi
 * `\Civi\Setup::checkInstalled()` => `civi.setup.checkInstalled` => `Civi\Setup\CheckInstalledEvent`
 * `\Civi\Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\CheckRequirementsEvent`
 * `\Civi\Setup::installFiles()` => `civi.setup.installFiles` => `Civi\Setup\InstallFilesEvent`
-* `\Civi\Setup::installSchema()` => `civi.setup.installSchema` => `Civi\Setup\InstallSchemaEvent`
+* `\Civi\Setup::installDatabase()` => `civi.setup.installDatabase` => `Civi\Setup\InstallDatabaseEvent`
 * `\Civi\Setup::uninstallFiles()` => `civi.setup.uninstallFiles` => `Civi\Setup\UninstallFilesEvent`
-* `\Civi\Setup::uninstallSchema()` => `civi.setup.uninstallSchema` => `Civi\Setup\UninstallSchemaEvent`
+* `\Civi\Setup::uninstallDatabase()` => `civi.setup.uninstallDatabase` => `Civi\Setup\UninstallDatabaseEvent`
 * `\Civi\Setup::createForm()` => `civi.setup.createForm` => `Civi\Setup\CreateFormEvent`
 
 All events provide access to the setup data-model.

@@ -6,9 +6,9 @@ use Civi\Setup\Event\CheckRequirementsEvent;
 use Civi\Setup\Event\CheckInstalledEvent;
 use Civi\Setup\Event\CreateFormEvent;
 use Civi\Setup\Event\InitEvent;
-use Civi\Setup\Event\InstallSchemaEvent;
+use Civi\Setup\Event\InstallDatabaseEvent;
 use Civi\Setup\Event\InstallFilesEvent;
-use Civi\Setup\Event\UninstallSchemaEvent;
+use Civi\Setup\Event\UninstallDatabaseEvent;
 use Civi\Setup\Event\UninstallFilesEvent;
 use Civi\Setup\Exception\InitException;
 use Psr\Log\LoggerInterface;
@@ -161,11 +161,11 @@ class Setup {
   /**
    * Create the database schema.
    *
-   * @return \Civi\Setup\Event\InstallSchemaEvent
+   * @return \Civi\Setup\Event\InstallDatabaseEvent
    */
-  public function installSchema() {
-    $event = new InstallSchemaEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.installSchema', $event);
+  public function installDatabase() {
+    $event = new InstallDatabaseEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.installDatabase', $event);
   }
 
   /**
@@ -181,11 +181,11 @@ class Setup {
   /**
    * Remove the database schema.
    *
-   * @return \Civi\Setup\Event\UninstallSchemaEvent
+   * @return \Civi\Setup\Event\UninstallDatabaseEvent
    */
-  public function uninstallSchema() {
-    $event = new UninstallSchemaEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.uninstallSchema', $event);
+  public function uninstallDatabase() {
+    $event = new UninstallDatabaseEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.uninstallDatabase', $event);
   }
 
   /**
