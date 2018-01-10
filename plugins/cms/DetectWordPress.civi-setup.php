@@ -40,6 +40,8 @@ if (!defined('CIVI_SETUP')) {
       'database' => DB_NAME,
     );
 
+    // Compute URLs
+    $model->cmsBaseUrl = site_url();
     $model->paths['wp.frontend.base']['url'] = home_url() . '/';
     $model->paths['wp.backend.base']['url'] = admin_url();
     $model->mandatorySettings['userFrameworkResourceURL'] = plugin_dir_url(CIVICRM_PLUGIN_FILE) . 'civicrm';
