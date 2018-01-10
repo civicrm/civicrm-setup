@@ -28,31 +28,34 @@ to the downstream implementer to satisfy them.
 The library can be used to implement different installers, but consider using `cv` CLI as a reference/aide.
 Here are a few useful elements/workflows which are supported by `cv`:
 
- * __Dev loop__ (`cv core:install -f -vv`): When writing a patch to the installer logic, you may want to alternately update the
-   code and re-run the installation. You can do this quickly on the CLI with `cv`. Note the two options: `-f`
-   will force-reinstall (removing any old settings-files or database-tables), and `-vv` will enable very-verbose output.
+* __Dev loop__ (`cv core:install -f -vv`): When writing a patch to the installer logic, you may want to alternately update the
+  code and re-run the installation. You can do this quickly on the CLI with `cv`. Note the two options: `-f`
+  will force-reinstall (removing any old settings-files or database-tables), and `-vv` will enable very-verbose output.
+  This can be combined with `drush` or `wp-cli`, as in:
+    * WordPress: `wp plugin deactivate civicrm ; cv core:install -f -vv ; wp plugin activate civicrm`
+    * Drupal 7: `drush -y dis civicrm ; cv core:install -f -vv --cms-base-url=http://example.com/ ; drush -y en civicrm`
 
- * __Inspection__ (`cv core:install --debug-event`): Most of the installation logic is organized into *plugins* which
-   listen to *events*.  To better understand the installation logic, inspect the list of plugins and events.  For
-   example:
+* __Inspection__ (`cv core:install --debug-event`): Most of the installation logic is organized into *plugins* which
+  listen to *events*.  To better understand the installation logic, inspect the list of plugins and events.  For
+  example:
 
-   ```
-   $ cv core:install --debug-event
-   ...
-   [Event] civi.setup.checkInstalled
-   +-------+-----------------------------------------------------------------------------------------------------+
-   | Order | Callable                                                                                            |
-   +-------+-----------------------------------------------------------------------------------------------------+
-   | #1    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@30)        |
-   | #2    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/db/CheckInstalled.civi-setup.php@13)       |
-   | #3    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/settings/CheckInstalled.civi-setup.php@13) |
-   | #4    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@38)        |
-   +-------+-----------------------------------------------------------------------------------------------------+
-   ...
-   ```
+  ```
+  $ cv core:install --debug-event
+  ...
+  [Event] civi.setup.checkInstalled
+  +-------+-----------------------------------------------------------------------------------------------------+
+  | Order | Callable                                                                                            |
+  +-------+-----------------------------------------------------------------------------------------------------+
+  | #1    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@30)        |
+  | #2    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/db/CheckInstalled.civi-setup.php@13)       |
+  | #3    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/settings/CheckInstalled.civi-setup.php@13) |
+  | #4    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@38)        |
+  +-------+-----------------------------------------------------------------------------------------------------+
+  ...
+  ```
 
- * __Test coverage__: This library provides little of its own test-coverage. Instead, the main test coverage is provided
-   in the `cv` project (`phpunit4 --group installer`).
+* __Test coverage__: This library provides little of its own test-coverage. Instead, the main test coverage is provided
+  in the `cv` project (`phpunit4 --group installer`).
 
 ## Writing an installer
 
