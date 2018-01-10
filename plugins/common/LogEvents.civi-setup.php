@@ -17,10 +17,10 @@ $eventNames = array(
   'civi.setup.checkAuthorized',
   'civi.setup.checkRequirements',
   'civi.setup.checkInstalled',
-  'civi.setup.installSettings',
+  'civi.setup.installFiles',
   'civi.setup.installSchema',
   'civi.setup.uninstallSchema',
-  'civi.setup.uninstallSettings',
+  'civi.setup.uninstallFiles',
   'civi.setup.createForm',
 );
 foreach ($eventNames as $eventName) {

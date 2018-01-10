@@ -7,9 +7,9 @@ use Civi\Setup\Event\CheckInstalledEvent;
 use Civi\Setup\Event\CreateFormEvent;
 use Civi\Setup\Event\InitEvent;
 use Civi\Setup\Event\InstallSchemaEvent;
-use Civi\Setup\Event\InstallSettingsEvent;
+use Civi\Setup\Event\InstallFilesEvent;
 use Civi\Setup\Event\UninstallSchemaEvent;
-use Civi\Setup\Event\UninstallSettingsEvent;
+use Civi\Setup\Event\UninstallFilesEvent;
 use Civi\Setup\Exception\InitException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -151,11 +151,11 @@ class Setup {
   /**
    * Create the settings file.
    *
-   * @return \Civi\Setup\Event\InstallSettingsEvent
+   * @return \Civi\Setup\Event\InstallFilesEvent
    */
-  public function installSettings() {
-    $event = new InstallSettingsEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.installSettings', $event);
+  public function installFiles() {
+    $event = new InstallFilesEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.installFiles', $event);
   }
 
   /**
@@ -171,11 +171,11 @@ class Setup {
   /**
    * Remove the settings file.
    *
-   * @return \Civi\Setup\Event\UninstallSettingsEvent
+   * @return \Civi\Setup\Event\UninstallFilesEvent
    */
-  public function uninstallSettings() {
-    $event = new UninstallSettingsEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.uninstallSettings', $event);
+  public function uninstallFiles() {
+    $event = new UninstallFilesEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.uninstallFiles', $event);
   }
 
   /**

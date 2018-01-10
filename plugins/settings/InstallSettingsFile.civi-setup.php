@@ -30,7 +30,7 @@ if (!defined('CIVI_SETUP')) {
  * Read the $model and create the "civicrm.settings.php".
  */
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.installSettings', function (\Civi\Setup\Event\InstallSettingsEvent $e) {
+  ->addListener('civi.setup.installFiles', function (\Civi\Setup\Event\InstallFilesEvent $e) {
     Civi\Setup::log()->info('[SettingsFile] Generate civicrm.settings.php');
 
     /**

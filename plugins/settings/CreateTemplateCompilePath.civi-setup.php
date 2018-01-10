@@ -21,7 +21,7 @@ if (!defined('CIVI_SETUP')) {
   });
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.installSettings', function (\Civi\Setup\Event\InstallSettingsEvent $e) {
+  ->addListener('civi.setup.installFiles', function (\Civi\Setup\Event\InstallFilesEvent $e) {
     $m = $e->getModel();
 
     if (!file_exists($m->templateCompilePath)) {
