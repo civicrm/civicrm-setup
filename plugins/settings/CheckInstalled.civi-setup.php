@@ -19,17 +19,4 @@ if (!defined('CIVI_SETUP')) {
     else {
       throw new \Exception("The \"settingsPath\" is unspecified. Cannot determine whether the settings file exists.");
     }
-
-    if ($model->db) {
-      $conn = \Civi\Setup\DbUtil::connect($model->db);
-      $found = FALSE;
-      foreach ($conn->query('SHOW TABLES LIKE "civicrm_%"') as $result) {
-        $found = TRUE;
-      }
-      $conn->close();
-      $e->setDatabaseInstalled($found);
-    }
-    else {
-      throw new \Exception("The \"db\" is unspecified. Cannot determine whether the database schema file exists.");
-    }
   });
