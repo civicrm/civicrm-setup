@@ -27,10 +27,14 @@ if (!defined('CIVI_SETUP')) {
       return;
     }
 
+    // Note: We know WP is bootstrapped, but we don't know if the `civicrm` plugin is active,
+    // so we have to make an educated guess.
+    $civicrmPluginFile = implode(DIRECTORY_SEPARATOR, [WP_PLUGIN_DIR, 'civicrm', 'civicrm.php']);
+
     // Compute settingsPath.
     $uploadDir = wp_upload_dir();
     $preferredSettingsPath = $uploadDir['basedir'] . DIRECTORY_SEPARATOR . 'civicrm' . DIRECTORY_SEPARATOR . 'civicrm.settings.php';
-    $oldSettingsPath = CIVICRM_PLUGIN_DIR . 'civicrm.settings.php';
+    $oldSettingsPath = plugin_dir_path($civicrmPluginFile) . 'civicrm.settings.php';
     if (file_exists($preferredSettingsPath)) {
       $model->settingsPath = $preferredSettingsPath;
     }
@@ -55,5 +59,5 @@ if (!defined('CIVI_SETUP')) {
     $model->cmsBaseUrl = site_url();
     $model->paths['wp.frontend.base']['url'] = home_url() . '/';
     $model->paths['wp.backend.base']['url'] = admin_url();
-    $model->mandatorySettings['userFrameworkResourceURL'] = plugin_dir_url(CIVICRM_PLUGIN_FILE) . 'civicrm';
+    $model->mandatorySettings['userFrameworkResourceURL'] = plugin_dir_url($civicrmPluginFile) . 'civicrm';
   });
