@@ -23,6 +23,34 @@ to the downstream implementer to satisfy them.
 * Symfony `EventDispatcher` (`symfony/event-dispatcher` v2.x or v3.x)
 * PSR-3 (`psr/log` v1.x)
 
+## Development tips
+
+The library can be used to implement different installers, but consider using `cv` CLI as a reference/aide.
+Here are a few useful elements/workflows which are supported by `cv`:
+
+ * __Dev loop__ (`cv core:install -f -vv`): When writing a patch to the installer logic, you may want to alternately update the
+   code and re-run the installation. You can do this quickly on the CLI with `cv`. Note the two options: `-f`
+   will force-reinstall (removing any old settings-files or database-tables), and `-vv` will enable very-verbose output.
+
+ * __Inspection__ (`cv core:install --debug-event`): Most of the installation logic is organized into *plugins* which
+   listen to *events*.  To better understand the installation logic, inspect the list of plugins and events.  For
+   example:
+
+   ```
+   $ cv core:install --debug-event
+   ...
+   [Event] civi.setup.checkInstalled
+   +-------+-----------------------------------------------------------------------------------------------------+
+   | Order | Callable                                                                                            |
+   +-------+-----------------------------------------------------------------------------------------------------+
+   | #1    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@30)        |
+   | #2    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/db/CheckInstalled.civi-setup.php@13)       |
+   | #3    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/settings/CheckInstalled.civi-setup.php@13) |
+   | #4    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@38)        |
+   +-------+-----------------------------------------------------------------------------------------------------+
+   ...
+   ```
+
 ## Writing an installer
 
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
@@ -58,28 +86,6 @@ Alternatively, you might build a custom UI or a headless installer with these fu
 
 For uninstallation, you can use the corresponding functions `$setup->uninstallSchema()` and `$setup->uninstallSettings()`.
 
-## Inspecting plugins and events
-
-Most of the installation logic is organized into *plugins* which listen to *events*. To fully understand
-the installation logic, it may help to inspect the list of plugins and events.
-
-For example, the `cv` command includes an option to print the list of plugins and events.  Here is an example
-excerpt:
-
-```
-$ cv core:install -f --debug-event
-...
-[Event] civi.setup.checkInstalled
-+-------+-----------------------------------------------------------------------------------------------------+
-| Order | Callable                                                                                            |
-+-------+-----------------------------------------------------------------------------------------------------+
-| #1    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@30)        |
-| #2    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/db/CheckInstalled.civi-setup.php@13)       |
-| #3    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/settings/CheckInstalled.civi-setup.php@13) |
-| #4    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@38)        |
-+-------+-----------------------------------------------------------------------------------------------------+
-...
-```
 
 ## Writing a plugin
 
