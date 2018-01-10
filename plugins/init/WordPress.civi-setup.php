@@ -10,6 +10,17 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
+  ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
+    $model = $e->getModel();
+    if ($model->cms !== 'WordPress') {
+      return;
+    }
+
+    $e->setAuthorized(current_user_can('activate_plugins'));
+  });
+
+
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.init', function (\Civi\Setup\Event\InitEvent $e) {
     $model = $e->getModel();
     if ($model->cms !== 'WordPress' || !function_exists('current_user_can')) {
@@ -45,14 +56,4 @@ if (!defined('CIVI_SETUP')) {
     $model->paths['wp.frontend.base']['url'] = home_url() . '/';
     $model->paths['wp.backend.base']['url'] = admin_url();
     $model->mandatorySettings['userFrameworkResourceURL'] = plugin_dir_url(CIVICRM_PLUGIN_FILE) . 'civicrm';
-  });
-
-\Civi\Setup::dispatcher()
-  ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
-    $model = $e->getModel();
-    if ($model->cms !== 'WordPress') {
-      return;
-    }
-
-    $e->setAuthorized(current_user_can('activate_plugins'));
   });

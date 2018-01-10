@@ -10,6 +10,16 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
+  ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
+    $model = $e->getModel();
+    if ($model->cms !== 'Drupal') {
+      return;
+    }
+
+    $e->setAuthorized(user_access('administer modules'));
+  });
+
+\Civi\Setup::dispatcher()
   ->addListener('civi.setup.init', function (\Civi\Setup\Event\InitEvent $e) {
     $model = $e->getModel();
     if ($model->cms !== 'Drupal' || !function_exists('user_access')) {
@@ -50,16 +60,6 @@ if (!defined('CIVI_SETUP')) {
     $model->templateCompilePath = implode(DIRECTORY_SEPARATOR,
       [_drupal_civisetup_getPrivateFiles(), 'civicrm', 'templates_c']);
 
-  });
-
-\Civi\Setup::dispatcher()
-  ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
-    $model = $e->getModel();
-    if ($model->cms !== 'Drupal') {
-      return;
-    }
-
-    $e->setAuthorized(user_access('administer modules'));
   });
 
 function _drupal_civisetup_getPublicFiles() {
