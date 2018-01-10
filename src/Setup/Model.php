@@ -140,12 +140,6 @@ class Model {
       'type' => 'array',
       'value' => array(),
     ));
-    $this->addField(array(
-      'description' => 'List of callbacks to run',
-      'name' => 'callbacks',
-      'type' => 'array',
-      'value' => array(),
-    ));
   }
 
   /**
@@ -187,15 +181,6 @@ class Model {
       });
     }
     return $this->fields;
-  }
-
-  public function addCallback($file, $function, $arguments) {
-    $sig = md5(serialize($file, $function, $arguments));
-    $this->values['callbacks'][$sig] = array(
-      'file' => $file,
-      'function' => $function,
-      'arguments' => $arguments,
-    );
   }
 
   /**
