@@ -1,7 +1,7 @@
 # civicrm-setup
 
-`civicrm-setup` is a library for writing a CiviCRM installer.  It is to support the CLI command `cv` (`cv core:install`
-and `cv core:uninstall`) as well as fine-tuned, per-CMS installers (e.g.  for `civicrm-drupal` or `civicrm-wordpress`).
+`civicrm-setup` is a library for writing a CiviCRM installer.  It aims to support the CLI command `cv` (`cv core:install`
+and `cv core:uninstall`) as well as per-CMS, fine-tuned installers (e.g.  for `civicrm-drupal` or `civicrm-wordpress`).
 
 This library defines:
 
@@ -18,7 +18,7 @@ Some key features:
 
 There are a small number of external dependencies.  To allow for the variety
 of ways in which different builds manage their dependencies, we leave it up
-to the downstream implementer to satisfy them.
+to the downstream implementer to satisfy them:
 
 * Symfony `EventDispatcher` (`symfony/event-dispatcher` v2.x or v3.x)
 * PSR-3 (`psr/log` v1.x)
@@ -32,8 +32,8 @@ Here are a few useful elements/workflows which are supported by `cv`:
   code and re-run the installation. You can do this quickly on the CLI with `cv`. Note the two options: `-f`
   will force-reinstall (removing any old settings-files or database-tables), and `-vv` will enable very-verbose output.
   This can be combined with `drush` or `wp-cli`, as in:
-    * WordPress: `wp plugin deactivate civicrm ; cv core:install -f -vv ; wp plugin activate civicrm`
-    * Drupal 7: `drush -y dis civicrm ; cv core:install -f -vv --cms-base-url=http://example.com/ ; drush -y en civicrm`
+    * _WordPress_: `wp plugin deactivate civicrm ; cv core:install -f -vv ; wp plugin activate civicrm`
+    * _Drupal 7_: `drush -y dis civicrm ; cv core:install -f -vv --cms-base-url=http://example.com/ ; drush -y en civicrm`
 
 * __Inspection__ (`cv core:install --debug-event`): Most of the installation logic is organized into *plugins* which
   listen to *events*.  To better understand the installation logic, inspect the list of plugins and events.  For
@@ -99,7 +99,7 @@ A plugin is a PHP file with these characteristics:
 
 * The file's name ends in `*.civi-setup.php`. (Plugins in `civicrm-setup/plugins/*.civi-setup.php` are autodetected.)
 * The file has a guard at the top (`defined('CIVI_SETUP')`). If this constant is missing, then bail out. This prevents direct execution.
-* The file's logic locates the event-dispatcher and registers listeners, e.g. `\Civi\Setup::instance()->getDisptacher()->addListener($eventName, $callback)`.
+* The file's logic locates the event-dispatcher and registers listeners, e.g. `\Civi\Setup::disptacher()->addListener($eventName, $callback)`.
 
 Observe that the primary way for a plugin to interact with the system is to register for events (using Symfony's
 `EventDispatcher`).  The `$event` names and classes correspond to the methods of `Civi\Setup`, e.g.
