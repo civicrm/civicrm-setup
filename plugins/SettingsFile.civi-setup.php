@@ -95,3 +95,16 @@ if (!defined('CIVI_SETUP')) {
     file_put_contents($m->settingsPath, $str);
 
   }, \Civi\Setup::PRIORITY_LATE);
+
+\Civi\Setup::dispatcher()
+  ->addListener('civi.setup.removeSettings', function (\Civi\Setup\Event\RemoveSettingsEvent $e) {
+    Civi\Setup::log()->info('[SettingsFile] Remove civicrm.settings.php');
+
+    $file = $e->getModel()->settingsPath;
+    if (file_exists($file)) {
+      if (!\Civi\Setup\FileUtil::isDeletable($file)) {
+        throw new \Exception("Cannot remove $file");
+      }
+      unlink($file);
+    }
+  });
