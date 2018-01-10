@@ -51,13 +51,17 @@ Here are a few useful elements/workflows which are supported by `cv`:
    ...
    ```
 
+ * __Test coverage__: This library provides little of its own test-coverage. Instead, the main test coverage is provided
+   in the `cv` project (`phpunit4 --group installer`).
+
 ## Writing an installer
 
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
 first need to initialize the setup runtime and get a reference to the `$setup` API:
 
 * Bootstrap the CMS/host environment
-* Guard: Check if `civicrm-setup-autoload.php` exists.
+    * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
+* Check if `civicrm-setup-autoload.php` exists.
     * If it exists, then we'll proceed.
     * If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
 * Load `civicrm-setup-autoload.php`.
@@ -75,7 +79,7 @@ first need to initialize the setup runtime and get a reference to the `$setup` A
 When you have a copy of the `$setup` API, there are a few ways to work with it. For example, you might load
 the pre-built installation form (`$setup->createForm()->getForm()->run(array $postFields)`).
 
-Alternatively, you might build a custom UI or a headless installer with these functions:
+Alternatively, you might build a custom UI or a automated installer with these functions:
 
 * Guard: Check installation permissions (`$setup->checkAuthorized()`) and inspect the resulting object.
 * Guard: Check if Civi was previously installed (`$setup->checkInstalled()`) and inspect the resulting object.
@@ -85,7 +89,6 @@ Alternatively, you might build a custom UI or a headless installer with these fu
     * __Tip__: This will create the database tables, bootstrap Civi, and perform first-run configuration.
 
 For uninstallation, you can use the corresponding functions `$setup->uninstallDatabase()` and `$setup->uninstallFiles()`.
-
 
 ## Writing a plugin
 
