@@ -69,9 +69,12 @@ class Setup {
 
     $pluginDir = dirname(__DIR__) . '/plugins';
     $pluginFiles = array();
-    foreach ((array) glob("$pluginDir/*.civi-setup.php") as $file) {
-      $key = preg_replace('/\.civi-setup\.php$/', '', basename($file));
-      $pluginFiles[$key] = $file;
+    foreach (['*.civi-setup.php', '*/*.civi-setup.php'] as $pattern) {
+      foreach ((array) glob("$pluginDir/$pattern") as $file) {
+        $key = substr($file, strlen($pluginDir) + 1);
+        $key = preg_replace('/\.civi-setup\.php$/', '', $key);
+        $pluginFiles[$key] = $file;
+      }
     }
     ksort($pluginFiles);
 

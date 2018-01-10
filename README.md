@@ -4,7 +4,7 @@
 
 * A general system facade ([Civi\Setup](src/Setup.php)) which supports all major installation tasks/activities.
 * A *data model* ([Civi\Setup\Model](src/Setup/Model.php)) which lists all the standard configuration parameters.
-* A list of *plugins* (`plugins/*.civi-setup.php`) which can (a) autopopulate the model in certain environments and (b) execute installation tasks.
+* A list of *plugins* (`plugins/*/*.civi-setup.php`) which can (a) autopopulate the model in certain environments and (b) execute installation tasks.
 
 Some key features:
 
@@ -87,7 +87,7 @@ The `check*` events provide additional methods for relaying information.
 
 ## Managing plugins
 
-Plugins in `civicrm-setup/plugins/*.civi-setup.php` are automatically
+Plugins in `civicrm-setup/plugins/*/*.civi-setup.php` are automatically
 detected and loaded.  The simplest way to manage plugins is adding and
 removing files from this folder.
 
