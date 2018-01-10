@@ -1,6 +1,9 @@
 # civicrm-setup
 
-`civicrm-setup` is a library for writing a CiviCRM installer.  This library defines:
+`civicrm-setup` is a library for writing a CiviCRM installer.  It is to support the CLI command `cv` (`cv core:install`
+and `cv core:uninstall`) as well as fine-tuned, per-CMS installers (e.g.  for `civicrm-drupal` or `civicrm-wordpress`).
+
+This library defines:
 
 * A general system facade ([Civi\Setup](src/Setup.php)) which supports all major installation tasks/activities.
 * A *data model* ([Civi\Setup\Model](src/Setup/Model.php)) which lists all the standard configuration parameters.
@@ -54,6 +57,29 @@ Alternatively, you might build a custom UI or a headless installer with these fu
     * __Tip__: This will create the database tables, bootstrap Civi, and perform first-run configuration.
 
 For uninstallation, you can use the corresponding functions `$setup->uninstallSchema()` and `$setup->uninstallSettings()`.
+
+## Inspecting plugins and events
+
+Most of the installation logic is organized into *plugins* which listen to *events*. To fully understand
+the installation logic, it may help to inspect the list of plugins and events.
+
+For example, the `cv` command includes an option to print the list of plugins and events.  Here is an example
+excerpt:
+
+```
+$ cv core:install -f --debug-event
+...
+[Event] civi.setup.checkInstalled
++-------+-----------------------------------------------------------------------------------------------------+
+| Order | Callable                                                                                            |
++-------+-----------------------------------------------------------------------------------------------------+
+| #1    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@30)        |
+| #2    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/db/CheckInstalled.civi-setup.php@13)       |
+| #3    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/settings/CheckInstalled.civi-setup.php@13) |
+| #4    | closure(/var/www/sites/all/modules/civicrm/setup/plugins/common/LogEvents.civi-setup.php@38)        |
++-------+-----------------------------------------------------------------------------------------------------+
+...
+```
 
 ## Writing a plugin
 
