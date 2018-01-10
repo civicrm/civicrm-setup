@@ -8,8 +8,8 @@ use Civi\Setup\Event\CreateFormEvent;
 use Civi\Setup\Event\InitEvent;
 use Civi\Setup\Event\InstallSchemaEvent;
 use Civi\Setup\Event\InstallSettingsEvent;
-use Civi\Setup\Event\RemoveSchemaEvent;
-use Civi\Setup\Event\RemoveSettingsEvent;
+use Civi\Setup\Event\UninstallSchemaEvent;
+use Civi\Setup\Event\UninstallSettingsEvent;
 use Civi\Setup\Exception\InitException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -168,21 +168,21 @@ class Setup {
   /**
    * Remove the settings file.
    *
-   * @return \Civi\Setup\Event\RemoveSettingsEvent
+   * @return \Civi\Setup\Event\UninstallSettingsEvent
    */
-  public function removeSettings() {
-    $event = new RemoveSettingsEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.removeSettings', $event);
+  public function uninstallSettings() {
+    $event = new UninstallSettingsEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.uninstallSettings', $event);
   }
 
   /**
    * Remove the database schema.
    *
-   * @return \Civi\Setup\Event\RemoveSchemaEvent
+   * @return \Civi\Setup\Event\UninstallSchemaEvent
    */
-  public function removeSchema() {
-    $event = new RemoveSchemaEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.removeSchema', $event);
+  public function uninstallSchema() {
+    $event = new UninstallSchemaEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.uninstallSchema', $event);
   }
 
   /**

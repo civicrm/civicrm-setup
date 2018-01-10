@@ -97,7 +97,7 @@ if (!defined('CIVI_SETUP')) {
   }, \Civi\Setup::PRIORITY_LATE);
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.removeSettings', function (\Civi\Setup\Event\RemoveSettingsEvent $e) {
+  ->addListener('civi.setup.uninstallSettings', function (\Civi\Setup\Event\UninstallSettingsEvent $e) {
     Civi\Setup::log()->info('[SettingsFile] Remove civicrm.settings.php');
 
     $file = $e->getModel()->settingsPath;

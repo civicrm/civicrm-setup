@@ -19,8 +19,8 @@ $eventNames = array(
   'civi.setup.checkInstalled',
   'civi.setup.installSettings',
   'civi.setup.installSchema',
-  'civi.setup.removeSchema',
-  'civi.setup.removeSettings',
+  'civi.setup.uninstallSchema',
+  'civi.setup.uninstallSettings',
   'civi.setup.createForm',
 );
 foreach ($eventNames as $eventName) {

@@ -53,7 +53,7 @@ Alternatively, you might build a custom UI or a headless installer with these fu
 * Create the database schema (`$setup->installSchema()`).
     * __Tip__: This will create the database tables, bootstrap Civi, and perform first-run configuration.
 
-For uninstallation, you can use the corresponding functions `$setup->removeSchema()` and `$setup->removeSettings()`.
+For uninstallation, you can use the corresponding functions `$setup->uninstallSchema()` and `$setup->uninstallSettings()`.
 
 ## Writing a plugin
 
@@ -72,8 +72,8 @@ Observe that the primary way for a plugin to interact with the system is to regi
 * `\Civi\Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\CheckRequirementsEvent`
 * `\Civi\Setup::installSettings()` => `civi.setup.installSettings` => `Civi\Setup\InstallSettingsEvent`
 * `\Civi\Setup::installSchema()` => `civi.setup.installSchema` => `Civi\Setup\InstallSchemaEvent`
-* `\Civi\Setup::removeSettings()` => `civi.setup.removeSettings` => `Civi\Setup\RemoveSettingsEvent`
-* `\Civi\Setup::removeSchema()` => `civi.setup.removeSchema` => `Civi\Setup\RemoveSchemaEvent`
+* `\Civi\Setup::uninstallSettings()` => `civi.setup.uninstallSettings` => `Civi\Setup\UninstallSettingsEvent`
+* `\Civi\Setup::uninstallSchema()` => `civi.setup.uninstallSchema` => `Civi\Setup\UninstallSchemaEvent`
 * `\Civi\Setup::createForm()` => `civi.setup.createForm` => `Civi\Setup\CreateFormEvent`
 
 All events provide access to the setup data-model.
