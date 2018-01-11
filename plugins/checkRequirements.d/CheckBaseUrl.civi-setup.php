@@ -17,8 +17,13 @@ if (!defined('CIVI_SETUP')) {
 
     if (!$model->cmsBaseUrl || !preg_match('/^https?:/', $model->cmsBaseUrl)) {
       $e->addError('cmsBaseUrl', "The \"cmsBaseUrl\" ($model->cmsBaseUrl) is unavailable or malformed. Consider setting it explicitly.");
+      return;
     }
-    else {
-      $e->addOk('cmsBaseUrl', 'The "cmsBaseUrl" appears well-formed.');
+
+    if (PHP_SAPI === 'cli' && strpos($model->cmsBaseUrl, dirname($_SERVER['PHP_SELF'])) !== FALSE) {
+      $e->addError('cmsBaseUrl', "The \"cmsBaseUrl\" ($model->cmsBaseUrl) is unavailable or malformed. Consider setting it explicitly.");
+      return;
     }
+
+    $e->addOk('cmsBaseUrl', 'The "cmsBaseUrl" appears well-formed.');
   });
