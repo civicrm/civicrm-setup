@@ -90,11 +90,6 @@ class Model {
       'type' => 'string',
     ));
     $this->addField(array(
-      'description' => 'Locale of the default dataset',
-      'name' => 'locale',
-      'type' => 'string',
-    ));
-    $this->addField(array(
       'description' => 'Credentials for Civi database',
       'name' => 'db',
       'type' => 'dsn',
@@ -118,6 +113,7 @@ class Model {
       'description' => 'Language',
       'name' => 'lang',
       'type' => 'string',
+      'options' => array(),
     ));
     $this->addField(array(
       'description' => 'List of CiviCRM components to enable',
@@ -162,13 +158,33 @@ class Model {
     );
     $field = array_merge($defaults, $field);
 
-    $this->values[$field['name']] = isset($field['value']) ? $field['value'] : NULL;
-    unset($field['value']);
+    if (array_key_exists('value', $field) || !array_key_exists($field['name'], $this->values)) {
+      $this->values[$field['name']] = isset($field['value']) ? $field['value'] : NULL;
+      unset($field['value']);
+    }
 
     $this->fields[$field['name']] = $field;
 
     $this->sorted = FALSE;
     return $this;
+  }
+
+  /**
+   * @param string $field
+   *   The name of the field.
+   *   Ex: 'cmsDb', 'lang'.
+   * @param string $property
+   *   A specific property of the field to load.
+   *   Ex: 'name', 'description', 'type', 'options'.
+   * @return mixed|NULL
+   */
+  public function getField($field, $property = NULL) {
+    if ($property) {
+      return isset($this->fields[$field][$property]) ? $this->fields[$field][$property] : NULL;
+    }
+    else {
+      return isset($this->fields[$field]) ? $this->fields[$field] : NULL;
+    }
   }
 
   public function getFields() {
