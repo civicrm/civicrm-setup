@@ -16,13 +16,6 @@ Some key features:
     * To enable it, add the codebase to your civicrm source tree. (This can be done manually - or as part of a build process.)
 * It has minimal external dependencies.
 
-There are a small number of external dependencies.  To allow for the variety
-of ways in which different builds manage their dependencies, we leave it up
-to the downstream implementer to satisfy them:
-
-* Symfony `EventDispatcher` (`symfony/event-dispatcher` v2.x or v3.x)
-* PSR-3 (`psr/log` v1.x)
-
 ## Development tips
 
 The library can be used to implement different installers, but consider using `cv` CLI as a reference/aide.
@@ -62,21 +55,21 @@ Here are a few useful elements/workflows which are supported by `cv`:
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
 first need to initialize the setup runtime and get a reference to the `$setup` API:
 
-* Bootstrap the CMS/host environment
+* Bootstrap the CMS/host environment.
     * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
 * Check if `civicrm-setup-autoload.php` exists.
     * If it exists, then we'll proceed.
     * If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
 * Load `civicrm-setup-autoload.php`.
-* If necessary, add any extra autoloaders.
+* Load the CiviCRM class-loader.
     * Ex: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
-    * Ex: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then no steps are required. Your CMS and/or Civi should provide a copy of `EventDispatcher` and `psr/log`.
+    * Ex: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then you may not need to take any steps.
 * Initialize the `\Civi\Setup` subsystem.
     * Call `\Civi\Setup::init($modelValues = array(), $pluginCallback = NULL)`.
     * The `$modelValues` provides an opportunity to seed the configuration options, such as DSN and file-settings path. See the fields defined for the [Model](src/Setup/Model.php).
     * The `$pluginCallback` (`function(array $files) => array $files`) provides an opportunity to add/remove/override plugin files.
     * __Tip__: During initialization, some values may be autodetected. After initialization, you can inspect or revise these with `Civi\Setup::instance()->getModel()`.
-* Get a reference to the `$setup` API
+* Get a reference to the `$setup` API.
     * Call `$setup = Civi\Setup::instance()`.
 
 When you have a copy of the `$setup` API, there are a few ways to work with it. For example, you might load
