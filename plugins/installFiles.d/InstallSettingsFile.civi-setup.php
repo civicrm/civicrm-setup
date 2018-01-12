@@ -6,7 +6,7 @@
  */
 
 if (!defined('CIVI_SETUP')) {
-  exit();
+  exit("Installation plugins must only be loaded by the installer.\n");
 }
 
 /**
