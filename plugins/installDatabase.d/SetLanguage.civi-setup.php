@@ -11,8 +11,8 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
-    foreach ($e->getModel()->settings as $settingKey => $settingValue) {
-      \Civi\Setup::log()->info('[InstallSettings] Set value of ' . $settingKey);
-      \Civi::settings()->set($settingKey, $settingValue);
+    if ($e->getModel()->lang) {
+      \Civi\Setup::log()->info('[SetLanguage] Set default language to ' . $e->getModel()->lang);
+      \Civi::settings()->set('lcMessages', $e->getModel()->lang);
     }
-  }, \Civi\Setup::PRIORITY_LATE + 100);
+  }, \Civi\Setup::PRIORITY_LATE + 400);
