@@ -32,7 +32,9 @@ namespace Civi\Setup;
  *   The language of the default dataset.
  *   Ex: 'fr_FR'.
  * @property bool $loadGenerated
- *   EXPERIMENTAL/DEPRECATED: Load example dataset (in lieu of standard empty dataset).
+ *   UNSUPPORTED: Load example dataset (in lieu of the standard dataset).
+ *   This was copied-in from the previous installer code, but it should probably be
+ *   reconceived.
  * @property array $components
  *   Ex: ['CiviMail', 'CiviContribute', 'CiviEvent', 'CiviMember', 'CiviReport']
  * @property array $extensions
@@ -41,12 +43,13 @@ namespace Civi\Setup;
  *   List of hard-coded path-overrides.
  *   Ex: ['wp.frontend.base'=>['url'=>'http://example.org/']].
  * @property array $settings
- *   List of domain settings to apply. (These are defaults during installation;
- *   they could be changed via GUI by the admin post-install.)
+ *   List of domain settings to apply.
+ *   These are defaults during installation; they could be changed by the admin post-install via GUI or API.
  *   Ex: ['ajaxPopupsEnabled' => 0].
  * @property array $mandatorySettings
- *   List of hard-coded setting-overrides. (These are mandatory settings which
- *   are hard-coded into the config file. Changing requires editing the file.)
+ *   List of hard-coded setting-overrides.
+ *   These are mandatory settings which are hard-coded into the config file. Changing requires editing the file.
+ *   This makes sense for path/URL settings that are generally system-local and not migrated between dev/prod/etc.
  *   Ex: ['ajaxPopupsEnabled' => 0].
  */
 class Model {
