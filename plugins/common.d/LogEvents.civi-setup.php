@@ -21,7 +21,7 @@ $eventNames = array(
   'civi.setup.installDatabase',
   'civi.setup.uninstallDatabase',
   'civi.setup.uninstallFiles',
-  'civi.setup.createForm',
+  'civi.setup.createController',
 );
 foreach ($eventNames as $eventName) {
   $setup->getDispatcher()

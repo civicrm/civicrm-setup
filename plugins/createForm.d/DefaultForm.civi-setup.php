@@ -10,8 +10,8 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.createForm', function (\Civi\Setup\Event\CreateFormEvent $e) {
+  ->addListener('civi.setup.createController', function (\Civi\Setup\Event\CreateControllerEvent $e) {
 
-    $e->setForm(new \Civi\Setup\Form());
+    $e->setCtrl(new \Civi\Setup\SetupController(\Civi\Setup::instance()));
 
   }, \Civi\Setup::PRIORITY_PREPARE);

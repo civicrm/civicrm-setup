@@ -80,9 +80,21 @@ first need to initialize the setup runtime and get a reference to the `$setup` A
     * Call `$setup = Civi\Setup::instance()`.
 
 When you have a copy of the `$setup` API, there are a few ways to work with it. For example, you might load
-the pre-built installation form (`$setup->createForm()->getForm()->run(array $postFields)`).
+the pre-built installation form:
 
-Alternatively, you might build a custom UI or a automated installer with these functions:
+```
+// Create and execute the default setup controller (with standard PHP I/O).
+$ctrl = \Civi\Setup::instance()->createController()->getCtrl();
+$ctrl->setUrls(['res' => ..., 'ctrl' => ...]);
+\Civi\Setup\BasicRunner::run($ctrl);
+
+// As above, but customize the input/output process.
+$ctrl = \Civi\Setup::instance()->createController()->getCtrl();
+$ctrl->setUrls(['res' => ..., 'ctrl' => ...]);
+list ($headers, $htmlBody) = $ctrl->run($_SERVER['REQUEST_METHOD'], $_POST);
+```
+
+Alternatively, you might build a custom UI or an automated installer with these functions:
 
 * Guard: Check installation permissions (`$setup->checkAuthorized()`) and inspect the resulting object.
 * Guard: Check if Civi was previously installed (`$setup->checkInstalled()`) and inspect the resulting object.
@@ -112,7 +124,7 @@ Observe that the primary way for a plugin to interact with the system is to regi
 * `\Civi\Setup::installDatabase()` => `civi.setup.installDatabase` => `Civi\Setup\InstallDatabaseEvent`
 * `\Civi\Setup::uninstallFiles()` => `civi.setup.uninstallFiles` => `Civi\Setup\UninstallFilesEvent`
 * `\Civi\Setup::uninstallDatabase()` => `civi.setup.uninstallDatabase` => `Civi\Setup\UninstallDatabaseEvent`
-* `\Civi\Setup::createForm()` => `civi.setup.createForm` => `Civi\Setup\CreateFormEvent`
+* `\Civi\Setup::createController()` => `civi.setup.createController` => `Civi\Setup\CreateControllerEvent`
 
 All events provide access to the setup data-model.
 
