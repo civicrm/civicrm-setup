@@ -13,7 +13,7 @@ if ($text_direction == 'rtl') {
 <body>
 
 <div id="All">
-  <div class="civicrm-logo"><strong><?php echo ts('Version %1', array(1 => "{$civicrm_version['version']} {$civicrm_version['cms']}")); ?></strong><br/>
+  <div class="civicrm-logo"><strong><?php echo ts('Version %1', array(1 => "{$civicrm_version} {$model->cms}")); ?></strong><br/>
     <span><img src=<?php echo $installURLPath . "block_small.png"?> /></span>
   </div>
 
@@ -21,8 +21,6 @@ if ($text_direction == 'rtl') {
 <p><?php echo ts("Thanks for choosing CiviCRM! Please follow the instructions below to install CiviCRM."); ?></p>
 
 <form name="civicrm_form" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>">
-
-  <input type="hidden" name="civicrm_install_type" value="<?php echo $installType; ?>" />
 
 <?php if (isset($hasErrorOtherThanDatabase)) { ?>
   <p class="error"><?php echo ts('We are not able to install the software. Please <a href="#requirements">see below</a> for details.'); ?></p>
@@ -66,7 +64,7 @@ if ($text_direction == 'rtl') {
 <label for="seedLanguage"><span><?php echo ts('Language of basic data:'); ?></span></label>
 <select id="seedLanguage" name="seedLanguage" onchange="civicrmInstallerSetLanguage(this.value);">
   <?php
-    foreach ($langs as $locale => $language) {
+    foreach ($model->getField('lang', 'options') as $locale => $language) {
       $selected = ($locale == $seedLanguage) ? 'selected="selected"' : '';
       echo "<option value='$locale' $selected>$language</option>";
     }
@@ -77,8 +75,8 @@ if ($text_direction == 'rtl') {
 </noscript>
 <span class="testResults">
   <?php
-    if (count($langs) < 2) {
-      echo "(download the civicrm-{$civicrm_version['version']}-l10n.tar.gz file and unzip into CiviCRM’s directory to add languages here)";
+    if (count($model->getField('lang', 'options')) < 2) {
+      echo "(download the civicrm-{$civicrm_version}-l10n.tar.gz file and unzip into CiviCRM’s directory to add languages here)";
     }
   ?>
 </span>
@@ -99,17 +97,17 @@ if ($text_direction == 'rtl') {
 
 <h4><?php echo ts('CiviCRM Database Settings'); ?></h4>
 <p style="margin-left: 2em" id="mysql_credentials">
-  <label for="mysql_server"> <span><?php echo ts('MySQL server:'); ?></span> <input id="mysql_server" type="text" name="mysql[server]" value="<?php echo $databaseConfig['server']; ?>" /></label>
+  <label for="mysql_server"> <span><?php echo ts('MySQL server:'); ?></span> <input id="mysql_server" type="text" name="mysql[server]" value="<?php echo $model->db['server']; ?>" /></label>
   <span class="testResults"> <?php echo ts('If your mysql server is running on other port than default 3306, provide server info as server:port (i.e. localhost:1234) ') ?> </span> </br>
-  <label for="mysql_username"> <span><?php echo ts('MySQL username:'); ?></span> <input id="mysql_username" type="text" name="mysql[username]" value="<?php echo $databaseConfig['username']; ?>"  /></label> <br />
-  <label for="mysql_password"> <span><?php echo ts('MySQL password:'); ?></span> <input id="mysql_password" type="password" name="mysql[password]" value="<?php echo $databaseConfig['password']; ?>" /></label> <br />
-  <label for="mysql_database"><span><?php echo ts('MySQL database:'); ?></span> <input id="mysql_database" type="text" name="mysql[database]" value="<?php echo $databaseConfig['database']; ?>" /></label> <br />
+  <label for="mysql_username"> <span><?php echo ts('MySQL username:'); ?></span> <input id="mysql_username" type="text" name="mysql[username]" value="<?php echo $model->db['username']; ?>"  /></label> <br />
+  <label for="mysql_password"> <span><?php echo ts('MySQL password:'); ?></span> <input id="mysql_password" type="password" name="mysql[password]" value="<?php echo $model->db['password']; ?>" /></label> <br />
+  <label for="mysql_database"><span><?php echo ts('MySQL database:'); ?></span> <input id="mysql_database" type="text" name="mysql[database]" value="<?php echo $model->db['database']; ?>" /></label> <br />
 </p>
 
 <h4><?php echo ts('Other Settings'); ?></h4>
 
 <p>
-    <label for="loadGenerated"><span>Load sample data:</span><input id="loadGenerated" type="checkbox" name="loadGenerated" value=1 <?php if ( $loadGenerated == 1 ) { echo "checked='checked'"; } ?> /></label> <br />
+    <label for="loadGenerated"><span>Load sample data:</span><input id="loadGenerated" type="checkbox" name="loadGenerated" value=1 <?php if ( $model->loadGenerated ) { echo "checked='checked'"; } ?> /></label> <br />
     <span class="testResults">Check this box to pre-populate CiviCRM with sample English contact records, online contribution pages, profile forms, etc. These examples can help you learn about CiviCRM features.</span><br />
 </p>
 
