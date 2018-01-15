@@ -15,6 +15,7 @@ if (!defined('CIVI_SETUP')) {
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
 
     if (!$seedLanguage) {
+      $e->addInfo('lang', "Default language is allowed");
       return;
     }
 
@@ -34,6 +35,8 @@ if (!defined('CIVI_SETUP')) {
         return;
       }
     }
+
+    $e->addInfo('lang', "Language $seedLanguage is allowed.");
   });
 
 \Civi\Setup::dispatcher()
