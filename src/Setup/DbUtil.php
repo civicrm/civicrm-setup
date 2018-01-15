@@ -12,7 +12,7 @@ class DbUtil {
   public static function parseDsn($dsn) {
     $parsed = parse_url($dsn);
     return array(
-      'server' => $parsed['host'] . ($parsed['port'] ? (':' . $parsed['port']) : ''),
+      'server' => self::encodeHostPort($parsed['host'], $parsed['port']),
       'username' => $parsed['user'] ?: NULL,
       'password' => $parsed['pass'] ?: NULL,
       'database' => $parsed['path'] ? ltrim($parsed['path'], '/') : NULL,
@@ -24,15 +24,7 @@ class DbUtil {
    * @return \mysqli
    */
   public static function softConnect($db) {
-    $host = $db['server'];
-    $hostParts = explode(':', $host);
-    if (count($hostParts) > 1 && strrpos($host, ']') !== strlen($host) - 1) {
-      $port = array_pop($hostParts);
-      $host = implode(':', $hostParts);
-    }
-    else {
-      $port = NULL;
-    }
+    list($host, $port) = self::decodeHostPort($db['server']);
     $conn = @mysqli_connect($host, $db['username'], $db['password'], $db['database'], $port);
     return $conn;
   }
@@ -48,6 +40,43 @@ class DbUtil {
       throw new SqlException(sprintf("Connection failed: %s\n", mysqli_connect_error()));
     }
     return $conn;
+  }
+
+  /**
+   * @param string $host
+   *   Ex: 'localhost',
+   *   Ex: 'localhost:123'
+   *   Ex: '127.0.0.1:123'
+   *   Ex: '[1234:abcd]'
+   *   Ex: '[1234:abcd]:123'
+   * @return array
+   *   Combination: [0 => string $host, 1 => numeric|NULL $port].
+   *   Ex: ['localhost', NULL].
+   *   Ex: ['127.0.0.1', 3306]
+   */
+  public static function decodeHostPort($host) {
+    $hostParts = explode(':', $host);
+    if (count($hostParts) > 1 && strrpos($host, ']') !== strlen($host) - 1) {
+      $port = array_pop($hostParts);
+      $host = implode(':', $hostParts);
+    }
+    else {
+      $port = NULL;
+    }
+    return array($host, $port);
+  }
+
+  /**
+   * Combine a host and port number.
+   *
+   * @param string $host
+   * @param int|NULL $port
+   * @return string
+   *   Ex: 'localhost'.
+   *   Ex: '127.0.0.1:3307'.
+   */
+  public static function encodeHostPort($host, $port) {
+    return $host . ($port ? (':' . $port) : '');
   }
 
   /**
