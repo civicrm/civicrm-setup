@@ -23,7 +23,9 @@ if (!defined('CIVI_SETUP')) {
       $e->addError('settingsPath', sprintf('The settingsPath is undefined.'));
     }
 
-    $e->addMessage('settingsWritable', sprintf('The settings file "%s" cannot be created. Ensure the parent folder is writable.', $m->settingsPath), \Civi\Setup\FileUtil::isCreateable($m->settingsPath));
+    if (!\Civi\Setup\FileUtil::isCreateable($m->settingsPath)) {
+      $e->addError('settingsWritable', sprintf('The settings file "%s" cannot be created. Ensure the parent folder is writable.', $m->settingsPath));
+    }
   });
 
 /**

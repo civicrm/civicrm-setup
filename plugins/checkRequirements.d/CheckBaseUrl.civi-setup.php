@@ -25,5 +25,5 @@ if (!defined('CIVI_SETUP')) {
       return;
     }
 
-    $e->addOk('cmsBaseUrl', 'The "cmsBaseUrl" appears well-formed.');
+    $e->addInfo('cmsBaseUrl', 'The "cmsBaseUrl" appears well-formed.');
   });
