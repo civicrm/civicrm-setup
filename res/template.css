@@ -84,20 +84,9 @@ body {
   border: 1px #ccc solid;
 }
 
-.civicrm-setup-body .reqSeverity-info {
-  color: green;
-}
-
-.civicrm-setup-body .reqSeverity-warning {
-  color: white;
-  background-color: #e70;
-}
-
-.civicrm-setup-body .reqSeverity-error {
-  background-color: #c00;
-  border: 1px #700 solid;
-  color: white;
-}
+.civicrm-setup-body .reqSeverity-info { color: green; }
+.civicrm-setup-body .reqSeverity-warning { color: #a70; }
+.civicrm-setup-body .reqSeverity-error { color: #c00; }
 
 .civicrm-setup-body .settingsTable {
   border-collapse: collapse;
@@ -110,19 +99,21 @@ body {
 }
 
 .civicrm-setup-body .comp-box {
-  height: 4em;
+  height: 3.5em;
   width: 30%;
   display: inline-block;
   padding: 0.5em;
+  margin: 0.25em;
   border: 1px dashed #aaa;
   background: #eee;
   text-align: center;
 }
-.civicrm-setup-body .comp-box:hover { border: 1px solid black; cursor: hand}
+.civicrm-setup-body .comp-box:hover { background: #ddd; cursor: hand; }
 .civicrm-setup-body .comp-box > span {  width: 100%;  }
 .civicrm-setup-body .comp-label {  font-size: 1.5em; }
 .civicrm-setup-body .comp-desc { font-style: italic; }
 .civicrm-setup-body .comp-cb:checked + label { background: #dfd; }
+.civicrm-setup-body .comp-cb:checked + label:hover { background: #cec; }
 
 .civicrm-setup-body .sr-only {
   position: absolute;
@@ -139,3 +130,21 @@ body {
 .civicrm-setup-body.has-warnings .if-no-warnings {display: none;}
 .civicrm-setup-body.has-problems .if-no-problems {display: none;}
 .civicrm-setup-body.has-no-problems .if-problems {display: none;}
+
+.civicrm-setup-body .action-box {
+  width: 100%;
+  text-align: center;
+  margin: 2em 0.5em;
+}
+.civicrm-setup-body input[type=submit] {
+  padding:5px 15px;
+  background:#44f;
+  color: white;
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+.civicrm-setup-body input[type=submit]:hover {
+  background: #33e;
+}

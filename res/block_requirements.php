@@ -51,4 +51,9 @@ $severityLabels = array('info' => ts('Info'), 'warning' => ts('Warning'), 'error
   </tbody>
 </table>
 
-<input id="recheck_button" type="submit" name="civisetup[action][Start]" value="<?php echo htmlentities(ts('Re-test')); ?>" />
+<div class="action-box">
+  <input id="recheck_button" type="submit" name="civisetup[action][Start]" value="<?php echo htmlentities(ts('Refresh')); ?>" />
+  <div class="advancedTip">
+    <?php echo ts('After updating your system, refresh to test the requirements again.'); ?>
+  </div>
+</div>
