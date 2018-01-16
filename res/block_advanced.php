@@ -32,6 +32,7 @@
   </table>
 </div>
 
-<p style="background: #ffb; padding: 0.5em; margin: 1em auto; width: 50%">
+<p class="tip">
+  <strong><?php echo ts('Tip'); ?></strong>:
   <?php echo ts('Need more advanced control? You may alternatively use the <a href="%1" target="%2">command-line installer</a>.', array(1 => 'https://github.com/civicrm/cv', 2 => '_blank')); ?>
 </p>

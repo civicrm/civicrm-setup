@@ -44,6 +44,7 @@ if ($text_direction == 'rtl') {
   ?>
   <div class="cvs-l10n"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.php'; ?></div>
   <div class="cvs-sample-data"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
+  <div class="cvs-components"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_components.php'; ?></div>
   <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.php'; ?></div>
 
   <p>

@@ -63,6 +63,13 @@ body {
   font-weight: bold;
 }
 
+.civicrm-setup-body p.tip {
+  background: #ffb;
+  padding: 0.5em;
+  margin: 1em auto;
+  width: 50%
+}
+
 .civicrm-setup-body .advancedTip {
   border-collapse: collapse;
   font-size: 80%;
@@ -100,4 +107,30 @@ body {
 .civicrm-setup-body th, .civicrm-setup-body td {
   text-align: left;
   padding: 0.25em;
+}
+
+.civicrm-setup-body .comp-box {
+  height: 4em;
+  width: 30%;
+  display: inline-block;
+  padding: 0.5em;
+  border: 1px dashed #aaa;
+  background: #eee;
+  text-align: center;
+}
+.civicrm-setup-body .comp-box:hover { border: 1px solid black; cursor: hand}
+.civicrm-setup-body .comp-box > span {  width: 100%;  }
+.civicrm-setup-body .comp-label {  font-size: 1.5em; }
+.civicrm-setup-body .comp-desc { font-style: italic; }
+.civicrm-setup-body .comp-cb:checked + label { background: #dfd; }
+
+.civicrm-setup-body .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
