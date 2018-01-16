@@ -15,17 +15,17 @@ if (!defined('CIVI_SETUP')) {
     $m = $e->getModel();
 
     if (empty($m->templateCompilePath)) {
-      $e->addError('templateCompilePath', sprintf('The templateCompilePath is undefined.'));
+      $e->addError('system', 'templateCompilePath', sprintf('The templateCompilePath is undefined.'));
     }
     else {
-      $e->addInfo('templateCompilePath', 'The templateCompilePath is defined.');
+      $e->addInfo('system', 'templateCompilePath', 'The templateCompilePath is defined.');
     }
 
     if (!\Civi\Setup\FileUtil::isCreateable($m->templateCompilePath)) {
-      $e->addError('templateCompilePathWritable', sprintf('The template compile dir "%s" cannot be created. Ensure the parent folder is writable.', $m->templateCompilePath));
+      $e->addError('system', 'templateCompilePathWritable', sprintf('The template compile dir "%s" cannot be created. Ensure the parent folder is writable.', $m->templateCompilePath));
     }
     else {
-      $e->addInfo('templateCompilePathWritable', sprintf('The template compile dir "%s" can be created.', $m->templateCompilePath));
+      $e->addInfo('system', 'templateCompilePathWritable', sprintf('The template compile dir "%s" can be created.', $m->templateCompilePath));
     }
   });
 

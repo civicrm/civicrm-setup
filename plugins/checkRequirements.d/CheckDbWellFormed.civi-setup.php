@@ -23,7 +23,7 @@ if (!defined('CIVI_SETUP')) {
       $expectedKeys = array('server', 'username', 'password', 'database');
       sort($expectedKeys);
       if ($keys !== $expectedKeys) {
-        $e->addError($dbField, sprintf("The database credentials for \"%s\" should be specified as (%s) not (%s)",
+        $e->addError('database', $dbField, sprintf("The database credentials for \"%s\" should be specified as (%s) not (%s)",
           $dbField,
           implode(',', $expectedKeys),
           implode(',', $keys)
@@ -33,13 +33,13 @@ if (!defined('CIVI_SETUP')) {
 
       foreach ($db as $k => $v) {
         if (!is_scalar($v)) {
-          $e->addError("$dbField.$k", "The property \"$dbField.$k\" is not well-formed.");
+          $e->addError('database', "$dbField.$k", "The property \"$dbField.$k\" is not well-formed.");
           $errors++;
         }
       }
 
       if (0 == $errors) {
-        $e->addInfo($dbField, "The database credentials for \"$dbField\" are well-formed.");
+        $e->addInfo('database', $dbField, "The database credentials for \"$dbField\" are well-formed.");
       }
     }
   });

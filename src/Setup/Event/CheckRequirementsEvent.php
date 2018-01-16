@@ -9,16 +9,20 @@ class CheckRequirementsEvent extends BaseSetupEvent {
    * @param string $level
    *   Severity/level.
    *   Ex: 'info', 'warning', 'error'.
+   * @param string $section
+   *   Symbolic machine name for this group of messages.
+   *   Ex: 'database' or 'system'.
    * @param string $name
-   *   Symbolic machine name.
+   *   Symbolic machine name for this particular message.
    *   Ex: 'mysqlThreadstack'
    * @param string $message
    *   Displayable explanation.
    *   Ex: 'The MySQL thread stack is too small.'
    * @return $this
    */
-  public function addMessage($level, $name, $message) {
+  public function addMessage($level, $section, $name, $message) {
     $this->messages[$name] = array(
+      'section' => $section,
       'name' => $name,
       'message' => $message,
       'level' => $level,
@@ -26,16 +30,16 @@ class CheckRequirementsEvent extends BaseSetupEvent {
     return $this;
   }
 
-  public function addInfo($name, $message = '') {
-    return $this->addMessage('info', $name, $message);
+  public function addInfo($section, $name, $message = '') {
+    return $this->addMessage('info', $section, $name, $message);
   }
 
-  public function addError($name, $message = '') {
-    return $this->addMessage('error', $name, $message);
+  public function addError($section, $name, $message = '') {
+    return $this->addMessage('error', $section, $name, $message);
   }
 
-  public function addWarning($name, $message = '') {
-    return $this->addMessage('warning', $name, $message);
+  public function addWarning($section, $name, $message = '') {
+    return $this->addMessage('warning', $section, $name, $message);
   }
 
   /**

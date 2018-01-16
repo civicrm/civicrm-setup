@@ -16,12 +16,12 @@ if (!defined('CIVI_SETUP')) {
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
 
     if (!$seedLanguage || $seedLanguage === 'en_US') {
-      $e->addInfo('lang', "Default language is allowed");
+      $e->addInfo('system', 'lang', "Default language is allowed");
       return;
     }
 
     if (!preg_match('/^[a-z][a-z]_[A-Z][A-Z]$/', $seedLanguage)) {
-      $e->addError('langMalformed', 'Language name is malformed.');
+      $e->addError('system', 'langMalformed', 'Language name is malformed.');
       return;
     }
 
@@ -32,12 +32,12 @@ if (!defined('CIVI_SETUP')) {
 
     foreach ($files as $file) {
       if (!file_exists($file)) {
-        $e->addError('langMissing', "Language schema file is missing: \"$file\"");
+        $e->addError('system', 'langMissing', "Language schema file is missing: \"$file\"");
         return;
       }
     }
 
-    $e->addInfo('lang', "Language $seedLanguage is allowed.");
+    $e->addInfo('system', 'lang', "Language $seedLanguage is allowed.");
   });
 
 \Civi\Setup::dispatcher()

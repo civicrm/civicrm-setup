@@ -15,33 +15,34 @@ else {
 
 <?php
 $severityLabels = array('info' => ts('Info'), 'warning' => ts('Warning'), 'error' => ts('Error'));
+$sectionLabels = array('database' => ts('Database'), 'system' => ts('System'));
+$msgs = array_filter($reqs->getMessages(), function($m) {
+  return $m['level'] != 'info';
+});
+uasort($msgs, function($a, $b) {
+  return strcmp(
+    $a['severity'] . '-' . $a['section'] . '-' . $a['name'],
+    $b['severity'] . '-' . $b['section'] . '-' . $b['name']
+  );
+});
 ?>
 
 <table class="reqTable">
   <thead>
   <tr>
     <th width="10%"><?php echo ts('Severity'); ?></th>
+    <th width="10%"><?php echo ts('Section'); ?></th>
     <th width="20%"><?php echo ts('Name'); ?></th>
     <th width="69%"><?php echo ts('Details'); ?></th>
   </tr>
   </thead>
   <tbody>
   <?php
-  foreach ($reqs->getErrors() as $msg) {
+  foreach ($msgs as $msg) {
     ?>
   <tr class="<?php echo 'reqSeverity-' . $msg['level']; ?>">
     <td><?php echo htmlentities($severityLabels[$msg['level']]); ?></td>
-    <td><?php echo htmlentities($msg['name']); ?></td>
-    <td><?php echo htmlentities($msg['message']); ?></td>
-  </tr>
-  <?php
-  }
-  ?>
-  <?php
-  foreach ($reqs->getWarnings() as $msg) {
-    ?>
-  <tr class="<?php echo 'reqSeverity-' . $msg['level']; ?>">
-    <td><?php echo htmlentities($severityLabels[$msg['level']]); ?></td>
+    <td><?php echo htmlentities(isset($sectionLabels[$msg['section']]) ? $sectionLabels[$msg['section']] : $msg['section']); ?></td>
     <td><?php echo htmlentities($msg['name']); ?></td>
     <td><?php echo htmlentities($msg['message']); ?></td>
   </tr>

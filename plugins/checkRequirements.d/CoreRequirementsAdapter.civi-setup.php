@@ -15,28 +15,39 @@ if (!defined('CIVI_SETUP')) {
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
     \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
+
     $model = $e->getModel();
-
-    $levelMap = array(
-      \Civi\Install\Requirements::REQUIREMENT_OK => 'info',
-      \Civi\Install\Requirements::REQUIREMENT_WARNING => 'warning',
-      \Civi\Install\Requirements::REQUIREMENT_ERROR => 'error',
-    );
-
     $r = new \Civi\Install\Requirements();
-    list ($host, $port) = \Civi\Setup\DbUtil::decodeHostPort($model->db['server']);
-    $msgs = $r->checkAll(array(
-      'file_paths' => array(/* we do this elsewhere */),
-      'db_config' => array(
-        'host' => $host,
-        'port' => $port,
-        'username' => $model->db['username'],
-        'password' => $model->db['password'],
-        'database' => $model->db['database'],
-      ),
-    ));
 
-    foreach ($msgs as $msg) {
-      $e->addMessage($levelMap[$msg['severity']], $msg['title'], $msg['details']);
-    }
+    $systemMsgs = $r->checkSystem(array(/* we do this elsewhere */));
+    _corereqadapter_addMessages($e, 'system', $systemMsgs);
+
+    list ($host, $port) = \Civi\Setup\DbUtil::decodeHostPort($model->db['server']);
+    $dbMsgs = $r->checkDatabase(array(
+      'host' => $host,
+      'port' => $port,
+      'username' => $model->db['username'],
+      'password' => $model->db['password'],
+      'database' => $model->db['database'],
+    ));
+    _corereqadapter_addMessages($e, 'database', $dbMsgs);
   });
+
+/**
+ * @param \Civi\Setup\Event\CheckRequirementsEvent $e
+ *   Symbolic machine name for this group of messages.
+ *   Ex: 'database' or 'system'.
+ * @param array $msgs
+ *   A list of messages in the format used by \Civi\Install\Requirements
+ */
+function _corereqadapter_addMessages($e, $section, $msgs) {
+  $levelMap = array(
+    \Civi\Install\Requirements::REQUIREMENT_OK => 'info',
+    \Civi\Install\Requirements::REQUIREMENT_WARNING => 'warning',
+    \Civi\Install\Requirements::REQUIREMENT_ERROR => 'error',
+  );
+
+  foreach ($msgs as $msg) {
+    $e->addMessage($levelMap[$msg['severity']], $section, $msg['title'], $msg['details']);
+  }
+}
