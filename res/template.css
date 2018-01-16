@@ -134,3 +134,8 @@ body {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+.civicrm-setup-body.has-errors .if-no-errors {display: none;}
+.civicrm-setup-body.has-warnings .if-no-warnings {display: none;}
+.civicrm-setup-body.has-problems .if-no-problems {display: none;}
+.civicrm-setup-body.has-no-problems .if-problems {display: none;}

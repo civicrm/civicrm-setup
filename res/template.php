@@ -16,7 +16,17 @@ if ($text_direction == 'rtl') {
 </head>
 <body>
 
-<div class="civicrm-setup-body">
+<?php
+$mainClasses = array(
+  'civicrm-setup-body',
+  count($reqs->getErrors()) ? 'has-errors' : '',
+  count($reqs->getWarnings()) ? 'has-warnings' : '',
+  (count($reqs->getErrors()) + count($reqs->getWarnings()) > 0) ? 'has-problems' : '',
+  (count($reqs->getErrors()) + count($reqs->getWarnings()) === 0) ? 'has-no-problems' : '',
+);
+?>
+
+<div class="<?php echo implode(' ', $mainClasses); ?>">
 <div id="All">
   <div class="civicrm-logo"><strong><?php echo ts('Version %1', array(1 => "{$civicrm_version} {$model->cms}")); ?></strong><br/>
     <span><img src=<?php echo $installURLPath . "block_small.png"?> /></span>
@@ -32,33 +42,23 @@ if ($text_direction == 'rtl') {
 
 <form name="civicrm_form" method="post" action="<?php echo str_replace('%7E', '~', $_SERVER['REQUEST_URI']); ?>">
 
-
-  <?php
-  if (count($reqs->getErrors()) + count($reqs->getWarnings()) > 0) {
-    ?><div class="cvs-requirements"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.php'; ?></div><?php
-  }
-  ?>
-
-  <?php
-  if (count($reqs->getErrors()) == 0) {
-  ?>
-  <div class="cvs-l10n"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.php'; ?></div>
-  <div class="cvs-sample-data"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
-  <div class="cvs-components"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_components.php'; ?></div>
+  <div class="cvs-requirements if-problems"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.php'; ?></div>
+  <div class="cvs-l10n if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.php'; ?></div>
+  <div class="cvs-sample-data if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
+  <div class="cvs-components if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_components.php'; ?></div>
   <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.php'; ?></div>
 
-  <p>
-    <input id="install_button" type="submit" name="civisetup[action][Install]" value="<?php echo htmlentities(ts('Install')); ?>" onclick="document.getElementById('saving_top').style.display = ''; this.value = '<?php echo ts('Installing CiviCRM...', array('escape' => 'js')); ?>'" />
+  <div class="cvs-install if-no-errors">
+    <input id="install_button" type="submit" name="civisetup[action][Install]"
+           value="<?php echo htmlentities(ts('Install CiviCRM')); ?>"
+           onclick="document.getElementById('saving_top').style.display = ''; this.value = '<?php echo ts('Installing CiviCRM...', array('escape' => 'js')); ?>'"/>
 
     <span id="saving_top" style="display: none">
   &nbsp;
-    <img src=<?php echo $installURLPath . "network-save.gif"?> />
+    <img src=<?php echo $installURLPath . "network-save.gif" ?>/>
       <?php echo ts('(this will take a few minutes)'); ?>
   </span>
-  </p>
-  <?php
-  }
-  ?>
+  </div>
 
 </form>
 </div>
