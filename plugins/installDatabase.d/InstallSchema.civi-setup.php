@@ -14,7 +14,7 @@ if (!defined('CIVI_SETUP')) {
     $seedLanguage = $e->getModel()->lang;
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
 
-    if (!$seedLanguage) {
+    if (!$seedLanguage || $seedLanguage === 'en_US') {
       $e->addInfo('lang', "Default language is allowed");
       return;
     }
@@ -53,7 +53,7 @@ if (!defined('CIVI_SETUP')) {
     }
     else {
       $seedLanguage = $model->lang;
-      if ($seedLanguage) {
+      if ($seedLanguage && $seedLanguage !== 'en_US') {
         \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . "civicrm_data.{$seedLanguage}.mysql");
         \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . "civicrm_acl.{$seedLanguage}.mysql");
       }
