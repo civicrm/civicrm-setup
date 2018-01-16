@@ -63,7 +63,7 @@ class SetupController implements SetupControllerInterface {
      */
     $model = $this->setup->getModel();
 
-    $tplFile = $this->getResourcePath('template.html');
+    $tplFile = $this->getResourcePath('template.php');
     $tplVars = [
       'civicrm_version' => \CRM_Utils_System::version(),
       'lang' => $model->lang,
@@ -97,7 +97,7 @@ class SetupController implements SetupControllerInterface {
     $this->setup->installDatabase();
 
     $m = $this->setup->getModel();
-    $tplFile = $this->getResourcePath('finished.' . $m->cms . '.html');
+    $tplFile = $this->getResourcePath('finished.' . $m->cms . '.php');
     if (file_exists($tplFile)) {
       $tplVars = array();
       return array(array(), $this->render($tplFile, $tplVars));

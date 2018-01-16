@@ -1,3 +1,4 @@
+<?php \Civi\Setup::assertRunning(); ?>
 <h2><?php echo ts('Advanced'); ?></h2>
 
 <p>

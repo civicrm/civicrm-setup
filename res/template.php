@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php \Civi\Setup::assertRunning(); ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $short_lang_code; ?>" lang="<?php echo $short_lang_code; ?>" dir="<?php echo $text_direction; ?>">
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
@@ -30,17 +30,21 @@ if ($text_direction == 'rtl') {
 
 <p><?php echo ts("Thanks for choosing CiviCRM! Please follow the instructions below to install CiviCRM."); ?></p>
 
-<form name="civicrm_form" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>">
+<form name="civicrm_form" method="post" action="<?php echo str_replace('%7E', '~', $_SERVER['REQUEST_URI']); ?>">
 
 
-  <?php if (count($reqs->getErrors()) + count($reqs->getWarnings()) > 0) { ?>
-  <div class="cvs-requirements"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.html'; ?></div>
-  <?php } ?>
+  <?php
+  if (count($reqs->getErrors()) + count($reqs->getWarnings()) > 0) {
+    ?><div class="cvs-requirements"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.php'; ?></div><?php
+  }
+  ?>
 
-  <?php if (count($reqs->getErrors()) == 0) { ?>
-  <div class="cvs-l10n"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.html'; ?></div>
-  <div class="cvs-sample-data"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.html'; ?></div>
-  <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.html'; ?></div>
+  <?php
+  if (count($reqs->getErrors()) == 0) {
+  ?>
+  <div class="cvs-l10n"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.php'; ?></div>
+  <div class="cvs-sample-data"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
+  <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.php'; ?></div>
 
   <p>
     <input id="install_button" type="submit" name="civisetup[action][Install]" value="<?php echo htmlentities(ts('Install')); ?>" onclick="document.getElementById('saving_top').style.display = ''; this.value = '<?php echo ts('Installing CiviCRM...', array('escape' => 'js')); ?>'" />
@@ -51,7 +55,9 @@ if ($text_direction == 'rtl') {
       <?php echo ts('(this will take a few minutes)'); ?>
   </span>
   </p>
-  <?php } ?>
+  <?php
+  }
+  ?>
 
 </form>
 </div>

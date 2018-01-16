@@ -1,9 +1,10 @@
+<?php \Civi\Setup::assertRunning(); ?>
 <?php
 throw new \Exception("A draft copy of this file is available but has not been tested. Please edit " . __FILE__);
 
 // FIXME: Compute URL's with backdrop functions (e.g. 'url(...)')
 // FIXME: Just echo instead of doing $output silliness.
-// FIXME: Use finished.Common.html instead of $commonOutputMessage.
+// FIXME: Use finished.Common.php instead of $commonOutputMessage.
 
 $registerSiteURL = "https://civicrm.org/register-site";
 $commonOutputMessage = "<li>" . ts("Have you registered this site at CiviCRM.org? If not, please help strengthen the CiviCRM ecosystem by taking a few minutes to <a %1>fill out the site registration form</a>. The information collected will help us prioritize improvements, target our communications and build the community. If you have a technical role for this site, be sure to check Keep in Touch to receive technical updates (a low volume mailing list).", array(1 => "href='$registerSiteURL' target='_blank'")) . "</li>"

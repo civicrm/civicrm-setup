@@ -92,6 +92,20 @@ class Setup {
   }
 
   /**
+   * Assert that the "Setup" subsystem is running.
+   *
+   * This function is mostly just a placeholder -- in practice, if
+   * someone makes a failed call to `assertRunning()`, it will probably
+   * manifest as an unknown class/function. But this gives us a pretty,
+   * one-line, syntactically-valid way to make the assertion.
+   */
+  public static function assertRunning() {
+    if (!defined('CIVI_SETUP')) {
+      exit("Installation plugins must only be loaded by the installer.\n");
+    }
+  }
+
+  /**
    * @return Setup
    */
   public static function instance() {

@@ -1,7 +1,8 @@
+<?php \Civi\Setup::assertRunning(); ?>
 <h2><?php echo ts('Sample Data'); ?></h2>
 
 <p>
-  <label for="loadGenerated"><span>Load sample data:</span><input id="loadGenerated" type="checkbox" name="loadGenerated" value=1 <?php if ( $model->loadGenerated ) { echo "checked='checked'"; } ?> /></label> <br />
+  <label for="loadGenerated"><span>Load sample data:</span><input id="loadGenerated" type="checkbox" name="loadGenerated" value=1 <?php echo $model->loadGenerated ? "checked='checked'" : ""; ?> /></label> <br />
   <span class="advancedTip"><?php echo ts("Check this box to pre-populate CiviCRM with sample English contact records, online contribution pages, profile forms, etc. These examples can help you learn about CiviCRM features."); ?></span><br />
 </p>
 
