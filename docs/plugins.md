@@ -1,4 +1,4 @@
-## Managing plugins
+# Managing plugins
 
 Plugins in `civicrm-setup/plugins/*/*.civi-setup.php` are automatically
 detected and loaded.  The simplest way to manage plugins is adding and

@@ -1,4 +1,4 @@
-## Writing a plugin
+# Writing a plugin
 
 A plugin is a PHP file with these characteristics:
 

@@ -1,4 +1,4 @@
-## Writing an installer
+# Writing an installer
 
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
 first need to initialize the setup runtime and get a reference to the `$setup` API:
