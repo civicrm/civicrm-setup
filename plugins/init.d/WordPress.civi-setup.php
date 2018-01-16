@@ -60,4 +60,9 @@ if (!defined('CIVI_SETUP')) {
     $model->paths['wp.frontend.base']['url'] = home_url() . '/';
     $model->paths['wp.backend.base']['url'] = admin_url();
     $model->mandatorySettings['userFrameworkResourceURL'] = plugin_dir_url($civicrmPluginFile) . 'civicrm';
+
+    // Compute default locale.
+    $langs = $model->getField('lang', 'options');
+    $wpLang = get_locale();
+    $model->lang = isset($langs[$wpLang]) ? $wpLang : 'en_US';
   });
