@@ -11,6 +11,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.createController', function (\Civi\Setup\Event\CreateControllerEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'createController'));
 
     $e->setCtrl(new \Civi\Setup\SetupController(\Civi\Setup::instance()));
 

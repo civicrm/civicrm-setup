@@ -14,6 +14,7 @@ if (!defined('CIVI_SETUP')) {
     if ($e->getModel()->cms !== 'Backdrop') {
       return;
     }
+    \Civi\Setup::log()->info(sprintf('[%s] Flush CMS metadata', basename(__FILE__)));
 
     throw new \Exception("A draft copy of this file is available but has not been tested. Please edit " . __FILE__);
 

@@ -14,7 +14,7 @@ if (!defined('CIVI_SETUP')) {
     if ($e->getModel()->cms !== 'Drupal') {
       return;
     }
-    \Civi\Setup::log()->info('[CleanupDrupalSession] Purge Drupal session state which have stale CiviCRM references');
+    \Civi\Setup::log()->info('[CleanupDrupalSession.civi-setup.php] Purge Drupal session state which have stale CiviCRM references');
 
     // This keeps the Drupal user logged in, but it purges any data.
 

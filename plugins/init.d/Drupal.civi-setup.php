@@ -16,6 +16,7 @@ if (!defined('CIVI_SETUP')) {
       return;
     }
 
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkAuthorized'));
     $e->setAuthorized(user_access('administer modules'));
   });
 
@@ -25,6 +26,7 @@ if (!defined('CIVI_SETUP')) {
     if ($model->cms !== 'Drupal' || !function_exists('user_access')) {
       return;
     }
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'init'));
 
     // Compute settingsPath.
     $drupalSystem = new CRM_Utils_System_Drupal();

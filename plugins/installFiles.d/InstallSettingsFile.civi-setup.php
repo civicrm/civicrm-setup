@@ -14,6 +14,8 @@ if (!defined('CIVI_SETUP')) {
  */
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function(\Civi\Setup\Event\CheckRequirementsEvent $e){
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
+
     /**
      * @var \Civi\Setup\Model $m
      */
@@ -39,7 +41,7 @@ if (!defined('CIVI_SETUP')) {
  */
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.installFiles', function (\Civi\Setup\Event\InstallFilesEvent $e) {
-    Civi\Setup::log()->info('[SettingsFile] Generate civicrm.settings.php');
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'installFiles'));
 
     /**
      * @var \Civi\Setup\Model $m
@@ -86,7 +88,7 @@ if (!defined('CIVI_SETUP')) {
 
     $parent = dirname($m->settingsPath);
     if (!file_exists($parent)) {
-      Civi\Setup::log()->info('[SettingsFile] mkdir "{path}"', ['path' => $parent]);
+      Civi\Setup::log()->info('[InstallSettingsFile.civi-setup.php] mkdir "{path}"', ['path' => $parent]);
       mkdir($parent, 0777, TRUE);
       \Civi\Setup\FileUtil::makeWebWriteable($parent);
     }

@@ -12,11 +12,11 @@ if (!defined('CIVI_SETUP')) {
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
     if (!$e->getModel()->extensions) {
-      \Civi\Setup::log()->info('[InstallExtensions] No extensions to activate.');
+      \Civi\Setup::log()->info('[InstallExtensions.civi-setup.php] No extensions to activate.');
       return;
     }
 
-    \Civi\Setup::log()->info('[InstallExtensions] Activate extensions: ' . implode(' ', $e->getModel()->extensions));
+    \Civi\Setup::log()->info('[InstallExtensions.civi-setup.php] Activate extensions: ' . implode(' ', $e->getModel()->extensions));
     \civicrm_api3('Extension', 'enable', array(
       'keys' => $e->getModel()->extensions,
     ));

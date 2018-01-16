@@ -11,6 +11,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkInstalled', function (\Civi\Setup\Event\CheckInstalledEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkInstalled'));
     $model = $e->getModel();
 
     if ($model->db) {

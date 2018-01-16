@@ -14,6 +14,7 @@ if (!defined('CIVI_SETUP')) {
     if ($e->getModel()->cms !== 'Drupal') {
       return;
     }
+    \Civi\Setup::log()->info(sprintf('[%s] Flush CMS metadata', basename(__FILE__)));
 
     system_rebuild_module_data();
     module_enable(array('civicrm', 'civicrmtheme'));

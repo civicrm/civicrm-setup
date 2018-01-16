@@ -11,7 +11,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.uninstallDatabase', function (\Civi\Setup\Event\UninstallDatabaseEvent $e) {
-    \Civi\Setup::log()->info('[DatabaseSchema] Remove all tables and views (civicrm_* and log_civicrm_*)');
+    \Civi\Setup::log()->info('[UninstallSchema.civi-setup.php] Remove all tables and views (civicrm_* and log_civicrm_*)');
     $model = $e->getModel();
 
     $conn = \Civi\Setup\DbUtil::connect($model->db);

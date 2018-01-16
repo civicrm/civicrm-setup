@@ -28,7 +28,7 @@ foreach ($eventNames as $eventName) {
     ->addListener(
       $eventName,
       function ($event) use ($eventName, $setup) {
-        $setup->getLog()->info("[EventDispatcher] Start $eventName");
+        $setup->getLog()->info("[LogEvents.civi-setup.php] Start $eventName");
       },
       Setup::PRIORITY_START + 1
     );
@@ -36,7 +36,7 @@ foreach ($eventNames as $eventName) {
     ->addListener(
       $eventName,
       function ($event) use ($eventName, $setup) {
-        $setup->getLog()->info("[EventDispatcher] Finish $eventName");
+        $setup->getLog()->info("[LogEvents.civi-setup.php] Finish $eventName");
       },
       Setup::PRIORITY_END - 1
     );

@@ -11,6 +11,8 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
+
     $dbFields = array('db', 'cmsDb');
     foreach ($dbFields as $dbField) {
       $errors = 0;

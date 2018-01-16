@@ -13,6 +13,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
     $model = $e->getModel();
 
     if (!$model->cmsBaseUrl || !preg_match('/^https?:/', $model->cmsBaseUrl)) {

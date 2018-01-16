@@ -11,6 +11,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
     $m = $e->getModel();
 
     if (empty($m->templateCompilePath)) {
@@ -30,10 +31,11 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.installFiles', function (\Civi\Setup\Event\InstallFilesEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'installFiles'));
     $m = $e->getModel();
 
     if (!file_exists($m->templateCompilePath)) {
-      Civi\Setup::log()->info('[TemplateCompilePath] mkdir "{path}"', [
+      Civi\Setup::log()->info('[CreateTemplateCompilePath.civi-setup.php] mkdir "{path}"', [
         'path' => $m->templateCompilePath,
       ]);
       mkdir($m->templateCompilePath, 0777, TRUE);

@@ -11,7 +11,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
-    \Civi\Setup::log()->info('[BootstrapCivi] Bootstrap CiviCRM');
+    \Civi\Setup::log()->info(sprintf('[%s] Bootstrap CiviCRM', basename(__FILE__)));
 
     if (!defined('CIVICRM_SETTINGS_PATH')) {
       define('CIVICRM_SETTINGS_PATH', $e->getModel()->settingsPath);

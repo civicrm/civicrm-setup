@@ -14,6 +14,7 @@ if (!defined('CIVI_SETUP')) {
     if ($e->getModel()->cms !== 'WordPress') {
       return;
     }
+    \Civi\Setup::log()->info(sprintf('[%s] Flush CMS metadata', basename(__FILE__)));
 
     // Should we set the default permissions -- like in Drupal?
   }, \Civi\Setup::PRIORITY_LATE + 50);

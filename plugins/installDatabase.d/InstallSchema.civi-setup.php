@@ -11,6 +11,7 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
     $seedLanguage = $e->getModel()->lang;
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
 
@@ -41,7 +42,8 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
-    \Civi\Setup::log()->info('[DatabaseSchema] Install');
+    \Civi\Setup::log()->info(sprintf('[%s] Install database schema', basename(__FILE__)));
+
     $model = $e->getModel();
 
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';

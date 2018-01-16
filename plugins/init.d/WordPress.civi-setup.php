@@ -16,6 +16,7 @@ if (!defined('CIVI_SETUP')) {
       return;
     }
 
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkAuthorized'));
     $e->setAuthorized(current_user_can('activate_plugins'));
   });
 
@@ -26,6 +27,7 @@ if (!defined('CIVI_SETUP')) {
     if ($model->cms !== 'WordPress' || !function_exists('current_user_can')) {
       return;
     }
+    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'init'));
 
     // Note: We know WP is bootstrapped, but we don't know if the `civicrm` plugin is active,
     // so we have to make an educated guess.
