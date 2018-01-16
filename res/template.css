@@ -75,7 +75,6 @@ body {
 
 .civicrm-setup-body .reqTable td {
   border: 1px #ccc solid;
-  padding: 0.25em;
 }
 
 .civicrm-setup-body .reqSeverity-info {
@@ -91,4 +90,14 @@ body {
   background-color: #c00;
   border: 1px #700 solid;
   color: white;
+}
+
+.civicrm-setup-body .settingsTable {
+  border-collapse: collapse;
+  margin: 2em
+}
+
+.civicrm-setup-body th, .civicrm-setup-body td {
+  text-align: left;
+  padding: 0.25em;
 }
