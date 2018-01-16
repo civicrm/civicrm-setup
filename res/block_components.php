@@ -7,11 +7,11 @@ $desc = array(
   'CiviContribute' => ts('Accept donations and payments'),
   'CiviEvent' => ts('Accept event registrations'),
   'CiviMail' => ts('Send email blasts and newsletters'),
-  'CiviMember' => ts('Accept recurring memberships'),
+  'CiviMember' => ts('Manage recurring memberships'),
   'CiviCase' => ts('Track case histories'),
   'CiviPledge' => ts('Accept pledges'),
   'CiviReport' => ts('Generate reports'),
-  'CiviCampaign' => ts('Organize campaigns'),
+  'CiviCampaign' => ts('Organize campaigns, surveys, and petitions'),
   'CiviGrant' => ts('Receive grant applications'),
 );
 ?>
