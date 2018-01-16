@@ -41,7 +41,7 @@ class SetupController implements SetupControllerInterface {
       return $this->createError("Not authorized to perform installation");
     }
 
-    $this->boot();
+    $this->boot($fields);
 
     $fields[self::PREFIX]['action'] = empty($fields[self::PREFIX]['action']) ? 'Start' : $fields[self::PREFIX]['action'];
     $func = 'run' . $fields[self::PREFIX]['action'];
@@ -67,12 +67,14 @@ class SetupController implements SetupControllerInterface {
     $tplFile = implode(DIRECTORY_SEPARATOR, [$model->setupPath, 'res', 'template.html']);
     $tplVars = [
       'civicrm_version' => \CRM_Utils_System::version(),
-      'seedLanguage' => $model->lang,
+      'lang' => $model->lang,
       'loadGenerated' => $model->loadGenerated,
       'installURLPath' => $this->urls['res'],
       'short_lang_code' => \CRM_Core_I18n_PseudoConstant::shortForLong($GLOBALS['tsLocale']),
       'text_direction' => (\CRM_Core_I18n::isLanguageRTL($GLOBALS['tsLocale']) ? 'rtl' : 'ltr'),
       'model' => $model,
+      'jqueryURL' => $this->urls['jquery'],
+      'reqs' => $this->setup->checkRequirements(),
     ];
 
     $body = "<p>Hello world</p>" .
@@ -85,7 +87,7 @@ class SetupController implements SetupControllerInterface {
         'tplVars' => $tplVars,
       ], 1)) . "</pre>";
 
-    // $body = $this->render($tplFile, $tplVars);
+    $body = $this->render($tplFile, $tplVars);
 
     return array(array(), $body);
   }
@@ -93,7 +95,7 @@ class SetupController implements SetupControllerInterface {
   /**
    * Partially bootstrap Civi services (such as localization).
    */
-  protected function boot() {
+  protected function boot($fields) {
     $model = $this->setup->getModel();
 
     define('CIVICRM_UF', $model->cms);
@@ -102,11 +104,13 @@ class SetupController implements SetupControllerInterface {
     global $tsLocale;
     $tsLocale = 'en_US';
 
-    // CRM-16801 This validates that seedLanguage is valid by looking in $langs.
+    // CRM-16801 This validates that lang is valid by looking in $langs.
     // NB: the variable is initial a $_REQUEST for the initial page reload,
     // then becomes a $_POST when the installation form is submitted.
     $langs = $model->getField('lang', 'options');
-    //    print_r(['lang'=>$model->lang, 'langs'=>$langs]);
+    if (array_key_exists('lang', $fields)) {
+      $model->lang = $fields['lang'];
+    }
     if ($model->lang and isset($langs[$model->lang])) {
       $tsLocale = $model->lang;
     }

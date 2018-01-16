@@ -1,0 +1,28 @@
+<h2 id="requirements"><?php echo ts('System Requirements'); ?></h2>
+
+<table class="reqTable">
+  <thead>
+  <tr>
+    <th width="10%"><?php echo ts('Severity'); ?></th>
+    <th width="20%"><?php echo ts('Name'); ?></th>
+    <th width="69%"><?php echo ts('Details'); ?></th>
+  </tr>
+  </thead>
+  <tbody>
+  <?php
+  $msgs = $reqs->getMessages();
+  usort($msgs, function($a,$b){
+  $levels = array('error' => 1, 'warning' => 2, 'info' => 3);
+  if ($a['level'] != $b['level']) return strcmp($levels[$a['level']], $levels[$b['level']]);
+    return strcmp($a['name'], $b['name']);
+  });
+  ?>
+  <?php foreach($msgs as $msg) { ?>
+  <tr class="<?php echo 'reqSeverity-' . $msg['level']; ?>">
+    <td><?php echo htmlentities($msg['level']); ?></td>
+    <td><?php echo htmlentities($msg['name']); ?></td>
+    <td><?php echo htmlentities($msg['message']); ?></td>
+  </tr>
+  <?php } ?>
+  </tbody>
+</table>
