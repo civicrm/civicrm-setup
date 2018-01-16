@@ -1,6 +1,8 @@
 <?php
 namespace Civi\Setup;
 
+use Civi\Cv\Util\ArrayUtil;
+
 class SetupController implements SetupControllerInterface {
 
   const PREFIX = 'civisetup';
@@ -42,13 +44,10 @@ class SetupController implements SetupControllerInterface {
     }
 
     $this->boot($fields);
-
-    $fields[self::PREFIX]['action'] = empty($fields[self::PREFIX]['action']) ? 'Start' : $fields[self::PREFIX]['action'];
-    $func = 'run' . $fields[self::PREFIX]['action'];
-    if (!preg_match('/^[a-zA-Z0-9_]+$/', $fields[self::PREFIX]['action'])
-      || !is_callable([$this, $func])
-    ) {
-      return $this->createError('Invalid action');
+    $action = $this->parseAction($fields, 'Start');
+    $func = 'run' . $action;
+    if (!preg_match('/^[a-zA-Z0-9_]+$/', $action) || !is_callable([$this, $func])) {
+      return $this->createError("Invalid action");
     }
     return call_user_func([$this, $func], $method, $fields);
   }
@@ -64,7 +63,7 @@ class SetupController implements SetupControllerInterface {
      */
     $model = $this->setup->getModel();
 
-    $tplFile = implode(DIRECTORY_SEPARATOR, [$model->setupPath, 'res', 'template.html']);
+    $tplFile = $this->getResourcePath('template.html');
     $tplVars = [
       'civicrm_version' => \CRM_Utils_System::version(),
       'lang' => $model->lang,
@@ -77,19 +76,35 @@ class SetupController implements SetupControllerInterface {
       'reqs' => $this->setup->checkRequirements(),
     ];
 
-    $body = "<p>Hello world</p>" .
-      "<form method='post'><input type='text' name='foo'><input type='submit'></form>";
-    $body .= "<pre>" . htmlentities(print_r([
-        'method' => $method,
-        'urls' => $this->urls,
-        'data' => $fields,
-        'tplFile' => $tplFile,
-        'tplVars' => $tplVars,
-      ], 1)) . "</pre>";
-
+    // $body = "<pre>" . htmlentities(print_r(['method' => $method, 'urls' => $this->urls, 'data' => $fields], 1)) . "</pre>";
     $body = $this->render($tplFile, $tplVars);
 
     return array(array(), $body);
+  }
+
+  public function runInstall($method, $fields) {
+    $checkInstalled = $this->setup->checkInstalled();
+    if ($checkInstalled->isDatabaseInstalled() || $checkInstalled->isSettingInstalled()) {
+      return $this->createError("CiviCRM is already installed");
+    }
+
+    $reqs = $this->setup->checkRequirements();
+    if (count($reqs->getErrors())) {
+      return $this->createError('CiviCRM cannot be installed because "checkRequirements" returned errors');
+    }
+
+    $this->setup->installFiles();
+    $this->setup->installDatabase();
+
+    $m = $this->setup->getModel();
+    $tplFile = $this->getResourcePath('finished.' . $m->cms . '.html');
+    if (file_exists($tplFile)) {
+      $tplVars = array();
+      return array(array(), $this->render($tplFile, $tplVars));
+    }
+    else {
+      return $this->createError("Installation succeeded. However, the final page ($tplFile) was not available.");
+    }
   }
 
   /**
@@ -123,8 +138,7 @@ class SetupController implements SetupControllerInterface {
   }
 
   public function createError($message, $title = 'Error') {
-    $tplFile = implode(DIRECTORY_SEPARATOR, [$this->setup->getModel()->setupPath, 'res', 'error.html']);
-    return array(array(), $this->render($tplFile, [
+    return array(array(), $this->render($this->getResourcePath('error.html'), [
       'errorTitle' => htmlentities($title),
       'errorMsg' => htmlentities($message),
       'installURLPath' => $this->urls['res'],
@@ -148,6 +162,13 @@ class SetupController implements SetupControllerInterface {
     return ob_get_clean();
   }
 
+  public function getResourcePath($parts) {
+    $parts = (array) $parts;
+    array_unshift($parts, 'res');
+    array_unshift($parts, $this->setup->getModel()->setupPath);
+    return implode(DIRECTORY_SEPARATOR, $parts);
+  }
+
   /**
    * @inheritdoc
    */
@@ -156,6 +177,33 @@ class SetupController implements SetupControllerInterface {
       $this->urls[$k] = $v;
     }
     return $this;
+  }
+
+  /**
+   * Given an HTML submission, determine the name.
+   *
+   * @param array $fields
+   *   HTTP inputs -- e.g. with a form element like this:
+   *   `<input type="submit" name="civisetup[action][Foo]" value="Do the foo">`
+   * @return string
+   *   The name of the action.
+   *   Ex: 'Foo'.
+   */
+  protected function parseAction($fields, $default) {
+    if (empty($fields[self::PREFIX]['action'])) {
+      return $default;
+    }
+    else {
+      if (is_array($fields[self::PREFIX]['action'])) {
+        foreach ($fields[self::PREFIX]['action'] as $name => $label) {
+          return $name;
+        }
+      }
+      elseif (is_string($fields[self::PREFIX]['action'])) {
+        return $fields[self::PREFIX]['action'];
+      }
+    }
+    return NULL;
   }
 
 }

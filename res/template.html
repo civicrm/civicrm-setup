@@ -32,30 +32,26 @@ if ($text_direction == 'rtl') {
 
 <form name="civicrm_form" method="post" action="<?php echo str_replace( '%7E', '~', $_SERVER['REQUEST_URI']); ?>">
 
-<?php if (count($reqs->getErrors()) > 0) { ?>
-  <p class="error"><?php echo ts('We are not able to install the software. Please see <a href="#requirements">System Requirements</a> for details.'); ?></p>
-<?php } else { ?>
-  <?php if (count($reqs->getWarnings()) > 0) { ?>
-    <p class="warning"><?php echo ts('There are some issues that we recommend you look at before installing. However, you are still able to install the software.  Please see <a href="#requirements">System Requirements</a> for details.'); ?></p>
-  <?php } elseif (1 /*ZZ !$dbReq->hasErrors()*/) { ?>
-    <p class="good"><?php echo ts("You're ready to install!"); ?></p>
+
+  <?php if (count($reqs->getErrors()) + count($reqs->getWarnings()) > 0) { ?>
+  <div class="cvs-requirements"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.html'; ?></div>
   <?php } ?>
 
-  <p>
-  <input id="install_button" type="submit" name="go" value="<?php echo ts('Check Requirements and Install CiviCRM', array('escape' => 'js')); ?>" onclick="document.getElementById('saving_top').style.display = ''; this.value = '<?php echo ts('Installing CiviCRM...', array('escape' => 'js')); ?>'" />
+  <?php if (count($reqs->getErrors()) == 0) { ?>
+  <div class="cvs-l10n"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.html'; ?></div>
+  <div class="cvs-sample-data"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.html'; ?></div>
+  <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.html'; ?></div>
 
-  <span id="saving_top" style="display: none">
+  <p>
+    <input id="install_button" type="submit" name="civisetup[action][Install]" value="<?php echo htmlentities(ts('Install')); ?>" onclick="document.getElementById('saving_top').style.display = ''; this.value = '<?php echo ts('Installing CiviCRM...', array('escape' => 'js')); ?>'" />
+
+    <span id="saving_top" style="display: none">
   &nbsp;
     <img src=<?php echo $installURLPath . "network-save.gif"?> />
-  <?php echo ts('(this will take a few minutes)'); ?>
+      <?php echo ts('(this will take a few minutes)'); ?>
   </span>
   </p>
-<?php } ?>
-
-<div class="cvs-l10n"><?php include __DIR__ . DIRECTORY_SEPARATOR . 'block_l10n.html'; ?></div>
-<div class="cvs-sample-data"><?php include __DIR__ . DIRECTORY_SEPARATOR . 'block_sample_data.html'; ?></div>
-<div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . 'block_advanced.html'; ?></div>
-<div class="cvs-requirements"><?php include __DIR__ . DIRECTORY_SEPARATOR . 'block_requirements.html'; ?></div>
+  <?php } ?>
 
 </form>
 </div>

@@ -70,6 +70,7 @@ body {
 
 .civicrm-setup-body .reqTable {
   border-collapse: collapse;
+  width: 100%;
 }
 
 .civicrm-setup-body .reqTable td {
@@ -82,8 +83,8 @@ body {
 }
 
 .civicrm-setup-body .reqSeverity-warning {
-  color: black;
-  background: orange;
+  color: white;
+  background-color: #e70;
 }
 
 .civicrm-setup-body .reqSeverity-error {
