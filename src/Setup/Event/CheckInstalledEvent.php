@@ -1,6 +1,11 @@
 <?php
 namespace Civi\Setup\Event;
 
+/**
+ * Check if CiviCRM is already installed.
+ *
+ * Event Name: 'civi.setup.checkInstalled'
+ */
 class CheckInstalledEvent extends BaseSetupEvent {
 
   /**

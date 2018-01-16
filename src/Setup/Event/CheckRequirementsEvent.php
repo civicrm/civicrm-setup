@@ -1,6 +1,11 @@
 <?php
 namespace Civi\Setup\Event;
 
+/**
+ * Check if the local system meets the installation requirements.
+ *
+ * Event Name: 'civi.setup.checkRequirements'
+ */
 class CheckRequirementsEvent extends BaseSetupEvent {
 
   protected $messages;

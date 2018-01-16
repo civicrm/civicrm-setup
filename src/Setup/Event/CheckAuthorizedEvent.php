@@ -1,6 +1,11 @@
 <?php
 namespace Civi\Setup\Event;
 
+/**
+ * Check if the current user is authorized to perform installations.
+ *
+ * Event Name: 'civi.setup.checkAuthorized'
+ */
 class CheckAuthorizedEvent extends BaseSetupEvent {
 
   /**
