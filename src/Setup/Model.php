@@ -169,6 +169,11 @@ class Model {
     return $this;
   }
 
+  public function setField($field, $property, $value) {
+    $this->fields[$field][$property] = $value;
+    return $this;
+  }
+
   /**
    * @param string $field
    *   The name of the field.

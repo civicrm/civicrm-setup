@@ -28,8 +28,6 @@ if (!defined('CIVI_SETUP')) {
       }
     }
 
-    $langField = $m->getField('lang');
-    $langField['options'] = $langs;
-    $m->addField($langField);
+    $m->setField('lang', 'options', $langs);
 
   }, \Civi\Setup::PRIORITY_PREPARE);
