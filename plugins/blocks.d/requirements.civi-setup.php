@@ -17,5 +17,14 @@ if (!defined('CIVI_SETUP')) {
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'requirements.tpl.php',
       'class' => 'if-problems',
       'weight' => 20,
+      'level_labels' => array(
+        'info' => ts('Info'),
+        'warning' => ts('Warning'),
+        'error' => ts('Error'),
+      ),
+      'section_labels' => array(
+        'database' => ts('Database'),
+        'system' => ts('System'),
+      ),
     );
   }, \Civi\Setup::PRIORITY_PREPARE);

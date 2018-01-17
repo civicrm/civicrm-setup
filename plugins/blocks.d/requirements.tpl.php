@@ -12,8 +12,6 @@ endif;
 ?>
 
 <?php
-$severityLabels = array('info' => ts('Info'), 'warning' => ts('Warning'), 'error' => ts('Error'));
-$sectionLabels = array('database' => ts('Database'), 'system' => ts('System'));
 $msgs = array_filter($reqs->getMessages(), function($m) {
   return $m['level'] != 'info';
 });
@@ -37,8 +35,8 @@ uasort($msgs, function($a, $b) {
   <tbody>
   <?php foreach ($msgs as $msg):?>
   <tr class="<?php echo 'reqSeverity-' . $msg['level']; ?>">
-    <td><?php echo htmlentities($severityLabels[$msg['level']]); ?></td>
-    <td><?php echo htmlentities(isset($sectionLabels[$msg['section']]) ? $sectionLabels[$msg['section']] : $msg['section']); ?></td>
+    <td><?php echo htmlentities($_tpl_block['level_labels'][$msg['level']]); ?></td>
+    <td><?php echo htmlentities(isset($_tpl_block['section_labels'][$msg['section']]) ? $_tpl_block['section_labels'][$msg['section']] : $msg['section']); ?></td>
     <td><?php echo htmlentities($msg['name']); ?></td>
     <td><?php echo htmlentities($msg['message']); ?></td>
   </tr>

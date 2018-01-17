@@ -17,5 +17,16 @@ if (!defined('CIVI_SETUP')) {
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'components.tpl.php',
       'class' => 'if-no-errors',
       'weight' => 50,
+      'component_labels' => array(
+        'CiviContribute' => ts('Accept donations and payments'),
+        'CiviEvent' => ts('Accept event registrations'),
+        'CiviMail' => ts('Send email blasts and newsletters'),
+        'CiviMember' => ts('Manage recurring memberships'),
+        'CiviCase' => ts('Track case histories'),
+        'CiviPledge' => ts('Accept pledges'),
+        'CiviReport' => ts('Generate reports'),
+        'CiviCampaign' => ts('Organize campaigns, surveys, and petitions'),
+        'CiviGrant' => ts('Receive grant applications'),
+      ),
     );
   }, \Civi\Setup::PRIORITY_PREPARE);
