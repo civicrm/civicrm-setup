@@ -2,6 +2,7 @@
 namespace Civi\Setup;
 
 use Civi\Cv\Util\ArrayUtil;
+use Civi\Setup\Event\RunControllerEvent;
 
 class SetupController implements SetupControllerInterface {
 
@@ -90,6 +91,10 @@ class SetupController implements SetupControllerInterface {
     }
 
     $this->boot($fields);
+
+    $this->setup->getDispatcher()->dispatch('civi.setup.runController',
+      new RunControllerEvent($this, $method, $fields));
+
     $action = $this->parseAction($fields, 'Start');
     $func = 'run' . $action;
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $action) || !is_callable([$this, $func])) {
