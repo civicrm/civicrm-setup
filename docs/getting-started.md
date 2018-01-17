@@ -47,7 +47,7 @@ $ cd /path/to/web-root
 ## Inspect the model
 
 The *model* defines any local installation options.  These values are mostly
-determined automatically. To inspect them, run `cv core:install --debug-model`, as in:
+determined automatically. To inspect them, use the `--debug-model` option, as in:
 
 ```
 $ cv core:install --debug-model
@@ -124,13 +124,13 @@ Found code for civicrm-setup in /home/myuser/src/civicrm-setup
 ...
 ```
 
-Notice that the `level` indicates whether there are any problems preventing installation. The levels are:
+Notice that the `level` indicates whether the requirement is satisfactory or problematic. The levels are:
 
-* `error`: The requirement is not met. Installation cannot proceed.
-* `warning`: The requirement is partially met. Installation may proceed, but there is some limitation or risk.
 * `info`: The requirement is met. Installation may proceed.
+* `warning`: The requirement is partially met. Installation may proceed, but there is some limitation or risk.
+* `error`: The requirement is not met. Installation cannot proceed.
 
-> __Tip__: If you want to focus on errors and warnings, add the `-we` option.
+> __Tip__: If you want to focus on warnings and errors, add the `-we` option.
 
 ## Run the installer
 
@@ -170,19 +170,19 @@ update the code, re-run the installer, and inspect what happens. This
 can be distilled into a single CLI call, which inclues a few elements:
 
 * Use `cv core:install -f` to force-install. This will remove any old settings-files or database-tables.
-* Use `cv core:install -vv` to enable very-verbose output. This will log more details about the execution.
+* Use `cv core:install -vvv` to enable very-verbose output. This will log more details about the execution.
 * Use `drush` or `wp-cli` to enable or disable the `civicrm` module.
 
 For example, on WordPress, this single command will uninstall and reinstall:
 
 ```
-wp plugin deactivate civicrm ; cv core:install -f -vv ; wp plugin activate civicrm
+wp plugin deactivate civicrm ; cv core:install -f -vvv ; wp plugin activate civicrm
 ```
 
 Similarly, in Drupal 7:
 
 ```
-drush -y dis civicrm ; cv core:install -f -vv --cms-base-url=http://example.com/ ; drush -y en civicrm
+drush -y dis civicrm ; cv core:install -f -vvv --cms-base-url=http://example.com/ ; drush -y en civicrm
 ```
 
 ## Test coverage

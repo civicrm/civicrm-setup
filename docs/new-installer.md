@@ -1,7 +1,7 @@
 # Writing an installer
 
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
-first need to initialize the setup runtime and get a reference to the `$setup` API:
+first need to initialize the runtime and get a reference to the `$setup` object:
 
 * Bootstrap the CMS/host environment.
     * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
@@ -14,7 +14,7 @@ first need to initialize the setup runtime and get a reference to the `$setup` A
     * Ex: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then you may not need to take any steps.
 * Initialize the `\Civi\Setup` subsystem.
     * Call `\Civi\Setup::init($modelValues = array(), $pluginCallback = NULL)`.
-    * The `$modelValues` provides an opportunity to seed the configuration options, such as DSN and file-settings path. See the fields defined for the [Model](src/Setup/Model.php).
+    * The `$modelValues` provides an opportunity to seed the configuration options, such as DB credentials and file-paths. See the fields defined for the [Model](src/Setup/Model.php).
     * The `$pluginCallback` (`function(array $files) => array $files`) provides an opportunity to add/remove/override plugin files.
     * __Tip__: During initialization, some values may be autodetected. After initialization, you can inspect or revise these with `Civi\Setup::instance()->getModel()`.
 * Get a reference to the `$setup` API.
@@ -63,11 +63,12 @@ $ctrl->setUrls(['res' => ..., 'ctrl' => ...]);
 list ($headers, $htmlBody) = $ctrl->run($_SERVER['REQUEST_METHOD'], $_POST);
 ```
 
-Alternatively, you might build a custom UI or an automated installer with these functions:
+Alternatively, you might build a custom UI or an automated installer. `$setup` provides a number of functions:
 
+* `$setup->getModel()`: Get a copy of the `Model`. You may want to tweak the model's data before performing installation.
 * `$setup->checkAuthorized()`: Determine if the current user is authorized to perform an installation.
 * `$setup->checkInstalled()`: Determine if CiviCRM is already installed.
-* `$setup->checkRequirements()`: Determine if the local system meets the instalation requirements.
+* `$setup->checkRequirements()`: Determine if the local system meets the installation requirements.
 * `$setup->installFiles()`: Create data files, such as `civicrm.settings.php` and `templates_c`.
 * `$setup->installDatabase()`: Create database schema (tables, views, etc). Perform first bootstrap and configure the system.
 * `$setup->uninstallDatabase()`: Purge database schema (tables, views, etc).

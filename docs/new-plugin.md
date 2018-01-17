@@ -15,7 +15,7 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.installDatabase', function (\Civi\Setup\InstallDatabaseEvent $event) {
+  ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $event) {
     \Civi\Setup::log()->info("I like to run the plugin during installation.");
   });
 ```
@@ -23,15 +23,15 @@ if (!defined('CIVI_SETUP')) {
 Observe that the primary way for a plugin to interact with the system is to register for events (using Symfony's
 `EventDispatcher`).  The `$event` names and classes correspond to the methods of `Civi\Setup`, e.g.
 
-* `\Civi\Setup::init()` => `civi.setup.init` => `Civi\Setup\InitEvent`
-* `\Civi\Setup::checkAuthorized()` => `civi.setup.checkAuthorized` => `Civi\Setup\CheckAuthorizedEvent`
-* `\Civi\Setup::checkInstalled()` => `civi.setup.checkInstalled` => `Civi\Setup\CheckInstalledEvent`
-* `\Civi\Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\CheckRequirementsEvent`
-* `\Civi\Setup::installFiles()` => `civi.setup.installFiles` => `Civi\Setup\InstallFilesEvent`
-* `\Civi\Setup::installDatabase()` => `civi.setup.installDatabase` => `Civi\Setup\InstallDatabaseEvent`
-* `\Civi\Setup::uninstallFiles()` => `civi.setup.uninstallFiles` => `Civi\Setup\UninstallFilesEvent`
-* `\Civi\Setup::uninstallDatabase()` => `civi.setup.uninstallDatabase` => `Civi\Setup\UninstallDatabaseEvent`
-* `\Civi\Setup::createController()` => `civi.setup.createController` => `Civi\Setup\CreateControllerEvent`
+* `\Civi\Setup::init()` => `civi.setup.init` => `Civi\Setup\Event\InitEvent`
+* `\Civi\Setup::checkAuthorized()` => `civi.setup.checkAuthorized` => `Civi\Setup\Event\CheckAuthorizedEvent`
+* `\Civi\Setup::checkInstalled()` => `civi.setup.checkInstalled` => `Civi\Setup\Event\CheckInstalledEvent`
+* `\Civi\Setup::checkRequirements()` => `civi.setup.checkRequirements` => `Civi\Setup\Event\CheckRequirementsEvent`
+* `\Civi\Setup::installFiles()` => `civi.setup.installFiles` => `Civi\Setup\Event\InstallFilesEvent`
+* `\Civi\Setup::installDatabase()` => `civi.setup.installDatabase` => `Civi\Setup\Event\InstallDatabaseEvent`
+* `\Civi\Setup::uninstallFiles()` => `civi.setup.uninstallFiles` => `Civi\Setup\Event\UninstallFilesEvent`
+* `\Civi\Setup::uninstallDatabase()` => `civi.setup.uninstallDatabase` => `Civi\Setup\Event\UninstallDatabaseEvent`
+* `\Civi\Setup::createController()` => `civi.setup.createController` => `Civi\Setup\Event\CreateControllerEvent`
 
 All events provide access to the setup data-model.
 
