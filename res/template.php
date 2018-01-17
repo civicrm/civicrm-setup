@@ -47,18 +47,7 @@ $mainClasses = array(
   <div class="cvs-sample-data if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
   <div class="cvs-components if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_components.php'; ?></div>
   <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.php'; ?></div>
-
-  <div class="cvs-install if-no-errors">
-    <div class="action-box">
-      <input id="install_button" type="submit" name="civisetup[action][Install]"
-             value="<?php echo htmlentities(ts('Install CiviCRM')); ?>"
-             onclick="document.getElementById('saving_top').style.display = ''; this.value = '<?php echo ts('Installing CiviCRM...', array('escape' => 'js')); ?>'"/>
-      <span id="saving_top" style="display: none;">
-  &nbsp;   <img src="<?php echo htmlentities($installURLPath . "network-save.gif") ?>"/>
-        <?php echo ts('(this will take a few minutes)'); ?>
-    </span>
-    </div>
-  </div>
+  <div class="cvs-install if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_install.php'; ?></div>
 
 </form>
 </div>
