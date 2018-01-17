@@ -14,14 +14,14 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
-    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
-
     $model = $e->getModel();
     $r = new \Civi\Install\Requirements();
 
+    \Civi\Setup::log()->info(sprintf('[%s] Run Requirements::checkSystem()', basename(__FILE__)));
     $systemMsgs = $r->checkSystem(array(/* we do this elsewhere */));
     _corereqadapter_addMessages($e, 'system', $systemMsgs);
 
+    \Civi\Setup::log()->info(sprintf('[%s] Run Requirements::checkDatabase()', basename(__FILE__)));
     list ($host, $port) = \Civi\Setup\DbUtil::decodeHostPort($model->db['server']);
     $dbMsgs = $r->checkDatabase(array(
       'host' => $host,
