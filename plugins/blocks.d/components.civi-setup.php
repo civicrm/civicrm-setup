@@ -29,4 +29,9 @@ if (!defined('CIVI_SETUP')) {
         'CiviGrant' => ts('Receive grant applications'),
       ),
     );
+
+    if ($e->getMethod() === 'POST' || is_array($e->getField('components'))) {
+      $e->getModel()->components = array_keys($e->getField('components'));
+    }
+
   }, \Civi\Setup::PRIORITY_PREPARE);

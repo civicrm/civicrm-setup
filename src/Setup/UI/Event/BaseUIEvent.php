@@ -52,14 +52,21 @@ class BaseUIEvent extends Event {
    * @return mixed
    */
   public function getFields() {
-    return $this->fields;
+    return $this->fields[\Civi\Setup\UI\SetupController::PREFIX];
+  }
+
+  public function getField($name, $default = NULL) {
+    if (isset($this->fields[\Civi\Setup\UI\SetupController::PREFIX][$name])) {
+      return $this->fields[\Civi\Setup\UI\SetupController::PREFIX][$name];
+    }
+    return $default;
   }
 
   /**
    * @return \Civi\Setup\Model
    */
   public function getModel() {
-    return $this->ctrl->getModel();
+    return $this->ctrl->getSetup()->getModel();
   }
 
 }

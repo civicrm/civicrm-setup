@@ -18,4 +18,9 @@ if (!defined('CIVI_SETUP')) {
       'class' => 'if-no-errors',
       'weight' => 40,
     );
+
+    if ($e->getMethod() === 'POST') {
+      $e->getModel()->loadGenerated = !empty($e->getField('loadGenerated'));
+    }
+
   }, \Civi\Setup::PRIORITY_PREPARE);

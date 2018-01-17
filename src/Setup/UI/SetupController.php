@@ -74,8 +74,6 @@ class SetupController implements SetupControllerInterface {
    *   [0 => array $headers, 1 => string $body].
    */
   public function runStart($method, $fields) {
-    $this->parseCommonFields($method, $fields);
-
     $checkInstalled = $this->setup->checkInstalled();
     if ($checkInstalled->isDatabaseInstalled() || $checkInstalled->isSettingInstalled()) {
       return $this->createError("CiviCRM is already installed");
@@ -116,8 +114,6 @@ class SetupController implements SetupControllerInterface {
    *   [0 => array $headers, 1 => string $body].
    */
   public function runInstall($method, $fields) {
-    $this->parseCommonFields($method, $fields);
-
     $checkInstalled = $this->setup->checkInstalled();
     if ($checkInstalled->isDatabaseInstalled() || $checkInstalled->isSettingInstalled()) {
       return $this->createError("CiviCRM is already installed");
@@ -139,22 +135,6 @@ class SetupController implements SetupControllerInterface {
     }
     else {
       return $this->createError("Installation succeeded. However, the final page ($tplFile) was not available.");
-    }
-  }
-
-  public function parseCommonFields($method, $fields) {
-    /**
-     * @var \Civi\Setup\Model $model
-     */
-    $model = $this->setup->getModel();
-    $inputs = @$fields[self::PREFIX] ?: array();
-
-    if ($method === 'POST' || is_array($inputs['components'])) {
-      $model->components = array_keys($inputs['components']);
-    }
-
-    if ($method === 'POST') {
-      $model->loadGenerated = !empty($inputs['loadGenerated']);
     }
   }
 
@@ -288,6 +268,13 @@ class SetupController implements SetupControllerInterface {
       );
     }
     return $buf;
+  }
+
+  /**
+   * @return \Civi\Setup
+   */
+  public function getSetup() {
+    return $this->setup;
   }
 
 }
