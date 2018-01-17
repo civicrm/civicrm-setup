@@ -41,13 +41,13 @@ if (!defined('CIVI_SETUP')) {
  *   A list of messages in the format used by \Civi\Install\Requirements
  */
 function _corereqadapter_addMessages($e, $section, $msgs) {
-  $levelMap = array(
+  $severityMap = array(
     \Civi\Install\Requirements::REQUIREMENT_OK => 'info',
     \Civi\Install\Requirements::REQUIREMENT_WARNING => 'warning',
     \Civi\Install\Requirements::REQUIREMENT_ERROR => 'error',
   );
 
   foreach ($msgs as $msg) {
-    $e->addMessage($levelMap[$msg['severity']], $section, $msg['title'], $msg['details']);
+    $e->addMessage($severityMap[$msg['severity']], $section, $msg['title'], $msg['details']);
   }
 }

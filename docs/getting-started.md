@@ -115,17 +115,17 @@ CiviCRM has a number of system requirements that should be met before installati
 $ cv core:check-req
 Found code for civicrm-core in /home/myuser/buildkit/build/hydra-wp/wp-content/plugins/civicrm/civicrm
 Found code for civicrm-setup in /home/myuser/src/civicrm-setup
-+---------+----------+--------------------------------------+-----------------------------------------------------+
-| level   | section  | name                                 | message                                             |
-+---------+----------+--------------------------------------+-----------------------------------------------------+
-| info    | database | CiviCRM InnoDB support               | MySQL supports InnoDB                               |
-| info    | database | CiviCRM MySQL AutoIncrementIncrement | MySQL server auto_increment_increment is 1          |
-| info    | database | CiviCRM MySQL Lock Tables            | Can successfully lock and unlock tables             |
-| info    | database | CiviCRM MySQL Temp Tables            | MySQL server supports temporary tables              |
++----------+----------+--------------------------------------+-----------------------------------------------------+
+| severity | section  | name                                 | message                                             |
++----------+----------+--------------------------------------+-----------------------------------------------------+
+| info     | database | CiviCRM InnoDB support               | MySQL supports InnoDB                               |
+| info     | database | CiviCRM MySQL AutoIncrementIncrement | MySQL server auto_increment_increment is 1          |
+| info     | database | CiviCRM MySQL Lock Tables            | Can successfully lock and unlock tables             |
+| info     | database | CiviCRM MySQL Temp Tables            | MySQL server supports temporary tables              |
 ...
 ```
 
-Notice that the `level` indicates the importance of the message. The levels are:
+Notice that the `severity` indicates the importance of the message. The severities are:
 
 * `info`: The requirement is met. The message is just informational. Installation may proceed.
 * `warning`: The requirement is partially met. Installation may proceed, but there is some limitation or risk.

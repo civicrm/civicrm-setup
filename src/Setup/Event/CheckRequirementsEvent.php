@@ -11,7 +11,7 @@ class CheckRequirementsEvent extends BaseSetupEvent {
   protected $messages;
 
   /**
-   * @param string $level
+   * @param string $severity
    *   Severity/level.
    *   Ex: 'info', 'warning', 'error'.
    * @param string $section
@@ -25,12 +25,12 @@ class CheckRequirementsEvent extends BaseSetupEvent {
    *   Ex: 'The MySQL thread stack is too small.'
    * @return $this
    */
-  public function addMessage($level, $section, $name, $message) {
+  public function addMessage($severity, $section, $name, $message) {
     $this->messages[$name] = array(
       'section' => $section,
       'name' => $name,
       'message' => $message,
-      'level' => $level,
+      'severity' => $severity,
     );
     return $this;
   }
@@ -48,22 +48,22 @@ class CheckRequirementsEvent extends BaseSetupEvent {
   }
 
   /**
-   * @param string|NULL $level
+   * @param string|NULL $severity
    *   Filter by severity of the message.
    *   Ex: 'info', 'error', 'warning'.
    * @return array
    *   List of messages. Each has fields:
    *     - name: string, symbolic name.
    *     - message: string, displayable message.
-   *     - level: string, ex: 'info', 'warning', 'error'.
+   *     - severity: string, ex: 'info', 'warning', 'error'.
    */
-  public function getMessages($level = NULL) {
-    if ($level === NULL) {
+  public function getMessages($severity = NULL) {
+    if ($severity === NULL) {
       return $this->messages;
     }
     else {
-      return array_filter($this->messages, function ($m) use ($level) {
-        return $m['level'] == $level;
+      return array_filter($this->messages, function ($m) use ($severity) {
+        return $m['severity'] == $severity;
       });
     }
   }
