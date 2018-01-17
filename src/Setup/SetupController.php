@@ -21,6 +21,13 @@ class SetupController implements SetupControllerInterface {
    */
   protected $urls;
 
+  /**
+   * @var array
+   *   A list of blocks to display on the setup page. Each item has:
+   *    - file: string, relative path
+   *    - class: string, a space-delimited list of CSS classes
+   *    - is_active: bool
+   */
   public $blocks;
 
   /**
@@ -31,30 +38,37 @@ class SetupController implements SetupControllerInterface {
     $this->setup = $setup;
     $this->blocks = array(
       'cvs-header' => array(
+        'is_active' => TRUE,
         'file' => 'block_header.php',
         'class' => '',
       ),
       'cvs-requirements' => array(
+        'is_active' => TRUE,
         'file' => 'block_requirements.php',
         'class' => 'if-no-problems',
       ),
       'cvs-l10n' => array(
+        'is_active' => TRUE,
         'file' => 'block_l10n.php',
         'class' => 'if-no-errors',
       ),
       'cvs-sample-data' => array(
+        'is_active' => TRUE,
         'file' => 'block_sample_data.php',
         'class' => 'if-no-errors',
       ),
       'cvs-components' => array(
+        'is_active' => TRUE,
         'file' => 'block_components.php',
         'class' => 'if-no-errors',
       ),
       'cvs-advanced' => array(
+        'is_active' => TRUE,
         'file' => 'block_advanced.php',
         'class' => '',
       ),
       'cvs-install' => array(
+        'is_active' => TRUE,
         'file' => 'block_install.php',
         'class' => 'if-no-errors',
       ),
@@ -281,10 +295,17 @@ class SetupController implements SetupControllerInterface {
   public function renderBlocks($_tpl_params) {
     $buf = '';
     foreach ($this->blocks as $name => $block) {
+      if (!$block['is_active']) {
+        continue;
+      }
+      $block['name'] = $name;
       $buf .= sprintf("<div class=\"%s %s\">%s</div>",
         $name,
         $block['class'],
-        $this->render($this->getResourcePath($block['file']), $_tpl_params)
+        $this->render(
+          $this->getResourcePath($block['file']),
+          $_tpl_params + array('_tpl_block' => $block)
+        )
       );
     }
     return $buf;
