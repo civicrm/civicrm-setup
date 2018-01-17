@@ -20,7 +20,7 @@ if (!defined('CIVI_SETUP')) {
     $e->getCtrl()->blocks['opt-in'] = array(
       'is_active' => TRUE, // FIXME
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'opt-in.tpl.php',
-      'class' => '',
+      'class' => 'if-no-errors',
       'weight' => 55,
     );
   }, \Civi\Setup::PRIORITY_PREPARE);
