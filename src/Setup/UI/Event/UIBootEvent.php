@@ -1,15 +1,16 @@
 <?php
-namespace Civi\Setup\Event;
+namespace Civi\Setup\UI\Event;
 
+use Civi\Setup\Event\BaseSetupEvent;
 use Civi\Setup\UI\SetupController;
 use Civi\Setup\UI\SetupControllerInterface;
 
 /**
  * Run the stock web-based UI.
  *
- * Event Name: 'civi.setup.runController'
+ * Event Name: 'civi.setupui.boot'
  */
-class RunControllerEvent extends BaseSetupEvent {
+class UIBootEvent extends BaseSetupEvent {
 
   /**
    * @var \Civi\Setup\UI\SetupControllerInterface

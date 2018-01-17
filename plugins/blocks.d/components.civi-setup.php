@@ -4,7 +4,7 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.runController', function (\Civi\Setup\Event\RunControllerEvent $e) {
+  ->addListener('civi.setupui.boot', function (\Civi\Setup\UI\Event\UIBootEvent $e) {
     \Civi\Setup::log()->info(sprintf('[%s] Register blocks', basename(__FILE__)));
 
     /**

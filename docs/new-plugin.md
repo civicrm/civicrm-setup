@@ -31,7 +31,11 @@ Observe that the primary way for a plugin to interact with the system is to regi
 * `\Civi\Setup::installDatabase()` => `civi.setup.installDatabase` => `Civi\Setup\Event\InstallDatabaseEvent`
 * `\Civi\Setup::uninstallFiles()` => `civi.setup.uninstallFiles` => `Civi\Setup\Event\UninstallFilesEvent`
 * `\Civi\Setup::uninstallDatabase()` => `civi.setup.uninstallDatabase` => `Civi\Setup\Event\UninstallDatabaseEvent`
-* `\Civi\Setup::createController()` => `civi.setup.createController` => `Civi\Setup\Event\CreateControllerEvent`
+
+For events related to the stock/reference UI, the namespace is slightly different:
+
+* `\Civi\Setup::createController()` => `civi.setupui.construct` => `Civi\Setup\UI\Event\UIConstructEvent`
+* `\Civi\Setup\UI\SetupController::boot()` => `civi.setupui.boot` => `Civi\Setup\UI\Event\UIBootEvent`
 
 All events provide access to the setup data-model.
 

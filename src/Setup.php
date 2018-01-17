@@ -4,7 +4,7 @@ namespace Civi;
 use Civi\Setup\Event\CheckAuthorizedEvent;
 use Civi\Setup\Event\CheckRequirementsEvent;
 use Civi\Setup\Event\CheckInstalledEvent;
-use Civi\Setup\Event\CreateControllerEvent;
+use Civi\Setup\UI\Event\UIConstructEvent;
 use Civi\Setup\Event\InitEvent;
 use Civi\Setup\Event\InstallDatabaseEvent;
 use Civi\Setup\Event\InstallFilesEvent;
@@ -208,11 +208,11 @@ class Setup {
   /**
    * Create a page-controller for a web-based installation form.
    *
-   * @return \Civi\Setup\Event\CreateControllerEvent
+   * @return \Civi\Setup\UI\Event\UIConstructEvent
    */
   public function createController() {
-    $event = new CreateControllerEvent($this->getModel());
-    return $this->getDispatcher()->dispatch('civi.setup.createController', $event);
+    $event = new UIConstructEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setupui.construct', $event);
   }
 
   // ----- Accessors -----

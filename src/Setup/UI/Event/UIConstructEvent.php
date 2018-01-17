@@ -1,14 +1,16 @@
 <?php
-namespace Civi\Setup\Event;
+namespace Civi\Setup\UI\Event;
 
+use Civi\Setup\Event\BaseSetupEvent;
+use Civi\Setup\Event\SetupControllerInterface;
 use Civi\Setup\UI\SetupController;
 
 /**
  * Create a web-based UI for handling the installation.
  *
- * Event Name: 'civi.setup.createController'
+ * Event Name: 'civi.setupui.construct'
  */
-class CreateControllerEvent extends BaseSetupEvent {
+class UIConstructEvent extends BaseSetupEvent {
 
   protected $ctrl;
 

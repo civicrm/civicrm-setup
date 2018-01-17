@@ -1,9 +1,7 @@
 <?php
 namespace Civi\Setup\UI;
 
-use Civi\Cv\Util\ArrayUtil;
-use Civi\Setup\Event\RunControllerEvent;
-use Civi\Setup\UI\SetupControllerInterface;
+use Civi\Setup\UI\Event\UIBootEvent;
 
 class SetupController implements SetupControllerInterface {
 
@@ -55,11 +53,7 @@ class SetupController implements SetupControllerInterface {
       return $this->createError("Not authorized to perform installation");
     }
 
-    $this->boot($fields);
-
-    $this->setup->getDispatcher()->dispatch('civi.setup.runController',
-      new RunControllerEvent($this, $method, $fields));
-
+    $this->boot($method, $fields);
     $action = $this->parseAction($fields, 'Start');
     $func = 'run' . $action;
     if (!preg_match('/^[a-zA-Z0-9_]+$/', $action) || !is_callable([$this, $func])) {
@@ -167,7 +161,7 @@ class SetupController implements SetupControllerInterface {
   /**
    * Partially bootstrap Civi services (such as localization).
    */
-  protected function boot($fields) {
+  protected function boot($method, $fields) {
     $model = $this->setup->getModel();
 
     define('CIVICRM_UF', $model->cms);
@@ -192,6 +186,8 @@ class SetupController implements SetupControllerInterface {
 
     // The translation files are in the parent directory (l10n)
     \CRM_Core_I18n::singleton();
+
+    $this->setup->getDispatcher()->dispatch('civi.setupui.boot', new UIBootEvent($this, $method, $fields));
   }
 
   public function createError($message, $title = 'Error') {

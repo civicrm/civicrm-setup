@@ -10,8 +10,8 @@ if (!defined('CIVI_SETUP')) {
 }
 
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.createController', function (\Civi\Setup\Event\CreateControllerEvent $e) {
-    \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'createController'));
+  ->addListener('civi.setupui.construct', function (\Civi\Setup\UI\Event\UIConstructEvent $e) {
+    \Civi\Setup::log()->info(sprintf('[%s] Construct default UI', basename(__FILE__)));
 
     $e->setCtrl(new \Civi\Setup\UI\SetupController(\Civi\Setup::instance()));
 
