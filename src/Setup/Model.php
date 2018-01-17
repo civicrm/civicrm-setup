@@ -51,6 +51,11 @@ namespace Civi\Setup;
  *   These are mandatory settings which are hard-coded into the config file. Changing requires editing the file.
  *   This makes sense for path/URL settings that are generally system-local and not migrated between dev/prod/etc.
  *   Ex: ['ajaxPopupsEnabled' => 0].
+ * @property array $extras
+ *   Open-ended list of private, adhoc fields/flags/tags.
+ *   Keys should be prefixed based on which plugin manages the field.
+ *   Values must only be scalars (bool/int/string) and arrays.
+ *   Ex: ['opt-in.version-check' => TRUE].
  */
 class Model {
 
@@ -136,6 +141,12 @@ class Model {
     $this->addField(array(
       'description' => 'List of setting overrides.',
       'name' => 'settings',
+      'type' => 'array',
+      'value' => array(),
+    ));
+    $this->addField(array(
+      'description' => 'Open-ended list of private, adhoc fields/flags/tags',
+      'name' => 'extras',
       'type' => 'array',
       'value' => array(),
     ));
