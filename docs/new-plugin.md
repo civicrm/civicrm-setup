@@ -43,9 +43,9 @@ All events provide access to the setup data-model.
 
 The `check*` events provide additional methods for relaying information.
 
-> __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted,
-> and use `$event->isAuthorized()` to see if authorization has been permitted.
->
 > __Ex__: For `checkRequirements`, use `$event->addError(...)` to record an
 > error that prevents installation.  Similarly, use `addWarning(...)` and
 > `addInfo(...)` to report less critical issues.
+>
+> __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted,
+> and use `$event->isAuthorized()` to see if authorization has been permitted.

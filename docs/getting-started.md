@@ -65,12 +65,10 @@ Found code for civicrm-setup in /home/myuser/src/civicrm-setup
         "password": "t0ps3cr3t4r3a1z",
         "database": "hydrawpcms_p7urq"
     },
-    ...
-}
+...
 ```
 
-Some options can be customized on the command line (as described in `cv core:install --help`). For example,
-passing `--db=<url>` will change the `db` field:
+Some options can be customized on the command line . For example, passing `--db=<url>` will change the `db` field:
 
 ```
 $ cv core:install --debug-model --db=mysql://otheruser:secret@mysql.example.org/civicrm
@@ -83,6 +81,8 @@ $ cv core:install --debug-model --db=mysql://otheruser:secret@mysql.example.org/
     },
 ...
 ```
+
+A more complete list of options is available in `cv core:install --help`.
 
 ## Inspect the plugins and events
 
@@ -124,9 +124,9 @@ Found code for civicrm-setup in /home/myuser/src/civicrm-setup
 ...
 ```
 
-Notice that the `level` indicates whether the requirement is satisfactory or problematic. The levels are:
+Notice that the `level` indicates whether the importance of the message. The levels are:
 
-* `info`: The requirement is met. Installation may proceed.
+* `info`: The requirement is met. The message is just informational. Installation may proceed.
 * `warning`: The requirement is partially met. Installation may proceed, but there is some limitation or risk.
 * `error`: The requirement is not met. Installation cannot proceed.
 
