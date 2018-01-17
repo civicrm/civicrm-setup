@@ -26,7 +26,7 @@ $drupalURL = url('civicrm/admin/configtask', array(
         2 => "target='_blank' href='http://wiki.civicrm.org/confluence/display/CRMDOC/Default+Permissions+and+Roles'",
       )); ?></li>
     <li><?php echo ts("Use the <a %1>Configuration Checklist</a> to review and configure settings for your new site", array(1 => "target='_blank' href='$drupalURL'")); ?></li>
-    <?php include './finished.Common.php'; ?>
+    <?php include 'finished.Common.php'; ?>
   </ul>
 </div>
 </body>

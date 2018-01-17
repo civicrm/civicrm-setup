@@ -22,7 +22,7 @@ $wpInstallRedirect = admin_url('admin.php?page=CiviCRM&q=civicrm&reset=1');
     <li><?php
     echo ts("Use the <a %1>Configuration Checklist</a> to review and configure settings for your new site", array(1 => "target='_blank' href='$cmsURL'"));
     ?></li>
-    <?php include './finished.Common.php'; ?>
+    <?php include 'finished.Common.php'; ?>
   </ul>
 </div>
 <script>
