@@ -1,7 +1,7 @@
 <?php
 namespace Civi\Setup\Event;
 
-use Civi\Setup\SetupController;
+use Civi\Setup\UI\SetupController;
 
 /**
  * Create a web-based UI for handling the installation.

@@ -8,7 +8,7 @@ if (!defined('CIVI_SETUP')) {
     \Civi\Setup::log()->info(sprintf('[%s] Register blocks', basename(__FILE__)));
 
     /**
-     * @var \Civi\Setup\SetupController $ctrl
+     * @var \Civi\Setup\UI\SetupController $ctrl
      */
     $ctrl = $e->getCtrl();
 

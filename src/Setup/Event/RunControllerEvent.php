@@ -1,8 +1,8 @@
 <?php
 namespace Civi\Setup\Event;
 
-use Civi\Setup\SetupController;
-use Civi\Setup\SetupControllerInterface;
+use Civi\Setup\UI\SetupController;
+use Civi\Setup\UI\SetupControllerInterface;
 
 /**
  * Run the stock web-based UI.
@@ -12,7 +12,7 @@ use Civi\Setup\SetupControllerInterface;
 class RunControllerEvent extends BaseSetupEvent {
 
   /**
-   * @var \Civi\Setup\SetupControllerInterface
+   * @var \Civi\Setup\UI\SetupControllerInterface
    */
   protected $ctrl;
 

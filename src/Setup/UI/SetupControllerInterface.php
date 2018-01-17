@@ -1,5 +1,5 @@
 <?php
-namespace Civi\Setup;
+namespace Civi\Setup\UI;
 
 interface SetupControllerInterface {
 

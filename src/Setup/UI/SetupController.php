@@ -1,8 +1,9 @@
 <?php
-namespace Civi\Setup;
+namespace Civi\Setup\UI;
 
 use Civi\Cv\Util\ArrayUtil;
 use Civi\Setup\Event\RunControllerEvent;
+use Civi\Setup\UI\SetupControllerInterface;
 
 class SetupController implements SetupControllerInterface {
 
