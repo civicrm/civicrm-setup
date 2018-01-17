@@ -1,4 +1,4 @@
-<?php \Civi\Setup::assertRunning(); ?>
+<?php if (!defined('CIVI_SETUP')): exit("Installation plugins must only be loaded by the installer.\n"); endif; ?>
 <div class="civicrm-logo"><strong><?php echo ts('Version %1', array(1 => "{$civicrm_version} {$model->cms}")); ?></strong><br/>
     <span><img src=<?php echo $installURLPath . "block_small.png"?> /></span>
   </div>

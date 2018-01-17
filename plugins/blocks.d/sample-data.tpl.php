@@ -1,4 +1,4 @@
-<?php \Civi\Setup::assertRunning(); ?>
+<?php if (!defined('CIVI_SETUP')): exit("Installation plugins must only be loaded by the installer.\n"); endif; ?>
 <h2><?php echo ts('Sample Data'); ?></h2>
 
 <p>
