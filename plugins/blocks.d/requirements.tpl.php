@@ -1,5 +1,4 @@
 <?php \Civi\Setup::assertRunning(); ?>
-<?php if (count($reqs->getErrors()) + count($reqs->getWarnings()) === 0): return; endif; ?>
 <h2 id="requirements"><?php echo ts('System Requirements'); ?></h2>
 
 <?php
