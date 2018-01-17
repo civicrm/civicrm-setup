@@ -83,6 +83,9 @@ class Setup {
     }
 
     foreach ($pluginFiles as $pluginFile) {
+      self::$instance->log->debug('[Setup.php] Load plugin {file}', array(
+        'file' => $pluginFile,
+      ));
       require $pluginFile;
     }
 
