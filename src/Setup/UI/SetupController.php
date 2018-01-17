@@ -27,6 +27,10 @@ class SetupController implements SetupControllerInterface {
    *    - file: string, relative path
    *    - class: string, a space-delimited list of CSS classes
    *    - is_active: bool
+   *
+   * Note: When rendering a block, content of the block's definition
+   * will be available as `$_tpl_block`. For example, `$_tpl_block['is_active']`
+   * would be the same boolean.
    */
   public $blocks;
 
