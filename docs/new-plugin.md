@@ -49,3 +49,29 @@ The `check*` events provide additional methods for relaying information.
 >
 > __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted,
 > and use `$event->isAuthorized()` to see if authorization has been permitted.
+
+## What's in a file name?
+
+The plugins folder is *loosely* organized based on how the plugin fits into
+the system.  Let's take a few example files (at time of writing):
+
+```
+plugins/checkRequirements/CheckBaseUrl.civi-setup.php
+plugins/checkRequirements/CheckDbWellFormed.civi-setup.php
+plugins/common/LogEvents.civi-setup.php
+plugins/installDatabase/InstallExtensions.civi-setup.php
+plugins/installDatabase/InstallSchema.civi-setup.php
+plugins/installDatabase/InstallSettings.civi-setup.php
+```
+
+Notice a pattern?
+
+* The files under `plugins/checkRequirements` are all pre-installation checks which listen to the `civi.setup.checkRequirements` event.
+* The files under `plugins/installDatabase` are installation steps which listen to the `civi.setup.installDatabase` event.
+
+Most plugins only handle one event, so it's a convenient way to organize them.  However, this is just a
+*convention*.  It's entirely legitimate for a plugin to listen to multiple events .  For example,
+`common/LogEvents` listens to many events.  Tips:
+
+* Do whatever is best (on the whole) for improving concept/coupling/cohesion. This *usually* means writing a small/narrow plugin, but it doesn't necessarily.
+* Browsing the folders provides a high-level skim. However, for detailed inspection or debugging, use `cv core:install --debug-event`.
