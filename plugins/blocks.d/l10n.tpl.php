@@ -21,18 +21,18 @@
   <label for="lang"><span><?php echo ts('Language of basic data:'); ?></span></label>
   <select id="lang" name="lang" onchange="civicrmInstallerSetLanguage(this.value);">
     <?php
-    foreach ($model->getField('lang', 'options') as $locale => $language) {
+    foreach ($model->getField('lang', 'options') as $locale => $language):
       $selected = ($locale == $model->lang) ? 'selected="selected"' : '';
       echo "<option value='$locale' $selected>$language</option>";
-    }
+    endforeach;
     ?>
   </select>
 
   <span class="advancedTip">
   <?php
-  if (count($model->getField('lang', 'options')) < 2) {
+  if (count($model->getField('lang', 'options')) < 2):
     echo "(download the civicrm-{$civicrm_version}-l10n.tar.gz file and unzip into CiviCRM’s directory to add languages here)";
-  }
+  endif;
   ?>
 </span>
 </p>

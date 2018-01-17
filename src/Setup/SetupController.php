@@ -37,43 +37,7 @@ class SetupController implements SetupControllerInterface {
    */
   public function __construct(\Civi\Setup $setup) {
     $this->setup = $setup;
-    $this->blocks = array(
-      'cvs-header' => array(
-        'is_active' => TRUE,
-        'file' => 'block_header.php',
-        'class' => '',
-      ),
-      'cvs-requirements' => array(
-        'is_active' => TRUE,
-        'file' => 'block_requirements.php',
-        'class' => 'if-no-problems',
-      ),
-      'cvs-l10n' => array(
-        'is_active' => TRUE,
-        'file' => 'block_l10n.php',
-        'class' => 'if-no-errors',
-      ),
-      'cvs-sample-data' => array(
-        'is_active' => TRUE,
-        'file' => 'block_sample_data.php',
-        'class' => 'if-no-errors',
-      ),
-      'cvs-components' => array(
-        'is_active' => TRUE,
-        'file' => 'block_components.php',
-        'class' => 'if-no-errors',
-      ),
-      'cvs-advanced' => array(
-        'is_active' => TRUE,
-        'file' => 'block_advanced.php',
-        'class' => '',
-      ),
-      'cvs-install' => array(
-        'is_active' => TRUE,
-        'file' => 'block_install.php',
-        'class' => 'if-no-errors',
-      ),
-    );
+    $this->blocks = array();
   }
 
   /**
@@ -299,16 +263,29 @@ class SetupController implements SetupControllerInterface {
 
   public function renderBlocks($_tpl_params) {
     $buf = '';
+
+    // Cleanup - Ensure 'name' is present.
+    foreach (array_keys($this->blocks) as $name) {
+      $this->blocks[$name]['name'] = $name;
+    }
+
+    // Sort by weight+name.
+    uasort($this->blocks, function($a, $b) {
+      if ($a['weight'] != $b['weight']) {
+        return $a['weight'] - $b['weight'];
+      }
+      return strcmp($a['name'], $b['name']);
+    });
+
     foreach ($this->blocks as $name => $block) {
       if (!$block['is_active']) {
         continue;
       }
-      $block['name'] = $name;
       $buf .= sprintf("<div class=\"%s %s\">%s</div>",
         $name,
         $block['class'],
         $this->render(
-          $this->getResourcePath($block['file']),
+          $block['file'],
           $_tpl_params + array('_tpl_block' => $block)
         )
       );

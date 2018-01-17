@@ -17,17 +17,13 @@ $desc = array(
 ?>
 
 <div>
-  <?php
-  foreach ($model->getField('components', 'options') as $comp => $label) {
-  ?>
+  <?php foreach ($model->getField('components', 'options') as $comp => $label): ?>
     <input class="comp-cb sr-only" style="display: none;" type="checkbox" name="civisetup[components][<?php echo $comp; ?>]" id="civisetup[components][<?php echo $comp; ?>]" <?php echo in_array($comp, $model->components) ? 'checked' : '' ?>>
     <label class="comp-box" for="civisetup[components][<?php echo $comp; ?>]">
       <span class="comp-label"><?php echo $label; ?></span>
       <span class="comp-desc"><?php echo $desc[$comp] ?></span>
     </label>
-  <?php
-  }
-  ?>
+  <?php endforeach; ?>
 </div>
 
 <p class="tip">

@@ -1,16 +1,15 @@
 <?php \Civi\Setup::assertRunning(); ?>
+<?php if (count($reqs->getErrors()) + count($reqs->getWarnings()) === 0): return; endif; ?>
 <h2 id="requirements"><?php echo ts('System Requirements'); ?></h2>
 
 <?php
-if (count($reqs->getErrors()) > 0) {
+if (count($reqs->getErrors()) > 0):
   ?><p class="error"><?php echo ts('We are not able to install the software. Please review the errors and warnings below.'); ?></p><?php
-}
-elseif (count($reqs->getWarnings()) > 0) {
+elseif (count($reqs->getWarnings()) > 0):
   ?><p class="warning"><?php echo ts('There are some issues that we recommend you look at before installing. However, you are still able to install the software.'); ?></p><?php
-}
-else {
+else:
   ?><p class="good"><?php echo ts("You're ready to install!"); ?></p><?php
-}
+endif;
 ?>
 
 <?php
@@ -37,18 +36,14 @@ uasort($msgs, function($a, $b) {
   </tr>
   </thead>
   <tbody>
-  <?php
-  foreach ($msgs as $msg) {
-    ?>
+  <?php foreach ($msgs as $msg):?>
   <tr class="<?php echo 'reqSeverity-' . $msg['level']; ?>">
     <td><?php echo htmlentities($severityLabels[$msg['level']]); ?></td>
     <td><?php echo htmlentities(isset($sectionLabels[$msg['section']]) ? $sectionLabels[$msg['section']] : $msg['section']); ?></td>
     <td><?php echo htmlentities($msg['name']); ?></td>
     <td><?php echo htmlentities($msg['message']); ?></td>
   </tr>
-  <?php
-  }
-  ?>
+  <?php endforeach; ?>
   </tbody>
 </table>
 
