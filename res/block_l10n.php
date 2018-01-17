@@ -22,7 +22,7 @@
   <select id="lang" name="lang" onchange="civicrmInstallerSetLanguage(this.value);">
     <?php
     foreach ($model->getField('lang', 'options') as $locale => $language) {
-      $selected = ($locale == $lang) ? 'selected="selected"' : '';
+      $selected = ($locale == $model->lang) ? 'selected="selected"' : '';
       echo "<option value='$locale' $selected>$language</option>";
     }
     ?>

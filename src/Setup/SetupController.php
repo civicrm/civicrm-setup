@@ -84,6 +84,17 @@ class SetupController implements SetupControllerInterface {
     return call_user_func([$this, $func], $method, $fields);
   }
 
+  /**
+   * Run the main installer page.
+   *
+   * @param string $method
+   *   Ex: 'GET' or 'POST'.
+   * @param array $fields
+   *   List of any HTTP GET/POST fields.
+   * @return array
+   *   The HTTP headers and response text.
+   *   [0 => array $headers, 1 => string $body].
+   */
   public function runStart($method, $fields) {
     $this->parseCommonFields($method, $fields);
 
@@ -101,8 +112,6 @@ class SetupController implements SetupControllerInterface {
     $tplVars = [
       'ctrl' => $this,
       'civicrm_version' => \CRM_Utils_System::version(),
-      'lang' => $model->lang,
-      'loadGenerated' => $model->loadGenerated,
       'installURLPath' => $this->urls['res'],
       'short_lang_code' => \CRM_Core_I18n_PseudoConstant::shortForLong($GLOBALS['tsLocale']),
       'text_direction' => (\CRM_Core_I18n::isLanguageRTL($GLOBALS['tsLocale']) ? 'rtl' : 'ltr'),
@@ -117,6 +126,17 @@ class SetupController implements SetupControllerInterface {
     return array(array(), $body);
   }
 
+  /**
+   * Perform the installation action.
+   *
+   * @param string $method
+   *   Ex: 'GET' or 'POST'.
+   * @param array $fields
+   *   List of any HTTP GET/POST fields.
+   * @return array
+   *   The HTTP headers and response text.
+   *   [0 => array $headers, 1 => string $body].
+   */
   public function runInstall($method, $fields) {
     $this->parseCommonFields($method, $fields);
 
