@@ -28,20 +28,10 @@ $mainClasses = array(
 
 <div class="<?php echo implode(' ', $mainClasses); ?>">
 <div id="All">
-  <div class="civicrm-logo"><strong><?php echo ts('Version %1', array(1 => "{$civicrm_version} {$model->cms}")); ?></strong><br/>
-    <span><img src=<?php echo $installURLPath . "block_small.png"?> /></span>
-  </div>
-
-<h1><?php echo ts("CiviCRM Installer"); ?></h1>
-
-<noscript>
-<p class="error"><?php echo ts("Error: Javascipt appears to be disabled. The CiviCRM web-based installer requires Javascript.");?></p>
-</noscript>
-
-<p><?php echo ts("Thanks for choosing CiviCRM! Please follow the instructions below to install CiviCRM."); ?></p>
 
 <form name="civicrm_form" method="post" action="<?php echo str_replace('%7E', '~', $_SERVER['REQUEST_URI']); ?>">
 
+  <div class="cvs-header"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_header.php'; ?></div>
   <div class="cvs-requirements if-problems"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.php'; ?></div>
   <div class="cvs-l10n if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.php'; ?></div>
   <div class="cvs-sample-data if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
