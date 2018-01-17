@@ -31,13 +31,7 @@ $mainClasses = array(
 
 <form name="civicrm_form" method="post" action="<?php echo str_replace('%7E', '~', $_SERVER['REQUEST_URI']); ?>">
 
-  <div class="cvs-header"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_header.php'; ?></div>
-  <div class="cvs-requirements if-problems"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_requirements.php'; ?></div>
-  <div class="cvs-l10n if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_l10n.php'; ?></div>
-  <div class="cvs-sample-data if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_sample_data.php'; ?></div>
-  <div class="cvs-components if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_components.php'; ?></div>
-  <div class="cvs-advanced"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_advanced.php'; ?></div>
-  <div class="cvs-install if-no-errors"><?php include __DIR__ . DIRECTORY_SEPARATOR . './block_install.php'; ?></div>
+  <?php echo $ctrl->renderBlocks($_tpl_params); ?>
 
 </form>
 </div>

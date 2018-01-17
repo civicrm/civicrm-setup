@@ -21,12 +21,44 @@ class SetupController implements SetupControllerInterface {
    */
   protected $urls;
 
+  public $blocks;
+
   /**
    * SetupController constructor.
    * @param \Civi\Setup $setup
    */
   public function __construct(\Civi\Setup $setup) {
     $this->setup = $setup;
+    $this->blocks = array(
+      'cvs-header' => array(
+        'file' => 'block_header.php',
+        'class' => '',
+      ),
+      'cvs-requirements' => array(
+        'file' => 'block_requirements.php',
+        'class' => 'if-no-problems',
+      ),
+      'cvs-l10n' => array(
+        'file' => 'block_l10n.php',
+        'class' => 'if-no-errors',
+      ),
+      'cvs-sample-data' => array(
+        'file' => 'block_sample_data.php',
+        'class' => 'if-no-errors',
+      ),
+      'cvs-components' => array(
+        'file' => 'block_components.php',
+        'class' => 'if-no-errors',
+      ),
+      'cvs-advanced' => array(
+        'file' => 'block_advanced.php',
+        'class' => '',
+      ),
+      'cvs-install' => array(
+        'file' => 'block_install.php',
+        'class' => 'if-no-errors',
+      ),
+    );
   }
 
   /**
@@ -67,6 +99,7 @@ class SetupController implements SetupControllerInterface {
 
     $tplFile = $this->getResourcePath('template.php');
     $tplVars = [
+      'ctrl' => $this,
       'civicrm_version' => \CRM_Utils_System::version(),
       'lang' => $model->lang,
       'loadGenerated' => $model->loadGenerated,
@@ -176,7 +209,6 @@ class SetupController implements SetupControllerInterface {
    */
   public function render($_tpl_file, $_tpl_params = array()) {
     extract($_tpl_params);
-    unset($_tpl_params);
     ob_start();
     require $_tpl_file;
     return ob_get_clean();
@@ -224,6 +256,18 @@ class SetupController implements SetupControllerInterface {
       }
     }
     return NULL;
+  }
+
+  public function renderBlocks($_tpl_params) {
+    $buf = '';
+    foreach ($this->blocks as $name => $block) {
+      $buf .= sprintf("<div class=\"%s %s\">%s</div>",
+        $name,
+        $block['class'],
+        $this->render($this->getResourcePath($block['file']), $_tpl_params)
+      );
+    }
+    return $buf;
   }
 
 }
