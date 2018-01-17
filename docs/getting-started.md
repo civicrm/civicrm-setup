@@ -2,7 +2,8 @@
 
 Whether your goal is to improve the `civicrm-setup` library, write a new
 installer, or write a new plugin, it will help to start out by running the
-command-line installer. This will help to explore and experiment.
+command-line installer. This can help you understand and experiment with
+the library.
 
 ## Get the `civicrm-setup` code
 
@@ -124,7 +125,7 @@ Found code for civicrm-setup in /home/myuser/src/civicrm-setup
 ...
 ```
 
-Notice that the `level` indicates whether the importance of the message. The levels are:
+Notice that the `level` indicates the importance of the message. The levels are:
 
 * `info`: The requirement is met. The message is just informational. Installation may proceed.
 * `warning`: The requirement is partially met. Installation may proceed, but there is some limitation or risk.
@@ -145,7 +146,8 @@ Creating civicrm_* database tables in hydrawpcms_p7urq
 ```
 
 However, you could encounter an error.  For example, the model requires a valid `cmsBaseUrl`, but this
-is not auto-detected correctly in Drupal 7.
+is not auto-detected correctly in Drupal 7. The installer will raise an error because the requirement
+hasn't been met.
 
 ```
 $ cv core:install
