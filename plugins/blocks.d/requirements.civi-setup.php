@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
      */
     $ctrl = $e->getCtrl();
 
-    $ctrl->blocks['cvs-requirements'] = array(
+    $ctrl->blocks['requirements'] = array(
       'is_active' => TRUE,
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'requirements.tpl.php',
       'class' => 'if-problems',

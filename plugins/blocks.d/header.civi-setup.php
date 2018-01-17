@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
      */
     $ctrl = $e->getCtrl();
 
-    $ctrl->blocks['cvs-header'] = array(
+    $ctrl->blocks['header'] = array(
       'is_active' => TRUE,
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'header.tpl.php',
       'class' => '',

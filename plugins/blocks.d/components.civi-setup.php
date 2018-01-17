@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
      */
     $ctrl = $e->getCtrl();
 
-    $ctrl->blocks['cvs-components'] = array(
+    $ctrl->blocks['components'] = array(
       'is_active' => TRUE,
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'components.tpl.php',
       'class' => 'if-no-errors',

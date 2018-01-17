@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
      */
     $ctrl = $e->getCtrl();
 
-    $ctrl->blocks['cvs-sample-data'] = array(
+    $ctrl->blocks['sample-data'] = array(
       'is_active' => TRUE,
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'sample-data.tpl.php',
       'class' => 'if-no-errors',

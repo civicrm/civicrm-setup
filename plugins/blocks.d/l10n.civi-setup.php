@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
      */
     $ctrl = $e->getCtrl();
 
-    $ctrl->blocks['cvs-l10n'] = array(
+    $ctrl->blocks['l10n'] = array(
       'is_active' => TRUE,
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'l10n.tpl.php',
       'class' => 'if-no-errors',

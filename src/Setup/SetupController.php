@@ -281,7 +281,7 @@ class SetupController implements SetupControllerInterface {
       if (!$block['is_active']) {
         continue;
       }
-      $buf .= sprintf("<div class=\"%s %s\">%s</div>",
+      $buf .= sprintf("<div class=\"civicrm-setup-block-%s %s\">%s</div>",
         $name,
         $block['class'],
         $this->render(
