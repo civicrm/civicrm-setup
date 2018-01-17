@@ -88,7 +88,7 @@ class DbUtil {
   public static function sourceSQL($db, $fileName, $lineMode = FALSE) {
     $conn = self::connect($db);
 
-    mysqli_free_result($conn->query('SET NAMES utf8'));
+    $conn->query('SET NAMES utf8');
 
     if (!$lineMode) {
       $string = file_get_contents($fileName);
@@ -106,7 +106,9 @@ class DbUtil {
         $query = trim($query);
         if (!empty($query)) {
           if ($result = $conn->query($query)) {
-            mysqli_free_result($result);
+            if (is_object($result)) {
+              mysqli_free_result($result);
+            }
           }
           else {
             throw new SqlException("Cannot execute $query: " . mysqli_error($conn));
@@ -123,7 +125,9 @@ class DbUtil {
         $string = trim($string);
         if (!empty($string)) {
           if ($result = $conn->query($string)) {
-            mysqli_free_result($result);
+            if (is_object($result)) {
+              mysqli_free_result($result);
+            }
           }
           else {
             throw new SqlException("Cannot execute $string: " . mysqli_error($conn));
