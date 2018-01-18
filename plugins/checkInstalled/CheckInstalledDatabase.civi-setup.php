@@ -15,7 +15,13 @@ if (!defined('CIVI_SETUP')) {
     $model = $e->getModel();
 
     if ($model->db) {
-      $conn = \Civi\Setup\DbUtil::connect($model->db);
+      try {
+        $conn = \Civi\Setup\DbUtil::connect($model->db);
+      }
+      catch (\Civi\Setup\Exception\SqlException $exception) {
+        $e->setDatabaseInstalled(FALSE);
+        return;
+      }
       $found = FALSE;
       foreach ($conn->query('SHOW TABLES LIKE "civicrm_%"') as $result) {
         $found = TRUE;
