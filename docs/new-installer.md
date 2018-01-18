@@ -20,7 +20,7 @@ first need to initialize the runtime and get a reference to the `$setup` object:
 6. Get a reference to the `$setup` API.
     a. Call `$setup = Civi\Setup::instance()`.
 
-For example, this code will check for `civicrm-setup-autoload.php` in three locations; 
+For example, this code will check for `civicrm-setup-autoload.php` in three locations;
 if found, it sets up the class-loaders, and it initializes the `\Civi\Setup` subsystem.
 
 ```php
@@ -53,15 +53,26 @@ the pre-built installation form:
 
 ```php
 <?php
-// Create and execute the default setup controller (with standard PHP I/O).
+// Create and execute the default setup controller.
 $ctrl = \Civi\Setup::instance()->createController()->getCtrl();
-$ctrl->setUrls(['res' => ..., 'ctrl' => ...]);
+$ctrl->setUrls(array(
+  'ctrl' => 'url://for/the/install/ui',
+  'res' => 'url://for/civicrm-setup/res',
+  'jquery.js' => 'url://for/jquery.js',
+  'font-awesome.css' ='url://for/font-awesome.css',
+  'finished' => 'url://to/open/after/finishing',
+));
 \Civi\Setup\BasicRunner::run($ctrl);
+```
 
-// Same as above, but customize the input/output process.
-$ctrl = \Civi\Setup::instance()->createController()->getCtrl();
-$ctrl->setUrls(['res' => ..., 'ctrl' => ...]);
-list ($headers, $htmlBody) = $ctrl->run($_SERVER['REQUEST_METHOD'], $_POST);
+The `BasicRunner::run()` function uses PHP's standard, global I/O (e.g.
+`$_POST` for input; `echo` for output).  However, some frameworks have their
+own variants on this.  You can get more direct control of I/O by calling the
+controller directly, e.g.:
+
+```php
+<?php
+list ($httpHeaders, $htmlBody) = $ctrl->run($_SERVER['REQUEST_METHOD'], $_POST);
 ```
 
 Alternatively, you might build a custom UI or an automated installer. `$setup` provides a number of functions:
