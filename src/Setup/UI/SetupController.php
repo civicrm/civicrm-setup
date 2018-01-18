@@ -96,7 +96,6 @@ class SetupController implements SetupControllerInterface {
       'short_lang_code' => \CRM_Core_I18n_PseudoConstant::shortForLong($GLOBALS['tsLocale']),
       'text_direction' => (\CRM_Core_I18n::isLanguageRTL($GLOBALS['tsLocale']) ? 'rtl' : 'ltr'),
       'model' => $model,
-      'jqueryURL' => $this->urls['jquery'],
       'reqs' => $this->setup->checkRequirements(),
     ];
 
@@ -203,6 +202,10 @@ class SetupController implements SetupControllerInterface {
     array_unshift($parts, 'res');
     array_unshift($parts, $this->setup->getModel()->setupPath);
     return implode(DIRECTORY_SEPARATOR, $parts);
+  }
+
+  public function getUrl($name) {
+    return isset($this->urls[$name]) ? $this->urls[$name] : NULL;
   }
 
   /**

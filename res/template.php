@@ -3,11 +3,12 @@
 <head>
   <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
   <title><?php echo ts('CiviCRM Installer'); ?></title>
-  <script type="text/javascript" src="<?php echo $jqueryURL; ?>"></script>
+  <script type="text/javascript" src="<?php echo $ctrl->getUrl('jquery.js'); ?>"></script>
   <script type="text/javascript">
     window.csj$ = jQuery.noConflict();
   </script>
   <link rel="stylesheet" type="text/css" href=<?php echo $installURLPath . "template.css"?> />
+  <link rel="stylesheet" type="text/css" href=<?php echo $ctrl->getUrl('font-awesome.css') ?> />
 <?php
 if ($text_direction == 'rtl') {
   echo "  <link rel='stylesheet' type='text/css' href='{$installURLPath}template-rtl.css' />\n";
