@@ -116,6 +116,23 @@ body {
 .civicrm-setup-body .comp-cb:checked + label { background: #dfd; }
 .civicrm-setup-body .comp-cb:checked + label:hover { background: #cec; }
 
+.civicrm-setup-body .optin-box {
+  height: 3.5em;
+  width: 45%;
+  display: inline-block;
+  padding: 0.5em;
+  margin: 0.75em;
+  border: 1px dashed #aaa;
+  background: #eee;
+  text-align: center;
+}
+.civicrm-setup-body .optin-box:hover { background: #ddd; cursor: hand; }
+.civicrm-setup-body .optin-box > span {  width: 100%; }
+.civicrm-setup-body .optin-label {  font-size: 1.5em; }
+.civicrm-setup-body .optin-desc { font-style: italic; }
+.civicrm-setup-body .optin-cb:checked + label { background: #dfd; }
+.civicrm-setup-body .optin-cb:checked + label:hover { background: #cec; }
+
 .civicrm-setup-body .sr-only {
   position: absolute;
   width: 1px;
