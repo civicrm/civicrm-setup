@@ -35,6 +35,7 @@ Observe that the primary way for a plugin to interact with the system is to regi
 For events related to the stock/reference UI, the namespace is slightly different:
 
 * `\Civi\Setup::createController()` => `civi.setupui.construct` => `Civi\Setup\UI\Event\UIConstructEvent`
+* `\Civi\Setup\UI\SetupController::run()` => `civi.setupui.run` => `Civi\Setup\UI\Event\UIRunEvent`
 * `\Civi\Setup\UI\SetupController::boot()` => `civi.setupui.boot` => `Civi\Setup\UI\Event\UIBootEvent`
 
 All events provide access to the setup data-model.

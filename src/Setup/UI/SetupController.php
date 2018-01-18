@@ -53,6 +53,7 @@ class SetupController implements SetupControllerInterface {
    *   [0 => array $headers, 1 => string $body].
    */
   public function run($method, $fields = array()) {
+    $this->setup->getDispatcher()->dispatch('civi.setupui.run', new UIBootEvent($this, $method, $fields));
     if (!$this->setup->checkAuthorized()->isAuthorized()) {
       return $this->createError("Not authorized to perform installation");
     }
