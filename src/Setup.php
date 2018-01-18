@@ -17,6 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Setup {
 
+  const PROTOCOL = '0.1';
+
   const PRIORITY_START = 2000;
   const PRIORITY_PREPARE = 1000;
   const PRIORITY_MAIN = 0;
