@@ -19,11 +19,19 @@
       <td class="advanced-db">
         <div class="ro">
           <code><?php echo htmlentities('mysql://' . $model->db['username'] . ':HIDDEN@' . $model->db['server'] . '/' . $model->db['database']); ?></code>
-          <a href="" onclick="csj$('.advanced-db .ro').hide(); csj$('.advanced-db .rw').show(); return false;" title="<?php echo htmlentities(ts('Edit')) ?>" class="advanced-db-btn"><i class="fa fa-pencil"></i></a>
+          <a href="" onclick="csj$('.advanced-db .ro').hide(); csj$('.advanced-db .rw').show(); return false;" title="<?php echo htmlentities(ts('Edit')) ?>"><i class="fa fa-pencil"></i></a>
         </div>
         <div class="rw" style="display: none;">
-          <input type="text" name="civisetup[advanced][db]" value="<?php echo htmlentities($model->extras['advanced']['db']); ?>">
+          <input type="text" name="civisetup[advanced][db]" value="<?php echo htmlentities($model->extras['advanced']['db']); ?>" data-original="<?php echo htmlentities($model->extras['advanced']['db']); ?>">
           <input id="db_apply_button" type="submit" name="civisetup[action][Start]" value="<?php echo htmlentities(ts('Apply')); ?>" />
+          <a href="" onclick="civisetupAdvancedDbCancel(); return false;" title="<?php echo htmlentities(ts('Cancel')) ?>"><i class="fa fa-close"></i></a>
+          <script type="text/javascript">
+            function civisetupAdvancedDbCancel() {
+              csj$('.advanced-db .rw').hide();
+              csj$('.advanced-db .ro').show();
+              csj$('.advanced-db .rw input[type=text]').val(csj$('.advanced-db .rw input[type=text]').attr('data-original'));
+            }
+          </script>
         </div>
       </td>
     </tr>
