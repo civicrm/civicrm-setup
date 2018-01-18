@@ -1,5 +1,5 @@
 <?php if (!defined('CIVI_SETUP')): exit("Installation plugins must only be loaded by the installer.\n"); endif; ?>
-<h2><?php echo ts('Details'); ?></h2>
+<h2 id="environment"><?php echo ts('Environment'); ?></h2>
 
 <p>
   <?php echo ts('The system settings were auto-detected. CiviCRM will be installed with:'); ?>
@@ -11,13 +11,20 @@
     <tr>
       <th><?php echo ts('CMS Database'); ?></th>
       <td>
-        <code><?php echo htmlentities('mysql://' . $model->cmsDb['username'] . ':CENSORED@' . $model->cmsDb['server'] . '/' . $model->cmsDb['database']); ?></code>
+        <code><?php echo htmlentities('mysql://' . $model->cmsDb['username'] . ':HIDDEN@' . $model->cmsDb['server'] . '/' . $model->cmsDb['database']); ?></code>
       </td>
     </tr>
     <tr>
       <th><?php echo ts('CiviCRM Database'); ?></th>
-      <td>
-        <code><?php echo htmlentities('mysql://' . $model->db['username'] . ':CENSORED@' . $model->db['server'] . '/' . $model->db['database']); ?></code>
+      <td class="advanced-db">
+        <div class="ro">
+          <code><?php echo htmlentities('mysql://' . $model->db['username'] . ':HIDDEN@' . $model->db['server'] . '/' . $model->db['database']); ?></code>
+          <a href="" onclick="csj$('.advanced-db .ro').hide(); csj$('.advanced-db .rw').show(); return false;" title="<?php echo htmlentities(ts('Edit')) ?>" class="advanced-db-btn"><i class="fa fa-pencil"></i></a>
+        </div>
+        <div class="rw" style="display: none;">
+          <input type="text" name="civisetup[advanced][db]" value="<?php echo htmlentities($model->extras['advanced']['db']); ?>">
+          <input id="db_apply_button" type="submit" name="civisetup[action][Start]" value="<?php echo htmlentities(ts('Apply')); ?>" />
+        </div>
       </td>
     </tr>
     <tr>

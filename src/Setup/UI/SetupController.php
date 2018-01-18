@@ -125,7 +125,7 @@ class SetupController implements SetupControllerInterface {
 
     $reqs = $this->setup->checkRequirements();
     if (count($reqs->getErrors())) {
-      return $this->createError('CiviCRM cannot be installed because "checkRequirements" returned errors');
+      return $this->runStart($method, $fields);
     }
 
     $this->setup->installFiles();
