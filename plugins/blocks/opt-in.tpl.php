@@ -10,7 +10,7 @@
   <input class="optin-cb sr-only" style="display: none;" type="checkbox" name="civisetup[opt-in][versionCheck]" id="civisetup[opt-in][versionCheck]" value="1" <?php echo $model->extras['opt-in']['versionCheck'] ? 'checked' : ''; ?>>
   <label class="optin-box" for="civisetup[opt-in][versionCheck]">
     <span class="optin-label"><?php echo ts('Version pingback'); ?></span>
-    <span class="optin-desc"><?php echo ts('Checks for CiviCRM version updates. Report anonymous usage statistics.'); ?></span>
+    <span class="optin-desc"><?php echo ts('Check for CiviCRM version updates. Report anonymous usage statistics.'); ?></span>
   </label>
 
   <input class="optin-cb sr-only" style="display: none;" type="checkbox" name="civisetup[opt-in][empoweredBy]" id="civisetup[opt-in][empoweredBy]" value="1" <?php echo $model->extras['opt-in']['empoweredBy'] ? 'checked' : ''; ?>>
