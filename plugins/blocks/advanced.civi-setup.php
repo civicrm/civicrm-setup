@@ -39,6 +39,6 @@ if (!defined('CIVI_SETUP')) {
       'is_active' => TRUE,
       'file' => __DIR__ . DIRECTORY_SEPARATOR . 'advanced.tpl.php',
       'class' => '',
-      'weight' => 35,
+      'weight' => 60,
     );
   }, \Civi\Setup::PRIORITY_PREPARE);
