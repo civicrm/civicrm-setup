@@ -20,6 +20,21 @@ class DbUtil {
   }
 
   /**
+   * Convert an datasource from array notation to URL notation.
+   *
+   * @param array $db
+   * @return string
+   */
+  public static function encodeDsn($db) {
+    return sprintf('mysql://%s:%s@%s/%s',
+      $db['username'],
+      $db['password'],
+      self::encodeHostPort($db['host'], $db['port']),
+      $db['database']
+    );
+  }
+
+  /**
    * @param array $db
    * @return \mysqli
    */
