@@ -97,6 +97,23 @@ class Setup {
   }
 
   /**
+   * Assert that this copy of civicrm-setup is compatible with the client.
+   *
+   * @param string $expectedVersion
+   * @throws \Exception
+   */
+  public static function assertProtocolCompatibility($expectedVersion) {
+    if (version_compare(self::PROTOCOL, $expectedVersion, '<')) {
+      throw new InitException(sprintf("civicrm-setup is running protocol v%s. This application expects civicrm-setup to support protocol v%s.", self::PROTOCOL, $expectedVersion));
+    }
+    list ($actualFirst) = explode('.', self::PROTOCOL);
+    list ($expectedFirst) = explode('.', $expectedVersion);
+    if ($actualFirst > $expectedFirst) {
+      throw new InitException(sprintf("civicrm-setup is running protocol v%s. This application expects civicrm-setup to support protocol v%s.", self::PROTOCOL, $expectedVersion));
+    }
+  }
+
+  /**
    * Assert that the "Setup" subsystem is running.
    *
    * This function is mostly just a placeholder -- in practice, if
