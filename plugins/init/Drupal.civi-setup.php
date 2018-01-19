@@ -37,13 +37,8 @@ if (!defined('CIVI_SETUP')) {
 
     // Compute DSN.
     global $databases;
-    $dbServer = $databases['default']['default']['host'];
-    if (!empty($databases['default']['default']['port'])) {
-      $dbServer .= ':' . $databases['default']['default']['port'];
-    }
-
     $model->db = $model->cmsDb = array(
-      'server' => $dbServer,
+      'server' => \Civi\Setup\DbUtil::encodeHostPort($databases['default']['default']['host'], $databases['default']['default']['port'] ?: NULL),
       'username' => $databases['default']['default']['username'],
       'password' => $databases['default']['default']['password'],
       'database' => $databases['default']['default']['database'],
@@ -62,6 +57,9 @@ if (!defined('CIVI_SETUP')) {
     $model->templateCompilePath = implode(DIRECTORY_SEPARATOR,
       [_drupal_civisetup_getPrivateFiles(), 'civicrm', 'templates_c']);
 
+    // Compute default locale.
+    global $language;
+    $model->lang = \Civi\Setup\LocaleUtil::pickClosest($language->langcode, $model->getField('lang', 'options'));
   });
 
 function _drupal_civisetup_getPublicFiles() {

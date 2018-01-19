@@ -16,9 +16,6 @@ if (!defined('CIVI_SETUP')) {
     }
     \Civi\Setup::log()->info(sprintf('[%s] Flush CMS metadata', basename(__FILE__)));
 
-    throw new \Exception("A draft copy of this file is available but has not been tested. Please edit " . __FILE__);
-
-    error_reporting(1);
     system_rebuild_module_data();
     module_enable(array('civicrm', 'civicrmtheme'));
     backdrop_flush_all_caches();

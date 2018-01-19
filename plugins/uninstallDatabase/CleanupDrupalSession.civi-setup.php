@@ -11,7 +11,8 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.uninstallDatabase', function (\Civi\Setup\Event\UninstallDatabaseEvent $e) {
-    if ($e->getModel()->cms !== 'Drupal') {
+    $supportedCms = array('Drupal', 'Backdrop');
+    if (!in_array($e->getModel()->cms, $supportedCms)) {
       return;
     }
     \Civi\Setup::log()->info('[CleanupDrupalSession.civi-setup.php] Purge Drupal session state which have stale CiviCRM references');
