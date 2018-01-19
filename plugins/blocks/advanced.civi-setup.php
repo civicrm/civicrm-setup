@@ -14,7 +14,7 @@ if (!defined('CIVI_SETUP')) {
     $ctrl = $e->getCtrl();
     $values = $e->getField('advanced', array());
 
-    $placeholderDb = 'mysql://USER:PASS@HOST:3306/DB';
+    $placeholderDb = 'mysql://USER:PASS@HOST/DB';
 
     if (empty($values['db']) || $values['db'] === $placeholderDb) {
       $e->getModel()->extras['advanced']['db'] = $placeholderDb;
