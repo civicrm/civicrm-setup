@@ -68,8 +68,8 @@ function _backdrop_civisetup_getPublicFiles() {
   $filePublicPath = variable_get('file_public_path', conf_path() . '/files');
 
   if (!CRM_Utils_File::isAbsolute($filePublicPath)) {
-    $drupalSystem = new CRM_Utils_System_Backdrop();
-    $cmsPath = $drupalSystem->cmsRootPath();
+    $ufSystem = new CRM_Utils_System_Backdrop();
+    $cmsPath = $ufSystem->cmsRootPath();
     $filePublicPath = $cmsPath . DIRECTORY_SEPARATOR . $filePublicPath;
   }
 
