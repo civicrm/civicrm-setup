@@ -3,22 +3,22 @@
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
 first need to initialize the runtime and get a reference to the `$setup` object:
 
-1. Bootstrap the CMS/host environment.
-    a. __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
-2. Check if `civicrm-setup-autoload.php` exists.
-    a. If it exists, then we'll proceed.
-    b. If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
-3. Load `civicrm-setup-autoload.php`.
-4. Load the CiviCRM class-loader.
-    a. __Ex__: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
-    b. __Ex__: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then you may not need to take any steps.
-5. Initialize the `\Civi\Setup` subsystem.
-    a. Call `\Civi\Setup::init($modelValues = array(), $pluginCallback = NULL)`.
-    b. The `$modelValues` provides an opportunity to seed the configuration options, such as DB credentials and file-paths. See the fields defined for the [Model](src/Setup/Model.php).
-    c. The `$pluginCallback` (`function(array $files) => array $files`) provides an opportunity to add/remove/override plugin files.
-    d. __Tip__: During initialization, some values may be autodetected. After initialization, you can inspect or revise these with `Civi\Setup::instance()->getModel()`.
-6. Get a reference to the `$setup` API.
-    a. Call `$setup = Civi\Setup::instance()`.
+* Bootstrap the CMS/host environment.
+    * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
+* Check if `civicrm-setup-autoload.php` exists.
+    * If it exists, then we'll proceed.
+    * If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
+* Load `civicrm-setup-autoload.php`.
+* Load the CiviCRM class-loader.
+    * __Ex__: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
+    * __Ex__: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then you may not need to take any steps.
+* Initialize the `\Civi\Setup` subsystem.
+    * Call `\Civi\Setup::init($modelValues = array(), $pluginCallback = NULL)`.
+    * The `$modelValues` provides an opportunity to seed the configuration options, such as DB credentials and file-paths. See the fields defined for the [Model](src/Setup/Model.php).
+    * The `$pluginCallback` (`function(array $files) => array $files`) provides an opportunity to add/remove/override plugin files.
+    * __Tip__: During initialization, some values may be autodetected. After initialization, you can inspect or revise these with `Civi\Setup::instance()->getModel()`.
+* Get a reference to the `$setup` API.
+    * Call `$setup = Civi\Setup::instance()`.
 
 For example, this code will check for `civicrm-setup-autoload.php` in three locations;
 if found, it sets up the class-loaders, and it initializes the `\Civi\Setup` subsystem.
