@@ -3,7 +3,7 @@
 A plugin is a PHP file with these characteristics:
 
 * The file's name ends in `*.civi-setup.php`. (Plugins in `civicrm-setup/plugins/*.civi-setup.php` are autodetected.)
-* The file has a guard at the top (`defined('CIVI_SETUP')`). If this constant is missing, then bail out. This prevents direct execution.
+* The file has a guard at the top (`defined('CIVI_SETUP')`). If this constant is missing, then bail out. In case the file becomes accessible on the web, this prevents direct execution.
 * The file's logic locates the event-dispatcher and registers listeners, e.g. `\Civi\Setup::disptacher()->addListener($eventName, $callback)`.
 
 For example, here is a basic plugin that logs a message during database installation:
@@ -32,7 +32,7 @@ Observe that the primary way for a plugin to interact with the system is to regi
 * `\Civi\Setup::uninstallFiles()` => `civi.setup.uninstallFiles` => `Civi\Setup\Event\UninstallFilesEvent`
 * `\Civi\Setup::uninstallDatabase()` => `civi.setup.uninstallDatabase` => `Civi\Setup\Event\UninstallDatabaseEvent`
 
-For events related to the stock/reference UI, the namespace is slightly different:
+For events related to the built-in web UI, the names are slightly different:
 
 * `\Civi\Setup::createController()` => `civi.setupui.construct` => `Civi\Setup\UI\Event\UIConstructEvent`
 * `\Civi\Setup\UI\SetupController::run()` => `civi.setupui.run` => `Civi\Setup\UI\Event\UIRunEvent`
@@ -42,18 +42,17 @@ All events provide access to the setup data-model.
 
 > __Ex__: To get the path to the `civicrm.settings.php` file, read `$event->getModel()->settingsPath`.
 
-The `check*` events provide additional methods for relaying information.
+Some events provide additional methods for relaying additional information. For example:
 
-> __Ex__: For `checkRequirements`, use `$event->addError(...)` to record an
-> error that prevents installation.  Similarly, use `addWarning(...)` and
-> `addInfo(...)` to report less critical issues.
->
-> __Ex__: For `checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted,
-> and use `$event->isAuthorized()` to see if authorization has been permitted.
+* For `civi.setup.checkRequirements`, use `$event->addError(...)` to record an error that prevents installation.  Similarly, use
+  `addWarning(...)` and `addInfo(...)` to report less critical issues.
+* For `civi.setup.checkAuthorized`, use `$event->setAuthorized(bool $authorized)` to indicate whether authorization is permitted,
+  and use `$event->isAuthorized()` to see if authorization has been permitted.
+* For `civi.setupui.run`, the list of HTTP inputs is available as `$event->getFields()`.
 
 ## What's in a file name?
 
-The plugins folder is *loosely* organized based on how the plugin fits into
+The `plugins/` folder is *loosely* organized based on how the plugin fits into
 the system.  Let's take a few example files (at time of writing):
 
 ```
@@ -71,8 +70,12 @@ Notice a pattern?
 * The files under `plugins/installDatabase` are installation steps which listen to the `civi.setup.installDatabase` event.
 
 Most plugins only handle one event, so it's a convenient way to organize them.  However, this is just a
-*convention*.  It's entirely legitimate for a plugin to listen to multiple events .  For example,
-`common/LogEvents` listens to many events.  Tips:
+*convention*.  It's entirely legitimate for a plugin to listen to multiple events .  For example:
+
+* `common/LogEvents` listens to many events.
+* `blocks/*` define visible blocks for the built-in web UI. Many of these listen to a 2-3 events.
+
+Tips:
 
 * Do whatever is best (on the whole) for improving concept/coupling/cohesion. This *usually* means writing a small/narrow plugin, but it doesn't necessarily.
 * Browsing the folders provides a high-level skim. However, for detailed inspection or debugging, use `cv core:install --debug-event`.

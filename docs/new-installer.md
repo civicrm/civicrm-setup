@@ -5,7 +5,8 @@ first need to initialize the runtime and get a reference to the `$setup` object:
 
 * Bootstrap the CMS/host environment.
     * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
-* Check if `civicrm-setup-autoload.php` exists.
+    * __Tip__: Initializing this first ensures that we can *automatically discover* information about the host environment.
+* Check if `civicrm-setup-autoload.php` exists. (If the location isn't obvious or standardized, you may perform a search to find it.)
     * If it exists, then we'll proceed.
     * If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
 * Load `civicrm-setup-autoload.php`.
@@ -56,19 +57,18 @@ the pre-built installation form:
 // Create and execute the default setup controller.
 $ctrl = \Civi\Setup::instance()->createController()->getCtrl();
 $ctrl->setUrls(array(
-  'ctrl' => 'url://for/the/install/ui',
+  'ctrl' => 'url://for/the/install/controller',
   'res' => 'url://for/civicrm-setup/res',
   'jquery.js' => 'url://for/jquery.js',
   'font-awesome.css' ='url://for/font-awesome.css',
-  'finished' => 'url://to/open/after/finishing',
 ));
 \Civi\Setup\BasicRunner::run($ctrl);
 ```
 
-The `BasicRunner::run()` function uses PHP's standard, global I/O (e.g.
-`$_POST` for input; `echo` for output).  However, some frameworks have their
-own variants on this.  You can get more direct control of I/O by calling the
-controller directly, e.g.:
+The `BasicRunner::run()` function uses PHP's standard, global I/O (e.g. 
+`$_POST` for input; `header()` for headers; `echo` for textual output). 
+However, some frameworks have their own I/O conventions.  You can get more
+direct control of I/O by calling the controller directly, e.g.:
 
 ```php
 <?php
@@ -85,3 +85,25 @@ Alternatively, you might build a custom UI or an automated installer. `$setup` p
 * `$setup->installDatabase()`: Create database schema (tables, views, etc). Perform first bootstrap and configure the system.
 * `$setup->uninstallDatabase()`: Purge database schema (tables, views, etc).
 * `$setup->uninstallFiles()`: Purge data files, such as `civicrm.settings.php`.
+
+The typical install algorithm would be:
+
+```php
+if (!$setup->checkAuthorized()->isAuthorized()) {
+  exit("Sorry, you are not authorized to perform installation.");
+}
+
+$reqs = $setup->checkRequirements();
+if ($reqs->getErrors()) {
+  print_r($reqs->getErrors());
+  exit("Cannot install. Please address the system requirements." );
+}
+
+$installed = $setup->checkInstalled();
+if ($installed->isSettingInstalled() || $installed->isDatabaseInstalled()) {
+  exit("Cannot install. CiviCRM has already been installed.");
+}
+
+$setup->installFiles();
+$setup->installDatabase();
+```

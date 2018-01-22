@@ -10,13 +10,14 @@ the library.
 Let's a get a copy of the library.
 
 ```
-$ mkdir $HOME/src/
+$ mkdir $HOME/src
 $ git clone https://github.com/civicrm/civicrm-setup $HOME/src/civicrm-setup
 ```
 
 Note that this is our developmental copy of the library -- it is not a
-generally-expected default. However, you can set an environment variable
-to ensure that it's used in subsequent commands:
+default location that's generally recognized by the software.  However, you
+can set an environment variable to ensure that it's used in subsequent
+commands:
 
 ```
 $ export CV_SETUP_PATH=$HOME/src/civicrm-setup 
@@ -48,7 +49,7 @@ $ cd /path/to/web-root
 ## Inspect the model
 
 The *model* defines any local installation options.  These values are mostly
-determined automatically. To inspect them, use the `--debug-model` option, as in:
+discovered automatically. To inspect them, use the `--debug-model` option, as in:
 
 ```
 $ cv core:install --debug-model
@@ -83,7 +84,7 @@ $ cv core:install --debug-model --db=mysql://otheruser:secret@mysql.example.org/
 ...
 ```
 
-A more complete list of options is available in `cv core:install --help`.
+To browse a more complete list of options, run `cv core:install --help`.
 
 ## Inspect the plugins and events
 
@@ -189,6 +190,6 @@ drush -y dis civicrm ; cv core:install -f -vvv --cms-base-url=http://example.com
 
 ## Test coverage
 
-This library provides little of its own test-coverage.  Instead, the main
+This library provides little test-coverage on its own.  Instead, the main
 test coverage is provided in the `cv` project (`phpunit4 --group installer`).
 For more details on running that test, consult the documentation in `cv`'s git repo.
