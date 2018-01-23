@@ -6,11 +6,10 @@ first need to initialize the runtime and get a reference to the `$setup` object:
 * Bootstrap the CMS/host environment.
     * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
     * __Tip__: Initializing this first ensures that we can *automatically discover* information about the host environment.
-* Check if `civicrm-setup-autoload.php` exists. (If the location isn't obvious or standardized, you may perform a search to find it.)
-    * If it exists, then we'll proceed.
-    * If it doesn't exist, then don't try to setup. Fail or fallback gracefully.
-* Load `civicrm-setup-autoload.php`.
-* Load the CiviCRM class-loader.
+* (Optional) Check for `civicrm/.use-civicrm-setup`
+    * If you're incrementally replacing the old installer with the new installer, you can check for a signal that allows the system-builder
+      to toggle between the old/new installers. Specifically, in the `civicrm-core` folder, look for a file named `.use-civicrm-setup`.
+* Load the class-loader.
     * __Ex__: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
     * __Ex__: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then you may not need to take any steps.
 * Initialize the `\Civi\Setup` subsystem.
@@ -21,31 +20,20 @@ first need to initialize the runtime and get a reference to the `$setup` object:
 * Get a reference to the `$setup` API.
     * Call `$setup = Civi\Setup::instance()`.
 
-For example, this code will check for `civicrm-setup-autoload.php` in three locations;
-if found, it sets up the class-loaders, and it initializes the `\Civi\Setup` subsystem.
+For example:
 
 ```php
 <?php
 $civicrmCore = '/path/to/civicrm';
-$setupPaths = array(
-  implode(DIRECTORY_SEPARATOR, ['vendor', 'civicrm', 'civicrm-setup']),
-  implode(DIRECTORY_SEPARATOR, ['packages', 'civicrm-setup',]),
-  implode(DIRECTORY_SEPARATOR, ['setup']),
-);
-foreach ($setupPaths as $setupPath) {
-  $loader = implode(DIRECTORY_SEPARATOR, [$civicrmCore, $setupPath, 'civicrm-setup-autoload.php']);
-  if (file_exists($loader)) {
-    require_once $loader;
-    require_once implode(DIRECTORY_SEPARATOR, [$civicrmCore, 'CRM', 'Core', 'ClassLoader.php']);
-    CRM_Core_ClassLoader::singleton()->register();
-    \Civi\Setup::init([
-      'cms' => 'WordPress',
-      'srcPath' => $civicrmCore,
-      'setupPath' => dirname($loader),
-    ]);
-    $setup = Civi\Setup::instance();
-    break;
-  }
+if (file_exists($civicrmCore . DIRECTORY_SEPARATOR . '.use-civicrm-setup')) {
+  require_once implode(DIRECTORY_SEPARATOR, [$civicrmCore, 'CRM', 'Core', 'ClassLoader.php']);
+  CRM_Core_ClassLoader::singleton()->register();
+  \Civi\Setup::assertProtocolCompatibility(1.0);
+  \Civi\Setup::init([
+    'cms' => 'WordPress',
+    'srcPath' => $civicrmCore,
+  ]);
+  $setup = Civi\Setup::instance();
 }
 ```
 
