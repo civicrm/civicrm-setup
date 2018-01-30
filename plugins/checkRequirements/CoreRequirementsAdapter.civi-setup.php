@@ -18,7 +18,7 @@ if (!defined('CIVI_SETUP')) {
     $r = new \Civi\Install\Requirements();
 
     \Civi\Setup::log()->info(sprintf('[%s] Run Requirements::checkSystem()', basename(__FILE__)));
-    $systemMsgs = $r->checkSystem(array(/* we do this elsewhere */));
+    $systemMsgs = $r->checkSystem(array(/* no $file_paths to pass - we check those elsewhere */));
     _corereqadapter_addMessages($e, 'system', $systemMsgs);
 
     \Civi\Setup::log()->info(sprintf('[%s] Run Requirements::checkDatabase()', basename(__FILE__)));
