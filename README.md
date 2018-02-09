@@ -27,7 +27,7 @@ Key features:
 
 * The library can be used by other projects -- such as `cv`, `civicrm-drupal`, `civicrm-wordpress` -- to provide an installation process.
 * It is a *leap*. It can coexist with the old installer, and it lives in a separate project/repo which can be deployed optionally.
-    * To enable it, add the codebase to your civicrm source tree. (This can be done manually - or as part of a build process.)
+    * _Example_: The `civicrm-wordpress` integration is phasing-in support for the new installer. By default, it uses the old installer. If you create a file `civicrm/.use-civicrm-setup`, then it will use the new installer.
 * It has minimal external dependencies. (The codebase for CiviCRM and its dependencies must be available -- but nothing else is needed.)
 
 ## Documentation
