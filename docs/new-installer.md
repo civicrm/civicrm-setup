@@ -1,14 +1,14 @@
 # Writing an installer
 
 For a CMS integration (e.g. `civicrm-drupal` or `civicrm-wordpress`) which aims to incorporate an installer, you'll
-first need to initialize the runtime and get a reference to the `$setup` object:
+first need to initialize the runtime and get a reference to the `$setup` object. The general steps are:
 
 * Bootstrap the CMS/host environment.
     * __Tip__: You may not need to do anything here -- this is often implicitly handled by the host environment.
     * __Tip__: Initializing this first ensures that we can *automatically discover* information about the host environment.
 * (Optional) Check for `civicrm/.use-civicrm-setup`
-    * If you're incrementally replacing the old installer with the new installer, you can check for a signal that allows the system-builder
-      to toggle between the old/new installers. Specifically, in the `civicrm-core` folder, look for a file named `.use-civicrm-setup`.
+    * If you're incrementally replacing the old installer with the new installer, you can check for a signal that allows the system-builder to toggle between the old/new installers. Specifically, in the `civicrm-core` folder, look for a file named `.use-civicrm-setup`.
+    * If you're writing an installer for a new build/channel, then you probably don't need to worry about this.
 * Load the class-loader.
     * __Ex__: If you use `civicrm` as a distinct sub-project (with its own `vendor` and autoloader), then you may need to load `CRM/Core/ClassLoader.php` and call `register()`.
     * __Ex__: If you use `composer` to manage the full site-build (with CMS+Civi+dependencies), then you may not need to take any steps.
@@ -54,7 +54,7 @@ $ctrl->setUrls(array(
 ```
 
 The `BasicRunner::run()` function uses PHP's standard, global I/O (e.g. 
-`$_POST` for input; `header()` for headers; `echo` for textual output). 
+`$_POST` for input; `header()` for headers; `echo` for output). 
 However, some frameworks have their own I/O conventions.  You can get more
 direct control of I/O by calling the controller directly, e.g.:
 
