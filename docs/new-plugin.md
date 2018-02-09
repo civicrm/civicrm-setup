@@ -21,7 +21,7 @@ if (!defined('CIVI_SETUP')) {
 ```
 
 Observe that the primary way for a plugin to interact with the system is to register for events (using Symfony's
-`EventDispatcher`).  The `$event` names and classes correspond to the methods of `Civi\Setup`, e.g.
+`EventDispatcher`). Most methods in the `Civi\Setup` API have a corresponding event name and event class:
 
 * `\Civi\Setup::init()` => `civi.setup.init` => `Civi\Setup\Event\InitEvent`
 * `\Civi\Setup::checkAuthorized()` => `civi.setup.checkAuthorized` => `Civi\Setup\Event\CheckAuthorizedEvent`
@@ -66,16 +66,16 @@ plugins/installDatabase/InstallSettings.civi-setup.php
 
 Notice a pattern?
 
-* The files under `plugins/checkRequirements` are all pre-installation checks which listen to the `civi.setup.checkRequirements` event.
-* The files under `plugins/installDatabase` are installation steps which listen to the `civi.setup.installDatabase` event.
+* The files under `plugins/checkRequirements` are all plugins which listen to the `civi.setup.checkRequirements` event.
+* The files under `plugins/installDatabase` are all plugins which listen to the `civi.setup.installDatabase` event.
 
 Most plugins only handle one event, so it's a convenient way to organize them.  However, this is just a
-*convention*.  It's entirely legitimate for a plugin to listen to multiple events .  For example:
+*convention*.  It's entirely legitimate for a plugin to listen to multiple events. For example:
 
-* `common/LogEvents` listens to many events.
-* `blocks/*` define visible blocks for the built-in web UI. Many of these listen to a 2-3 events.
+* `common/LogEvents.civi-setup.php` listens to many events.
+* `blocks/*` define visible blocks for the built-in web UI. Many of these listen to 2-3 events.
 
 Tips:
 
-* Do whatever is best (on the whole) for improving concept/coupling/cohesion. This *usually* means writing a small/narrow plugin, but it doesn't necessarily.
-* Browsing the folders provides a high-level skim. However, for detailed inspection or debugging, use `cv core:install --debug-event`.
+* If you write a new plugin, should it handle one event or multiple? Do whatever is best (on the whole) for improving the concept/coupling/cohesion. This *usually* means writing a small/narrow plugin, but it doesn't necessarily.
+* Browsing the folders provides a high-level skim. Try to respect this in framing new plugins, but don't assume that it's perfect. For detailed inspection or debugging, use `cv core:install --debug-event`.
