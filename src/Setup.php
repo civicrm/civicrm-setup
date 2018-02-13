@@ -6,6 +6,7 @@ use Civi\Setup\Event\CheckRequirementsEvent;
 use Civi\Setup\Event\CheckInstalledEvent;
 use Civi\Setup\UI\Event\UIConstructEvent;
 use Civi\Setup\Event\InitEvent;
+use Civi\Setup\Event\GenerateSchemaEvent;
 use Civi\Setup\Event\InstallDatabaseEvent;
 use Civi\Setup\Event\InstallFilesEvent;
 use Civi\Setup\Event\UninstallDatabaseEvent;
@@ -192,6 +193,16 @@ class Setup {
   public function installFiles() {
     $event = new InstallFilesEvent($this->getModel());
     return $this->getDispatcher()->dispatch('civi.setup.installFiles', $event);
+  }
+
+  /**
+   * Generate the schema files.
+   *
+   * @return \Civi\Setup\Event\GenerateSchemaEvent
+   */
+  public function generateSchema() {
+    $event = new GenerateSchemaEvent($this->getModel());
+    return $this->getDispatcher()->dispatch('civi.setup.generateSchema', $event);
   }
 
   /**
