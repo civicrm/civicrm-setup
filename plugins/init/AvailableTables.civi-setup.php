@@ -22,7 +22,7 @@ if (!defined('CIVI_SETUP')) {
       $xmlBuilt = \CRM_Core_CodeGen_Util_Xml::parse($versionFile);
       $buildVersion = preg_replace('/^(\d{1,2}\.\d{1,2})\.(\d{1,2}|\w{4,7})$/i', '$1', $xmlBuilt->version_no);
       $specification = new \CRM_Core_CodeGen_Specification();
-      $specification->parse($schemaFile, $buildVersion);
+      $specification->parse($schemaFile, $buildVersion, FALSE);
       $tables = $specification->tables;
     }
     else {
