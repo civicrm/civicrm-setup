@@ -133,23 +133,24 @@ class DbUtil {
       }
     }
     else {
-      $fd = fopen($SQLcontent, "r");
-      while ($string = fgets($fd)) {
-        $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
-        $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
-
-        $string = trim($string);
-        if (!empty($string)) {
-          if ($result = $conn->query($string)) {
-            if (is_object($result)) {
-              mysqli_free_result($result);
-            }
-          }
-          else {
-            throw new SqlException("Cannot execute $string: " . mysqli_error($conn));
-          }
-        }
-      }
+      throw new \RuntimeException("Not implemented: lineMode");
+      //      $fd = fopen($SQLcontent, "r");
+      //      while ($string = fgets($fd)) {
+      //        $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
+      //        $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
+      //
+      //        $string = trim($string);
+      //        if (!empty($string)) {
+      //          if ($result = $conn->query($string)) {
+      //            if (is_object($result)) {
+      //              mysqli_free_result($result);
+      //            }
+      //          }
+      //          else {
+      //            throw new SqlException("Cannot execute $string: " . mysqli_error($conn));
+      //          }
+      //        }
+      //      }
     }
   }
 
@@ -239,9 +240,6 @@ class DbUtil {
     }, self::fetchAll($conn, $sql));
   }
 
-  /**
-   * @param string $fileName
-   */
   public function generateCreateSql($srcPath, $databaseName, $tables) {
     \Civi\Setup::log()->info("Generating sql file\n");
     $template = new Template($srcPath, 'sql');
@@ -255,16 +253,16 @@ class DbUtil {
     return $template->getContent('schema.tpl');
   }
 
-  public function generateNavigation($sqlPath) {
-    echo "Generating navigation file\n";
+  public function generateNavigation($srcPath) {
     \Civi\Setup::log()->info("Generating navigation SQL content\n");
-    $template = new Template($sqlPath, 'sql');
+    $template = new Template($srcPath, 'sql');
     return $template->getContent('civicrm_navigation.tpl');
   }
 
-  public function generateSample($sqlPath) {
-    $template = new Template($sqlPath, 'sql');
+  public function generateSample($srcPath) {
+    $template = new Template($srcPath, 'sql');
     $sections = ['civicrm_sample.tpl', 'civicrm_acl.tpl', 'case_sample.tpl'];
     return $template->getConcatContent($sections);
   }
+
 }
