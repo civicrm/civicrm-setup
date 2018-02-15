@@ -97,17 +97,17 @@ class DbUtil {
 
   /**
    * @param array $db
-   * @param string $fileName
+   * @param string $SQLcontent
    * @param bool $lineMode
    *   What does this mean? Seems weird.
    */
-  public static function sourceSQL($db, $fileName, $lineMode = FALSE) {
+  public static function sourceSQL($db, $SQLcontent, $lineMode = FALSE) {
     $conn = self::connect($db);
 
     $conn->query('SET NAMES utf8');
 
     if (!$lineMode) {
-      $string = file_get_contents($fileName);
+      $string = $SQLcontent;
 
       // change \r\n to fix windows issues
       $string = str_replace("\r\n", "\n", $string);
@@ -133,7 +133,7 @@ class DbUtil {
       }
     }
     else {
-      $fd = fopen($fileName, "r");
+      $fd = fopen($SQLcontent, "r");
       while ($string = fgets($fd)) {
         $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
         $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
@@ -242,7 +242,7 @@ class DbUtil {
   /**
    * @param string $fileName
    */
-  public function generateCreateSql($srcPath, $databaseName, $tables, $fileName = 'civicrm.mysql') {
+  public function generateCreateSql($srcPath, $databaseName, $tables) {
     \Civi\Setup::log()->info("Generating sql file\n");
     $template = new Template($srcPath, 'sql');
 
@@ -252,21 +252,19 @@ class DbUtil {
     $template->assign('dropOrder', $dropOrder);
     $template->assign('mysql', 'modern');
 
-    $SQLfilePath = implode(DIRECTORY_SEPARATOR, [$srcPath, 'sql', $fileName]);
-    $template->run('schema.tpl', $SQLfilePath);
+    return $template->getContent('schema.tpl');
   }
 
   public function generateNavigation($sqlPath) {
     echo "Generating navigation file\n";
-    \Civi\Setup::log()->info("Generating navigation file\n");
-    $template = new Template('sql');
-    $template->run('civicrm_navigation.tpl', $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_navigation.mysql');
+    \Civi\Setup::log()->info("Generating navigation SQL content\n");
+    $template = new Template($sqlPath, 'sql');
+    return $template->getContent('civicrm_navigation.tpl');
   }
 
   public function generateSample($sqlPath) {
-    $template = new Template('sql');
-    $sections = ['civicrm_sample.tpl', 'civicrm_acl.tpl'];
-    $template->runConcat($sections, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_sample.mysql');
-    $template->run('case_sample.tpl', $sqlPath . DIRECTORY_SEPARATOR . 'case_sample.mysql');
+    $template = new Template($sqlPath, 'sql');
+    $sections = ['civicrm_sample.tpl', 'civicrm_acl.tpl', 'case_sample.tpl'];
+    return $template->getConcatContent($sections);
   }
 }

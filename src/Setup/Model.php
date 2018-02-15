@@ -56,6 +56,10 @@ namespace Civi\Setup;
  *   Keys should be prefixed based on which plugin manages the field.
  *   Values must only be scalars (bool/int/string) and arrays.
  *   Ex: ['opt-in.version-check' => TRUE].
+ * @property array $tables
+ *   List of CiviCRM tables extracted from xml schema files.
+ *   Values must only be array.
+ *   Ex: ['civicrm_contact', 'civicrm_group'].
  */
 class Model {
 

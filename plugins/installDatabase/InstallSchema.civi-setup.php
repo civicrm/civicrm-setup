@@ -47,32 +47,24 @@ if (!defined('CIVI_SETUP')) {
     $model = $e->getModel();
 
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
-    $tables = $model->tables;
 
-    if (!file_exists($sqlPath)) {
-      Civi\Setup::log()->info('[InstallSchema.civi-setup.php] mkdir "{path}"', ['path' => $sqlPath]);
-      mkdir($sqlPath, 0777, TRUE);
-      \Civi\Setup\FileUtil::makeWebWriteable($sqlPath);
-    }
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($srcPath, $model->db['database'], $model->tables));
 
-    \Civi\Setup\DbUtil::generateCreateSql($srcPath, $model->db['database'], $model->tables);
-    \Civi\Setup\DbUtil::generateNavigation($sqlPath);
-    \Civi\Setup\DbUtil::generateSample($sqlPath);
-
-    \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm.mysql');
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($sqlPath));
 
     if (!empty($model->loadGenerated)) {
-      \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_generated.mysql', TRUE);
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateSample($sqlPath));
     }
     else {
       $seedLanguage = $model->lang;
+      // @TODO need to generate and fetch seedLanguage mysql data
       if ($seedLanguage && $seedLanguage !== 'en_US') {
-        \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . "civicrm_data.{$seedLanguage}.mysql");
-        \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . "civicrm_acl.{$seedLanguage}.mysql");
+        \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . "civicrm_data.{$seedLanguage}.mysql"));
+        \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . "civicrm_acl.{$seedLanguage}.mysql"));
       }
       else {
-        \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_data.mysql');
-        \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_acl.mysql');
+        \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_data.mysql'));
+        \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_acl.mysql'));
       }
     }
 
