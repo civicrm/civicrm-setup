@@ -30,4 +30,28 @@ class FileUtil {
     return is_writable(dirname($path));
   }
 
+  /**
+   * @param string $dir
+   * @param int $perm
+   *
+   * @return string
+   */
+  public static function createDir($dir, $perm = 0755) {
+    if (!self::isCreateable($dir)) {
+      mkdir($dir, $perm, TRUE);
+    }
+  }
+
+  /**
+   * @param $prefix
+   *
+   * @return string
+   */
+  public static function createTempDir($prefix) {
+    $newTempDir = tempnam(sys_get_temp_dir(), $prefix) . '.d';
+    self::createDir($newTempDir);
+
+    return $newTempDir;
+  }
+
 }

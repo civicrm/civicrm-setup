@@ -18,7 +18,6 @@ $eventNames = array(
   'civi.setup.checkRequirements',
   'civi.setup.checkInstalled',
   'civi.setup.installFiles',
-  'civi.setup.generateSchema',
   'civi.setup.installDatabase',
   'civi.setup.uninstallDatabase',
   'civi.setup.uninstallFiles',

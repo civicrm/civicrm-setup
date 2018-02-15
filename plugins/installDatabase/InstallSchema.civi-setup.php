@@ -47,6 +47,17 @@ if (!defined('CIVI_SETUP')) {
     $model = $e->getModel();
 
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
+    $tables = $model->tables;
+
+    if (!file_exists($sqlPath)) {
+      Civi\Setup::log()->info('[InstallSchema.civi-setup.php] mkdir "{path}"', ['path' => $sqlPath]);
+      mkdir($sqlPath, 0777, TRUE);
+      \Civi\Setup\FileUtil::makeWebWriteable($sqlPath);
+    }
+
+    \Civi\Setup\DbUtil::generateCreateSql($srcPath, $model->db['database'], $model->tables);
+    \Civi\Setup\DbUtil::generateNavigation($sqlPath);
+    \Civi\Setup\DbUtil::generateSample($sqlPath);
 
     \Civi\Setup\DbUtil::sourceSQL($model->db, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm.mysql');
 

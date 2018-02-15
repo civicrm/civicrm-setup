@@ -2,6 +2,7 @@
 namespace Civi\Setup;
 
 use Civi\Setup\Exception\SqlException;
+use Civi\Setup\Template;
 
 class DbUtil {
 
@@ -238,4 +239,34 @@ class DbUtil {
     }, self::fetchAll($conn, $sql));
   }
 
+  /**
+   * @param string $fileName
+   */
+  public function generateCreateSql($srcPath, $databaseName, $tables, $fileName = 'civicrm.mysql') {
+    \Civi\Setup::log()->info("Generating sql file\n");
+    $template = new Template($srcPath, 'sql');
+
+    $template->assign('database', $databaseName);
+    $template->assign('tables', $tables);
+    $dropOrder = array_reverse(array_keys($tables));
+    $template->assign('dropOrder', $dropOrder);
+    $template->assign('mysql', 'modern');
+
+    $SQLfilePath = implode(DIRECTORY_SEPARATOR, [$srcPath, 'sql', $fileName]);
+    $template->run('schema.tpl', $SQLfilePath);
+  }
+
+  public function generateNavigation($sqlPath) {
+    echo "Generating navigation file\n";
+    \Civi\Setup::log()->info("Generating navigation file\n");
+    $template = new Template('sql');
+    $template->run('civicrm_navigation.tpl', $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_navigation.mysql');
+  }
+
+  public function generateSample($sqlPath) {
+    $template = new Template('sql');
+    $sections = ['civicrm_sample.tpl', 'civicrm_acl.tpl'];
+    $template->runConcat($sections, $sqlPath . DIRECTORY_SEPARATOR . 'civicrm_sample.mysql');
+    $template->run('case_sample.tpl', $sqlPath . DIRECTORY_SEPARATOR . 'case_sample.mysql');
+  }
 }

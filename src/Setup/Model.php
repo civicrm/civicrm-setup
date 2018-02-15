@@ -150,6 +150,12 @@ class Model {
       'type' => 'array',
       'value' => array(),
     ));
+    $this->addField(array(
+      'description' => 'CiviCRM Tables',
+      'name' => 'tables',
+      'type' => 'string',
+      'options' => array(),
+    ));
   }
 
   /**
