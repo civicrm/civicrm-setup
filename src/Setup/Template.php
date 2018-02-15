@@ -9,7 +9,7 @@ class Template {
   protected $beautifier;
 
   public function __construct($srcPath, $fileType) {
-    $this->filetype = $filetype;
+    $this->filetype = $fileType;
 
     $this->smarty = \Civi\Setup\SmartyUtil::createSmarty($srcPath);
 
@@ -27,15 +27,18 @@ class Template {
     }
   }
 
+  public function assign($tpl_var, $value = NULL) {
+    return $this->smarty->assign($tpl_var, $value);
+  }
+
   /**
    * Run template generator.
    *
    * @param string $infile
    *   Filename of the template, without a path.
-   * @param string $outpath
-   *   Full path to the desired output file.
+   * @return string
    */
-  public function getContent($infile, $outpath) {
+  public function getContent($infile) {
     $contents = $this->smarty->fetch($infile);
 
     if ($this->filetype === 'php') {
