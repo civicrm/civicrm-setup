@@ -48,12 +48,15 @@ if (!defined('CIVI_SETUP')) {
 
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
 
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($srcPath, $model->db['database'], $model->tables));
+    \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $model->db['database'], $model->tables));
 
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($sqlPath));
+    \Civi\Setup::log()->info(sprintf('[%s] generateNavigation', basename(__FILE__)));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($model->srcPath));
 
     if (!empty($model->loadGenerated)) {
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateSample($sqlPath));
+      \Civi\Setup::log()->info(sprintf('[%s] generateSample', basename(__FILE__)));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateSample($model->srcPath));
     }
     else {
       $seedLanguage = $model->lang;
