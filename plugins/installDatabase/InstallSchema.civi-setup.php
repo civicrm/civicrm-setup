@@ -11,6 +11,22 @@ if (!defined('CIVI_SETUP')) {
 
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+    $m = $e->getModel();
+    $files = array(
+      'xmlMissing' => implode(DIRECTORY_SEPARATOR, [$m->srcPath, 'xml']),
+      'xmlSchemaMissing' => implode(DIRECTORY_SEPARATOR, [$m->srcPath, 'xml', 'schema', 'Schema.xml']),
+      'xmlVersionMissing' => implode(DIRECTORY_SEPARATOR, [$m->srcPath, 'xml', 'version.xml']),
+    );
+
+    foreach ($files as $key => $file) {
+      if (!file_exists($file)) {
+        $e->addError('system', $key, "Schema file is missing: \"$file\"");
+      }
+    }
+  });
+
+\Civi\Setup::dispatcher()
+  ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
     \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
     $seedLanguage = $e->getModel()->lang;
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
@@ -47,9 +63,10 @@ if (!defined('CIVI_SETUP')) {
     $model = $e->getModel();
 
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
+    $spec = _installschema_getSpec($model->srcPath);
 
     \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $model->db['database'], $model->tables));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $spec->database, $spec->tables));
 
     \Civi\Setup::log()->info(sprintf('[%s] generateNavigation', basename(__FILE__)));
     \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($model->srcPath));
@@ -72,3 +89,17 @@ if (!defined('CIVI_SETUP')) {
     }
 
   });
+
+/**
+ * @param string $srcPath
+ * @return \CRM_Core_CodeGen_Specification
+ */
+function _installschema_getSpec($srcPath) {
+  $schemaFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'schema', 'Schema.xml']);
+  $versionFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'version.xml']);
+  $xmlBuilt = \CRM_Core_CodeGen_Util_Xml::parse($versionFile);
+  $buildVersion = preg_replace('/^(\d{1,2}\.\d{1,2})\.(\d{1,2}|\w{4,7})$/i', '$1', $xmlBuilt->version_no);
+  $specification = new \CRM_Core_CodeGen_Specification();
+  $specification->parse($schemaFile, $buildVersion, FALSE);
+  return $specification;
+}
