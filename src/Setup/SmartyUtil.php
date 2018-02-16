@@ -9,8 +9,10 @@ class SmartyUtil {
    * @return \Smarty
    */
   public static function createSmarty($srcPath) {
+    require_once 'CRM/Core/I18n.php';
+
     $packagePath = implode(DIRECTORY_SEPARATOR, [$srcPath, 'packages']);
-    require_once $packagePath . DIRECTORY_SEPARATOR . 'Smarty'. DIRECTORY_SEPARATOR . 'Smarty.class.php';
+    require_once $packagePath . DIRECTORY_SEPARATOR . 'Smarty' . DIRECTORY_SEPARATOR . 'Smarty.class.php';
 
     $smarty = new \Smarty();
     $smarty->template_dir = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'templates']);
@@ -27,4 +29,5 @@ class SmartyUtil {
 
     return $smarty;
   }
+
 }
