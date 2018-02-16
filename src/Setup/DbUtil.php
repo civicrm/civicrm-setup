@@ -241,7 +241,7 @@ class DbUtil {
   }
 
   public function generateCreateSql($srcPath, $databaseName, $tables) {
-    \Civi\Setup::log()->info("Generating sql file\n");
+    \Civi\Setup::log()->info("Generating sql file");
     $template = new Template($srcPath, 'sql');
 
     $template->assign('database', $databaseName);
@@ -254,7 +254,7 @@ class DbUtil {
   }
 
   public function generateNavigation($srcPath) {
-    \Civi\Setup::log()->info("Generating navigation SQL content\n");
+    \Civi\Setup::log()->info("Generating navigation SQL content");
     $template = new Template($srcPath, 'sql');
     return $template->getContent('civicrm_navigation.tpl');
   }
