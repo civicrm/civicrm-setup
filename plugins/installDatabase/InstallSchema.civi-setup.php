@@ -9,8 +9,21 @@ if (!defined('CIVI_SETUP')) {
   exit("Installation plugins must only be loaded by the installer.\n");
 }
 
-\Civi\Setup::dispatcher()
-  ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSubscriberInterface {
+
+  public static function getSubscribedEvents() {
+    return [
+      'civi.setup.checkRequirements' => [
+        ['checkXmlFiles', 0],
+        ['checkSqlFiles', 0],
+      ],
+      'civi.setup.installDatabase' => [
+        ['installDatabase', 0]
+      ],
+    ];
+  }
+
+  public function checkXmlFiles(\Civi\Setup\Event\CheckRequirementsEvent $e) {
     $m = $e->getModel();
     $files = array(
       'xmlMissing' => implode(DIRECTORY_SEPARATOR, [$m->srcPath, 'xml']),
@@ -23,10 +36,9 @@ if (!defined('CIVI_SETUP')) {
         $e->addError('system', $key, "Schema file is missing: \"$file\"");
       }
     }
-  });
+  }
 
-\Civi\Setup::dispatcher()
-  ->addListener('civi.setup.checkRequirements', function (\Civi\Setup\Event\CheckRequirementsEvent $e) {
+  public function checkSqlFiles(\Civi\Setup\Event\CheckRequirementsEvent $e) {
     \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
     $seedLanguage = $e->getModel()->lang;
     $sqlPath = $e->getModel()->srcPath . DIRECTORY_SEPARATOR . 'sql';
@@ -54,16 +66,15 @@ if (!defined('CIVI_SETUP')) {
     }
 
     $e->addInfo('system', 'lang', "Language $seedLanguage is allowed.");
-  });
+  }
 
-\Civi\Setup::dispatcher()
-  ->addListener('civi.setup.installDatabase', function (\Civi\Setup\Event\InstallDatabaseEvent $e) {
+  public function installDatabase(\Civi\Setup\Event\InstallDatabaseEvent $e) {
     \Civi\Setup::log()->info(sprintf('[%s] Install database schema', basename(__FILE__)));
 
     $model = $e->getModel();
 
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
-    $spec = _installschema_getSpec($model->srcPath);
+    $spec = $this->loadSpecification($model->srcPath);
 
     \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
     \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $spec->database, $spec->tables));
@@ -87,19 +98,22 @@ if (!defined('CIVI_SETUP')) {
         \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_acl.mysql'));
       }
     }
+  }
 
-  });
+  /**
+   * @param string $srcPath
+   * @return \CRM_Core_CodeGen_Specification
+   */
+  protected function loadSpecification($srcPath) {
+    $schemaFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'schema', 'Schema.xml']);
+    $versionFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'version.xml']);
+    $xmlBuilt = \CRM_Core_CodeGen_Util_Xml::parse($versionFile);
+    $buildVersion = preg_replace('/^(\d{1,2}\.\d{1,2})\.(\d{1,2}|\w{4,7})$/i', '$1', $xmlBuilt->version_no);
+    $specification = new \CRM_Core_CodeGen_Specification();
+    $specification->parse($schemaFile, $buildVersion, FALSE);
+    return $specification;
+  }
 
-/**
- * @param string $srcPath
- * @return \CRM_Core_CodeGen_Specification
- */
-function _installschema_getSpec($srcPath) {
-  $schemaFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'schema', 'Schema.xml']);
-  $versionFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'version.xml']);
-  $xmlBuilt = \CRM_Core_CodeGen_Util_Xml::parse($versionFile);
-  $buildVersion = preg_replace('/^(\d{1,2}\.\d{1,2})\.(\d{1,2}|\w{4,7})$/i', '$1', $xmlBuilt->version_no);
-  $specification = new \CRM_Core_CodeGen_Specification();
-  $specification->parse($schemaFile, $buildVersion, FALSE);
-  return $specification;
 }
+
+\Civi\Setup::dispatcher()->addSubscriber(new InstallSchemaPlugin());
