@@ -16,7 +16,7 @@ if (!defined('CIVI_SETUP')) {
     $file = $e->getModel()->settingsPath;
     if (file_exists($file)) {
       if (!\Civi\Setup\FileUtil::isDeletable($file)) {
-        throw new \Exception("Cannot remove $file");
+        throw new \Exception("Cannot remove \"$file\". Please check permissions on the file and directory.");
       }
       unlink($file);
     }
