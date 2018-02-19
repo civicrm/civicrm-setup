@@ -65,6 +65,10 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
       }
     }
 
+    if (!file_exists($e->getModel()->settingsPath)) {
+      $e->addError('system', 'settingsPath', sprintf('The CiviCRM setting file is missing.'));
+    }
+
     $e->addInfo('system', 'lang', "Language $seedLanguage is allowed.");
   }
 
@@ -76,11 +80,10 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
     $spec = $this->loadSpecification($model->srcPath);
 
-    \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $spec->database, $spec->tables));
+    require_once $model->settingsPath;
 
-    \Civi\Setup::log()->info(sprintf('[%s] generateNavigation', basename(__FILE__)));
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($model->srcPath));
+    \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $model->db['database'], $spec->tables));
 
     if (!empty($model->loadGenerated)) {
       \Civi\Setup::log()->info(sprintf('[%s] generateSample', basename(__FILE__)));
@@ -98,6 +101,9 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
         \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_acl.mysql'));
       }
     }
+
+    \Civi\Setup::log()->info(sprintf('[%s] generateNavigation', basename(__FILE__)));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($model->srcPath));
   }
 
   /**

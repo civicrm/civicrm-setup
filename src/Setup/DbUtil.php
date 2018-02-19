@@ -30,7 +30,7 @@ class DbUtil {
     return sprintf('mysql://%s:%s@%s/%s',
       $db['username'],
       $db['password'],
-      self::encodeHostPort($db['host'], $db['port']),
+      $db['server']?: self::encodeHostPort($db['host'], $db['port']),
       $db['database']
     );
   }
