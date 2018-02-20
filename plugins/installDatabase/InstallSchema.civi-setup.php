@@ -80,7 +80,10 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
     $sqlPath = $model->srcPath . DIRECTORY_SEPARATOR . 'sql';
     $spec = $this->loadSpecification($model->srcPath);
 
-    require_once $model->settingsPath;
+    $conn = \Civi\Setup\DbUtil::connect($model->db);
+    \CRM_Core_I18n::$SQL_ESCAPER = function($text) use ($conn) {
+      return $conn->escape_string($text);
+    };
 
     \Civi\Setup::log()->info(sprintf('[%s] Load basic tables', basename(__FILE__)));
     \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateCreateSql($model->srcPath, $spec->database, $spec->tables));
@@ -106,6 +109,8 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
 
     \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
     \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
+
+    \CRM_Core_I18n::$SQL_ESCAPER = NULL;
   }
 
   /**
