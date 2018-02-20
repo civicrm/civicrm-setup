@@ -71,23 +71,11 @@ class Setup {
 
     $pluginDir = dirname(__DIR__) . '/plugins';
     $pluginFiles = array();
-    $pluginFileDirs = [
-      'blocks',
-      'checkInstalled',
-      'checkRequirements',
-      'common',
-      'createForm',
-      'init',
-      'installFiles',
-      'installDatabase',
-    ];
-    // Don't include uninstall plugin files, as this need to be called on demand and shoudn't be part of Civi installtion setup
-    foreach ($pluginFileDirs as $pattern) {
-      foreach ((array) glob("$pluginDir/$pattern/*") as $file) {
-        if (strstr($file, '.civi-setup.php')) {
-          $key = preg_replace('/\.civi-setup\.php$/', '', $file);
-          $pluginFiles[$key] = $file;
-        }
+    foreach (['*.civi-setup.php', '*/*.civi-setup.php'] as $pattern) {
+      foreach ((array) glob("$pluginDir/$pattern") as $file) {
+        $key = substr($file, strlen($pluginDir) + 1);
+        $key = preg_replace('/\.civi-setup\.php$/', '', $key);
+        $pluginFiles[$key] = $file;
       }
     }
     ksort($pluginFiles);

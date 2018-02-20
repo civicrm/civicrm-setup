@@ -83,11 +83,11 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
     require_once $model->settingsPath;
 
     \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateCreateSql($model->srcPath, $model->db['database'], $spec->tables));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateCreateSql($model->srcPath, $spec->database, $spec->tables));
 
     if (!empty($model->loadGenerated)) {
       \Civi\Setup::log()->info(sprintf('[%s] generateSample', basename(__FILE__)));
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateSample($model->srcPath));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath));
     }
     else {
       $seedLanguage = $model->lang;
@@ -103,7 +103,7 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
     }
 
     \Civi\Setup::log()->info(sprintf('[%s] generateNavigation', basename(__FILE__)));
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\DbUtil::generateNavigation($model->srcPath));
+    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
   }
 
   /**

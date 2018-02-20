@@ -30,7 +30,7 @@ class DbUtil {
     return sprintf('mysql://%s:%s@%s/%s',
       $db['username'],
       $db['password'],
-      $db['server']?: self::encodeHostPort($db['host'], $db['port']),
+      $db['server'],
       $db['database']
     );
   }
@@ -238,31 +238,6 @@ class DbUtil {
     return array_map(function($arr){
       return $arr['table_name'];
     }, self::fetchAll($conn, $sql));
-  }
-
-  public function generateCreateSql($srcPath, $databaseName, $tables) {
-    \Civi\Setup::log()->info("Generating sql file");
-    $template = new Template($srcPath, 'sql');
-
-    $template->assign('database', $databaseName);
-    $template->assign('tables', $tables);
-    $dropOrder = array_reverse(array_keys($tables));
-    $template->assign('dropOrder', $dropOrder);
-    $template->assign('mysql', 'modern');
-
-    return $template->getContent('schema.tpl');
-  }
-
-  public function generateNavigation($srcPath) {
-    \Civi\Setup::log()->info("Generating navigation SQL content");
-    $template = new Template($srcPath, 'sql');
-    return $template->getContent('civicrm_navigation.tpl');
-  }
-
-  public function generateSample($srcPath) {
-    $template = new Template($srcPath, 'sql');
-    $sections = ['civicrm_sample.tpl', 'civicrm_acl.tpl', 'case_sample.tpl'];
-    return $template->getConcatContent($sections);
   }
 
 }
