@@ -82,27 +82,29 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
 
     require_once $model->settingsPath;
 
-    \Civi\Setup::log()->info(sprintf('[%s] generateCreateSql', basename(__FILE__)));
+    \Civi\Setup::log()->info(sprintf('[%s] Load basic tables', basename(__FILE__)));
     \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateCreateSql($model->srcPath, $spec->database, $spec->tables));
 
     if (!empty($model->loadGenerated)) {
-      \Civi\Setup::log()->info(sprintf('[%s] generateSample', basename(__FILE__)));
+      \Civi\Setup::log()->info(sprintf('[%s] Load sample data', basename(__FILE__)));
       \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath));
     }
     else {
       $seedLanguage = $model->lang;
       // @TODO need to generate and fetch seedLanguage mysql data
       if ($seedLanguage && $seedLanguage !== 'en_US') {
+        \Civi\Setup::log()->info(sprintf('[%s] Load localized data', basename(__FILE__)));
         \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . "civicrm_data.{$seedLanguage}.mysql"));
         \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . "civicrm_acl.{$seedLanguage}.mysql"));
       }
       else {
+        \Civi\Setup::log()->info(sprintf('[%s] Load default data', basename(__FILE__)));
         \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_data.mysql'));
         \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_acl.mysql'));
       }
     }
 
-    \Civi\Setup::log()->info(sprintf('[%s] generateNavigation', basename(__FILE__)));
+    \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
     \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
   }
 

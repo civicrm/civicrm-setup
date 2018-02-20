@@ -10,13 +10,10 @@ class SchemaGenerator {
    *
    * @param string $srcPath
    * @param array $database
-   * @return array $tables
-   *   Ex: ['civicrm_view1', 'civicrm_view2']
-   *
+   * @param array $tables
    * @return string
    */
   public static function generateCreateSql($srcPath, $database, $tables) {
-    \Civi\Setup::log()->info("Generating sql file");
     $template = new Template($srcPath, 'sql');
 
     $template->assign('database', $database);
@@ -36,7 +33,6 @@ class SchemaGenerator {
    * @return string
    */
   public static function generateNavigation($srcPath) {
-    \Civi\Setup::log()->info("Generating navigation SQL content");
     $template = new Template($srcPath, 'sql');
     return $template->getContent('civicrm_navigation.tpl');
   }
