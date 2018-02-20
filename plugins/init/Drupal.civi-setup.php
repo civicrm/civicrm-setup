@@ -31,7 +31,7 @@ if (!defined('CIVI_SETUP')) {
     // Compute settingsPath.
     $drupalSystem = new CRM_Utils_System_Drupal();
     $cmsPath = $drupalSystem->cmsRootPath();
-    $siteDir = _drupal_civisetup_getSiteDir($cmsPath, $_SERVER['SCRIPT_FILENAME']);
+    $siteDir = \Civi\Setup\DrupalUtil::getDrupalSiteDir($cmsPath);
     $model->settingsPath = implode(DIRECTORY_SEPARATOR,
       [$cmsPath, 'sites', $siteDir, 'civicrm.settings.php']);
 
@@ -88,47 +88,4 @@ function _drupal_civisetup_getPrivateFiles() {
   }
 
   return $filePrivatePath;
-}
-
-/**
- * @param $cmsPath
- * @param $str
- *
- * @return string
- */
-function _drupal_civisetup_getSiteDir($cmsPath, $str) {
-  static $siteDir = '';
-
-  if ($siteDir) {
-    return $siteDir;
-  }
-
-  $sites = CIVICRM_DIRECTORY_SEPARATOR . 'sites' . CIVICRM_DIRECTORY_SEPARATOR;
-  $modules = CIVICRM_DIRECTORY_SEPARATOR . 'modules' . CIVICRM_DIRECTORY_SEPARATOR;
-  preg_match("/" . preg_quote($sites, CIVICRM_DIRECTORY_SEPARATOR) .
-    "([\-a-zA-Z0-9_.]+)" .
-    preg_quote($modules, CIVICRM_DIRECTORY_SEPARATOR) . "/",
-    $_SERVER['SCRIPT_FILENAME'], $matches
-  );
-  $siteDir = isset($matches[1]) ? $matches[1] : 'default';
-
-  if (strtolower($siteDir) == 'all') {
-    // For this case - use drupal's way of finding out multi-site directory
-    $uri = explode(CIVICRM_DIRECTORY_SEPARATOR, $_SERVER['SCRIPT_FILENAME']);
-    $server = explode('.', implode('.', array_reverse(explode(':', rtrim($_SERVER['HTTP_HOST'], '.')))));
-    for ($i = count($uri) - 1; $i > 0; $i--) {
-      for ($j = count($server); $j > 0; $j--) {
-        $dir = implode('.', array_slice($server, -$j)) . implode('.', array_slice($uri, 0, $i));
-        if (file_exists($cmsPath . CIVICRM_DIRECTORY_SEPARATOR .
-          'sites' . CIVICRM_DIRECTORY_SEPARATOR . $dir
-        )) {
-          $siteDir = $dir;
-          return $siteDir;
-        }
-      }
-    }
-    $siteDir = 'default';
-  }
-
-  return $siteDir;
 }
