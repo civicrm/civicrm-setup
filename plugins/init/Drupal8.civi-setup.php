@@ -23,18 +23,18 @@ if (!defined('CIVI_SETUP')) {
   \Civi\Setup::dispatcher()
     ->addListener('civi.setup.init', function (\Civi\Setup\Event\InitEvent $e) {
       $model = $e->getModel();
-      $cmsPath = \Drupal::root();
       if ($model->cms !== 'Drupal8') {
         return;
       }
       \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'init'));
+
+      $cmsPath = \Drupal::root();
 
       // Compute settingsPath.
       $siteDir = \Civi\Setup\DrupalUtil::getDrupalSiteDir($cmsPath);
       $model->settingsPath = implode(DIRECTORY_SEPARATOR, [$cmsPath, 'sites', $siteDir, 'civicrm.settings.php']);
 
       // Compute DSN.
-      global $databases;
       $databases = \Drupal\Core\Database\Database::getConnectionInfo();
       $model->db = $model->cmsDb = array(
         'server' => \Civi\Setup\DbUtil::encodeHostPort($databases['default']['host'], $databases['default']['port'] ?: NULL),
