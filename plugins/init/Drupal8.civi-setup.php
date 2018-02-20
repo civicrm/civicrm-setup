@@ -30,7 +30,7 @@ if (!defined('CIVI_SETUP')) {
       \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'init'));
 
       // Compute settingsPath.
-      $siteDir = \Civi\Setup\FileUtil::getDrupalSiteDir($cmsPath);
+      $siteDir = \Civi\Setup\DrupalUtil::getDrupalSiteDir($cmsPath);
       $model->settingsPath = implode(DIRECTORY_SEPARATOR, [$cmsPath, 'sites', $siteDir, 'civicrm.settings.php']);
 
       // Compute DSN.

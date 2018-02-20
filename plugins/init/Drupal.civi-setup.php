@@ -31,7 +31,7 @@ if (!defined('CIVI_SETUP')) {
     // Compute settingsPath.
     $drupalSystem = new CRM_Utils_System_Drupal();
     $cmsPath = $drupalSystem->cmsRootPath();
-    $siteDir = \Civi\Setup\FileUtil::getDrupalSiteDir($cmsPath);
+    $siteDir = \Civi\Setup\DrupalUtil::getDrupalSiteDir($cmsPath);
     $model->settingsPath = implode(DIRECTORY_SEPARATOR,
       [$cmsPath, 'sites', $siteDir, 'civicrm.settings.php']);
 
