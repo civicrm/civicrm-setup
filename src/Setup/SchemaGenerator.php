@@ -46,7 +46,8 @@ class SchemaGenerator {
    */
   public static function generateSample($srcPath) {
     $template = new Template($srcPath, 'sql');
-    $sections = ['civicrm_sample.tpl', 'civicrm_acl.tpl', 'case_sample.tpl'];
+
+    $sections = ['civicrm_country.tpl', 'civicrm_state_province.tpl', 'civicrm_data.tpl', 'civicrm_acl.tpl', 'case_sample.tpl'];
     return $template->getConcatContent($sections);
   }
 
