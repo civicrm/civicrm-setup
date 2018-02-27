@@ -31,8 +31,12 @@ if (!defined('CIVI_SETUP')) {
         $errors++;
       }
 
+      $ALLOW_BLANK = array('password');
       foreach ($db as $k => $v) {
-        if (!is_scalar($v)) {
+        if (in_array($k, $ALLOW_BLANK) && empty($v)) {
+          // ignore
+        }
+        elseif (!is_scalar($v)) {
           $e->addError('database', "$dbField.$k", "The property \"$dbField.$k\" is not well-formed.");
           $errors++;
         }
