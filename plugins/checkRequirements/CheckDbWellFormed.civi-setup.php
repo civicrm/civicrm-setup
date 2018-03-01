@@ -31,10 +31,9 @@ if (!defined('CIVI_SETUP')) {
         $errors++;
       }
 
-      $ALLOW_BLANK = array('password');
       foreach ($db as $k => $v) {
-        if (in_array($k, $ALLOW_BLANK) && empty($v)) {
-          // ignore
+        if ($k === 'password' && empty($v)) {
+          $e->addWarning('database', "$dbField.$k", "The property \"$dbField.$k\" is blank. This may be correct in some controlled environments; it could also be a mistake or a symptom of an insecure configuration.");
         }
         elseif (!is_scalar($v)) {
           $e->addError('database', "$dbField.$k", "The property \"$dbField.$k\" is not well-formed.");
