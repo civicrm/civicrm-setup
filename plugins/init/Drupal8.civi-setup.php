@@ -36,12 +36,16 @@ if (!defined('CIVI_SETUP')) {
 
       // Compute DSN.
       $databases = \Drupal\Core\Database\Database::getConnectionInfo();
-      $model->db = $model->cmsDb = array(
+      $model->cmsDb = array(
         'server' => \Civi\Setup\DbUtil::encodeHostPort($databases['default']['host'], $databases['default']['port'] ?: NULL),
         'username' => $databases['default']['username'],
         'password' => $databases['default']['password'],
         'database' => $databases['default']['database'],
       );
+
+      if(empty($model->db)) {
+        $model->db = $model->cmsDb;
+      }
 
       // Compute cmsBaseUrl.
       global $base_url, $base_path;
