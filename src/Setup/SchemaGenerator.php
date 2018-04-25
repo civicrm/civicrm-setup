@@ -44,10 +44,20 @@ class SchemaGenerator {
    *
    * @return string
    */
-  public static function generateSample($srcPath) {
+  public static function generateSample($srcPath, $dbVersion) {
     $template = new Template($srcPath, 'sql');
+    $template->assign('db_version', $dbVersion);
 
-    $sections = ['civicrm_country.tpl', 'civicrm_state_province.tpl', 'civicrm_data.tpl', 'civicrm_acl.tpl', 'case_sample.tpl'];
+    $sections = [
+      'civicrm_country.tpl',
+      'civicrm_state_province.tpl',
+      'civicrm_currency.tpl',
+      'civicrm_data.tpl',
+      'civicrm_acl.tpl',
+      'civicrm_sample.tpl',
+      'case_sample.tpl',
+      'civicrm_version_sql.tpl',
+    ];
     return $template->getConcatContent($sections);
   }
 

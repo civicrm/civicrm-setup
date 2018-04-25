@@ -53,18 +53,6 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
       return;
     }
 
-    $files = array(
-      $sqlPath . DIRECTORY_SEPARATOR . "civicrm_data.{$seedLanguage}.mysql",
-      $sqlPath . DIRECTORY_SEPARATOR . "civicrm_acl.{$seedLanguage}.mysql",
-    );
-
-    foreach ($files as $file) {
-      if (!file_exists($file)) {
-        $e->addError('system', 'langMissing', "Language schema file is missing: \"$file\"");
-        return;
-      }
-    }
-
     if (!file_exists($e->getModel()->settingsPath)) {
       $e->addError('system', 'settingsPath', sprintf('The CiviCRM setting file is missing.'));
     }
@@ -91,7 +79,7 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
     $seedLanguage = $model->lang;
     if (!empty($model->loadGenerated)) {
       \Civi\Setup::log()->info(sprintf('[%s] Load sample data', basename(__FILE__)));
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_generated.mysql'));
     }
     elseif ($seedLanguage) {
       global $tsLocale;
@@ -102,11 +90,18 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
       else {
         \Civi\Setup::log()->info(sprintf('[%s] Load default data', basename(__FILE__)));
       }
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath, $seedLanguage));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath, $spec->buildVersion));
+
+      \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
+
+      \Civi\Setup::log()->info(sprintf('[%s] Load zipcode data', basename(__FILE__)));
+      $conn->query("DROP TABLE IF EXISTS zipcodes");
+      \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'zipcodes.mysql'));
     }
 
-    \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
-    \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
+    require_once $model->settingsPath;
+    \Civi\Core\Container::boot(TRUE);
 
     \CRM_Core_I18n::$SQL_ESCAPER = NULL;
   }
