@@ -79,25 +79,18 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
     $seedLanguage = $model->lang;
     if (!empty($model->loadGenerated)) {
       \Civi\Setup::log()->info(sprintf('[%s] Load sample data', basename(__FILE__)));
+      // At time of writing, `generateSampleData()` is not yet a full replacement for `civicrm_generated.mysql`.
       \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'civicrm_generated.mysql'));
+      // \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSampleData($model->srcPath));
     }
     elseif ($seedLanguage) {
       global $tsLocale;
       $tsLocale = $seedLanguage;
-      if ($seedLanguage !== 'en_US') {
-        \Civi\Setup::log()->info(sprintf('[%s] Load localized data', basename(__FILE__)));
-      }
-      else {
-        \Civi\Setup::log()->info(sprintf('[%s] Load default data', basename(__FILE__)));
-      }
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath));
+      \Civi\Setup::log()->info(sprintf('[%s] Load basic data', basename(__FILE__)));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateBasicData($model->srcPath));
 
       \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
       \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
-
-      \Civi\Setup::log()->info(sprintf('[%s] Load zipcode data', basename(__FILE__)));
-      $conn->query("DROP TABLE IF EXISTS zipcodes");
-      \Civi\Setup\DbUtil::sourceSQL($model->db, file_get_contents($sqlPath . DIRECTORY_SEPARATOR . 'zipcodes.mysql'));
     }
 
     require_once $model->settingsPath;
