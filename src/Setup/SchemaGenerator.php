@@ -44,9 +44,12 @@ class SchemaGenerator {
    *
    * @return string
    */
-  public static function generateSample($srcPath, $dbVersion) {
+  public static function generateSample($srcPath) {
+    $versionFile = implode(DIRECTORY_SEPARATOR, [$srcPath, 'xml', 'version.xml']);
+    $xml = \CRM_Core_CodeGen_Util_Xml::parse($versionFile);
+
     $template = new Template($srcPath, 'sql');
-    $template->assign('db_version', $dbVersion);
+    $template->assign('db_version', $xml->version_no);
 
     $sections = [
       'civicrm_country.tpl',

@@ -90,7 +90,7 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
       else {
         \Civi\Setup::log()->info(sprintf('[%s] Load default data', basename(__FILE__)));
       }
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath, $spec->buildVersion));
+      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateSample($model->srcPath));
 
       \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
       \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
