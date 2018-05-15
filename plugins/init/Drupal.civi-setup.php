@@ -12,7 +12,7 @@ if (!defined('CIVI_SETUP')) {
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
     $model = $e->getModel();
-    if ($model->cms !== 'Drupal') {
+    if ($model->cms !== 'Drupal' || !function_exists('user_access')) {
       return;
     }
 

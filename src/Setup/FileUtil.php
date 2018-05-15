@@ -30,4 +30,16 @@ class FileUtil {
     return is_writable(dirname($path));
   }
 
+  /**
+   * @param $prefix
+   *
+   * @return string
+   */
+  public static function createTempDir($prefix) {
+    $newTempDir = tempnam(sys_get_temp_dir(), $prefix) . '.d';
+    mkdir($newTempDir, 0755, TRUE);
+
+    return $newTempDir;
+  }
+
 }

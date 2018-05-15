@@ -2,6 +2,7 @@
 namespace Civi\Setup;
 
 use Civi\Setup\Exception\SqlException;
+use Civi\Setup\Template;
 
 class DbUtil {
 
@@ -29,7 +30,7 @@ class DbUtil {
     return sprintf('mysql://%s:%s@%s/%s',
       $db['username'],
       $db['password'],
-      self::encodeHostPort($db['host'], $db['port']),
+      $db['server'],
       $db['database']
     );
   }
@@ -96,17 +97,17 @@ class DbUtil {
 
   /**
    * @param array $db
-   * @param string $fileName
+   * @param string $SQLcontent
    * @param bool $lineMode
    *   What does this mean? Seems weird.
    */
-  public static function sourceSQL($db, $fileName, $lineMode = FALSE) {
+  public static function sourceSQL($db, $SQLcontent, $lineMode = FALSE) {
     $conn = self::connect($db);
 
     $conn->query('SET NAMES utf8');
 
     if (!$lineMode) {
-      $string = file_get_contents($fileName);
+      $string = $SQLcontent;
 
       // change \r\n to fix windows issues
       $string = str_replace("\r\n", "\n", $string);
@@ -132,23 +133,24 @@ class DbUtil {
       }
     }
     else {
-      $fd = fopen($fileName, "r");
-      while ($string = fgets($fd)) {
-        $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
-        $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
-
-        $string = trim($string);
-        if (!empty($string)) {
-          if ($result = $conn->query($string)) {
-            if (is_object($result)) {
-              mysqli_free_result($result);
-            }
-          }
-          else {
-            throw new SqlException("Cannot execute $string: " . mysqli_error($conn));
-          }
-        }
-      }
+      throw new \RuntimeException("Not implemented: lineMode");
+      //      $fd = fopen($SQLcontent, "r");
+      //      while ($string = fgets($fd)) {
+      //        $string = preg_replace("/^#[^\n]*$/m", "\n", $string);
+      //        $string = preg_replace("/^(--[^-]).*/m", "\n", $string);
+      //
+      //        $string = trim($string);
+      //        if (!empty($string)) {
+      //          if ($result = $conn->query($string)) {
+      //            if (is_object($result)) {
+      //              mysqli_free_result($result);
+      //            }
+      //          }
+      //          else {
+      //            throw new SqlException("Cannot execute $string: " . mysqli_error($conn));
+      //          }
+      //        }
+      //      }
     }
   }
 
