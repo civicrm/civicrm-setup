@@ -26,18 +26,6 @@ class SchemaGenerator {
   }
 
   /**
-   * Return translated SQL content using tpl, mainly contain SQL codes to populate navigation links
-   *
-   * @param string $srcPath
-   *
-   * @return string
-   */
-  public static function generateNavigation($srcPath) {
-    $template = new Template($srcPath, 'sql');
-    return $template->getContent('civicrm_navigation.tpl');
-  }
-
-  /**
    * Generate an example set of data, including the basic data as well
    * as some example records/entities (e.g. case-types, membership types).
    *
@@ -65,6 +53,7 @@ class SchemaGenerator {
       'civicrm_sample.tpl',
       'case_sample.tpl',
       'civicrm_version_sql.tpl',
+      'civicrm_navigation.tpl',
     ];
 
     // DROP TABLE IF EXISTS zipcodes;
@@ -95,6 +84,7 @@ class SchemaGenerator {
       'civicrm_data.tpl',
       'civicrm_acl.tpl',
       'civicrm_version_sql.tpl',
+      'civicrm_navigation.tpl',
     ];
     return $template->getConcatContent($sections);
   }

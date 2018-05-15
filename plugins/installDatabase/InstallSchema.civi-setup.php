@@ -88,9 +88,6 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
       $tsLocale = $seedLanguage;
       \Civi\Setup::log()->info(sprintf('[%s] Load basic data', basename(__FILE__)));
       \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateBasicData($model->srcPath));
-
-      \Civi\Setup::log()->info(sprintf('[%s] Load navigation data', basename(__FILE__)));
-      \Civi\Setup\DbUtil::sourceSQL($model->db, \Civi\Setup\SchemaGenerator::generateNavigation($model->srcPath));
     }
 
     require_once $model->settingsPath;
