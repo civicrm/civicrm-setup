@@ -39,12 +39,16 @@ if (!defined('CIVI_SETUP')) {
 
     // Compute DSN.
     global $databases;
-    $model->db = $model->cmsDb = array(
+    $model->cmsDb = array(
       'server' => \Civi\Setup\DbUtil::encodeHostPort($databases['default']['default']['host'], $databases['default']['default']['port'] ?: NULL),
       'username' => $databases['default']['default']['username'],
       'password' => $databases['default']['default']['password'],
       'database' => $databases['default']['default']['database'],
     );
+
+    if(empty($model->db)) {
+      $model->db = $model->cmsDb;
+    }
 
     // Compute URLs
     global $base_url, $base_path;

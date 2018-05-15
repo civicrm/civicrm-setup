@@ -50,12 +50,16 @@ if (!defined('CIVI_SETUP')) {
     $model->templateCompilePath = implode(DIRECTORY_SEPARATOR, [$uploadDir['basedir'], 'civicrm', 'templates_c']);
 
     // Compute DSN.
-    $model->db = $model->cmsDb = array(
+    $model->cmsDb = array(
       'server' => DB_HOST,
       'username' => DB_USER,
       'password' => DB_PASSWORD,
       'database' => DB_NAME,
     );
+
+    if(empty($model->db)) {
+      $model->db = $model->cmsDb;
+    }
 
     // Compute URLs
     $model->cmsBaseUrl = site_url();
