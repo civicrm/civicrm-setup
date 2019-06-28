@@ -35,12 +35,12 @@ if (!defined('CIVI_SETUP')) {
       $model->settingsPath = implode(DIRECTORY_SEPARATOR, [$cmsPath, 'sites', $siteDir, 'civicrm.settings.php']);
 
       // Compute DSN.
-      $databases = \Drupal\Core\Database\Database::getConnectionInfo();
+      $connectionOptions = \Drupal::database()->getConnectionOptions();
       $model->db = $model->cmsDb = array(
-        'server' => \Civi\Setup\DbUtil::encodeHostPort($databases['default']['host'], $databases['default']['port'] ?: NULL),
-        'username' => $databases['default']['username'],
-        'password' => $databases['default']['password'],
-        'database' => $databases['default']['database'],
+        'server' => \Civi\Setup\DbUtil::encodeHostPort($connectionOptions['host'], $connectionOptions['port'] ?: NULL),
+        'username' => $connectionOptions['username'],
+        'password' => $connectionOptions['password'],
+        'database' => $connectionOptions['database'],
       );
 
       // Compute cmsBaseUrl.
