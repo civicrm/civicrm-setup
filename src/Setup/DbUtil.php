@@ -104,7 +104,7 @@ class DbUtil {
   public static function sourceSQL($db, $SQLcontent, $lineMode = FALSE) {
     $conn = self::connect($db);
 
-    $conn->query('SET NAMES utf8');
+    $conn->query('SET NAMES ' . ($conn->server_version < 50503 ? 'utf8' : 'utf8mb4'));
 
     if (!$lineMode) {
       $string = $SQLcontent;
