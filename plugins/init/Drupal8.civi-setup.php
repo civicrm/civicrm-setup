@@ -12,18 +12,18 @@ if (!defined('CIVI_SETUP')) {
 \Civi\Setup::dispatcher()
   ->addListener('civi.setup.checkAuthorized', function (\Civi\Setup\Event\CheckAuthorizedEvent $e) {
     $model = $e->getModel();
-    if ($model->cms !== 'Drupal8' || !function_exists('user_access')) {
+    if ($model->cms !== 'Drupal8' || !is_callable(['Drupal', 'currentUser'])) {
       return;
     }
 
     \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkAuthorized'));
-    $e->setAuthorized(user_access('administer modules'));
+    $e->setAuthorized(\Drupal::currentUser()->hasPermission('administer modules'));
   });
 
   \Civi\Setup::dispatcher()
     ->addListener('civi.setup.init', function (\Civi\Setup\Event\InitEvent $e) {
       $model = $e->getModel();
-      if ($model->cms !== 'Drupal8') {
+      if ($model->cms !== 'Drupal8' || !is_callable(['Drupal', 'currentUser'])) {
         return;
       }
       \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'init'));
