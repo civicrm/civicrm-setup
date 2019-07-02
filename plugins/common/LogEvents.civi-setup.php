@@ -8,7 +8,7 @@
 if (!defined('CIVI_SETUP')) {
   exit("Installation plugins must only be loaded by the installer.\n");
 }
-use \Civi\Setup;
+use Civi\Setup;
 
 $setup = Setup::instance();
 
