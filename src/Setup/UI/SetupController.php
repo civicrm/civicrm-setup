@@ -175,11 +175,14 @@ class SetupController implements SetupControllerInterface {
   }
 
   public function createError($message, $title = 'Error') {
-    return array(array(), $this->render($this->getResourcePath('error.html'), [
-      'errorTitle' => htmlentities($title),
-      'errorMsg' => htmlentities($message),
-      'installURLPath' => $this->urls['res'],
-    ]));
+    return [
+      [],
+      $this->render($this->getResourcePath('error.html'), [
+        'errorTitle' => htmlentities($title),
+        'errorMsg' => htmlentities($message),
+        'installURLPath' => $this->urls['res'],
+      ]),
+    ];
   }
 
   /**
@@ -225,6 +228,8 @@ class SetupController implements SetupControllerInterface {
    * @param array $fields
    *   HTTP inputs -- e.g. with a form element like this:
    *   `<input type="submit" name="civisetup[action][Foo]" value="Do the foo">`
+   * @param string $default
+   *   The action-name to return if no other action is identified.
    * @return string
    *   The name of the action.
    *   Ex: 'Foo'.
