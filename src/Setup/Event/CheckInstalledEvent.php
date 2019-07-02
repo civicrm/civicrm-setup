@@ -11,7 +11,12 @@ class CheckInstalledEvent extends BaseSetupEvent {
   /**
    * @var bool
    */
-  private $settingInstalled = NULL, $databaseInstalled = NULL;
+  private $settingInstalled = NULL;
+
+  /**
+   * @var bool
+   */
+  private $databaseInstalled = NULL;
 
   /**
    * @return bool
