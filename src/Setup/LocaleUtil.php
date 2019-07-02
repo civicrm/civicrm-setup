@@ -12,6 +12,9 @@ class LocaleUtil {
    * @param array $availLangs
    *   List of available languages.
    *   Ex: ['en_US' => 'English (US)', 'fr_CA' => 'French (Canadian)'].
+   * @param string $default
+   *   The locale to use if none other can be determined.
+   *   Ex: 'en_US'.
    * @return string
    *   Ex: 'en_US'.
    */
