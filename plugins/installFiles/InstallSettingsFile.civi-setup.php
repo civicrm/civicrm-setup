@@ -13,7 +13,7 @@ if (!defined('CIVI_SETUP')) {
  * Validate the $model.
  */
 \Civi\Setup::dispatcher()
-  ->addListener('civi.setup.checkRequirements', function(\Civi\Setup\Event\CheckRequirementsEvent $e){
+  ->addListener('civi.setup.checkRequirements', function(\Civi\Setup\Event\CheckRequirementsEvent $e) {
     \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkRequirements'));
 
     /**
@@ -52,7 +52,8 @@ if (!defined('CIVI_SETUP')) {
     $params = array();
     $params['crmRoot'] = addslashes(rtrim($m->srcPath, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR);
     $params['templateCompileDir'] = addslashes($m->templateCompilePath);
-    $params['frontEnd'] = 0; // ??why??
+    // ??why is frontEnd=0??
+    $params['frontEnd'] = 0;
     $params['baseURL'] = addslashes(rtrim($m->cmsBaseUrl, '/'));
     $params['dbUser'] = addslashes($m->db['username']);
     $params['dbPass'] = addslashes($m->db['password']);
