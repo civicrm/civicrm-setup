@@ -17,7 +17,7 @@ if (!defined('CIVI_SETUP')) {
       define('CIVICRM_SETTINGS_PATH', $e->getModel()->settingsPath);
     }
 
-    if (CIVICRM_SETTINGS_PATH !== $e->getModel()->settingsPath) {
+    if (realpath(CIVICRM_SETTINGS_PATH) !== realpath($e->getModel()->settingsPath)) {
       throw new \RuntimeException(sprintf("Cannot boot: The civicrm.settings.php path appears inconsistent (%s vs %s)", CIVICRM_SETTINGS_PATH, $e->getModel()->settingsPath));
     }
 
