@@ -11,7 +11,6 @@ use Civi\Setup\Event\InstallFilesEvent;
 use Civi\Setup\Event\UninstallDatabaseEvent;
 use Civi\Setup\Event\UninstallFilesEvent;
 use Civi\Setup\Exception\InitException;
-use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
@@ -38,7 +37,7 @@ class Setup {
   protected $model;
 
   /**
-   * @var LoggerInterface
+   * @var \Psr\Log\LoggerInterface
    */
   protected $log;
 
@@ -56,7 +55,7 @@ class Setup {
    *   Use this to add, remove, or re-order callbacks.
    *   function(array $files) => array
    *   Ex: ['hello' => '/var/www/plugins/hello.civi-setup.php']
-   * @param LoggerInterface $log
+   * @param \Psr\Log\LoggerInterface $log
    */
   public static function init($modelValues = array(), $pluginCallback = NULL, $log = NULL) {
     if (!defined('CIVI_SETUP')) {
