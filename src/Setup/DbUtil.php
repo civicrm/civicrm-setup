@@ -2,7 +2,6 @@
 namespace Civi\Setup;
 
 use Civi\Setup\Exception\SqlException;
-use Civi\Setup\Template;
 
 class DbUtil {
 
@@ -216,7 +215,7 @@ class DbUtil {
     $sql = sprintf("SELECT table_name FROM information_schema.TABLES  WHERE TABLE_SCHEMA='%s' AND TABLE_TYPE = 'VIEW'",
       $conn->escape_string($databaseName));
 
-    return array_map(function($arr){
+    return array_map(function($arr) {
       return $arr['table_name'];
     }, self::fetchAll($conn, $sql));
   }
@@ -235,7 +234,7 @@ class DbUtil {
     $sql = sprintf("SELECT table_name FROM information_schema.TABLES  WHERE TABLE_SCHEMA='%s' AND TABLE_TYPE = 'BASE TABLE'",
       $conn->escape_string($databaseName));
 
-    return array_map(function($arr){
+    return array_map(function($arr) {
       return $arr['table_name'];
     }, self::fetchAll($conn, $sql));
   }
