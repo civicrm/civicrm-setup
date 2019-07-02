@@ -145,6 +145,12 @@ class Model {
       'value' => array(),
     ));
     $this->addField(array(
+      'description' => 'List of mandatory settings',
+      'name' => 'mandatorySettings',
+      'type' => 'array',
+      'value' => array(),
+    ));
+    $this->addField(array(
       'description' => 'Open-ended list of private, adhoc fields/flags/tags',
       'name' => 'extras',
       'type' => 'array',
