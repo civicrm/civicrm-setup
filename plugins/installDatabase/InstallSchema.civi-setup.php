@@ -18,7 +18,7 @@ class InstallSchemaPlugin implements \Symfony\Component\EventDispatcher\EventSub
         ['checkSqlFiles', 0],
       ],
       'civi.setup.installDatabase' => [
-        ['installDatabase', 0]
+        ['installDatabase', 0],
       ],
     ];
   }
