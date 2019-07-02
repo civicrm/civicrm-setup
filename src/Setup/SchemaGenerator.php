@@ -1,8 +1,6 @@
 <?php
 namespace Civi\Setup;
 
-use Civi\Setup\Template;
-
 class SchemaGenerator {
 
   /**
