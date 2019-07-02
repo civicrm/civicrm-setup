@@ -59,8 +59,8 @@ if (!defined('CIVI_SETUP')) {
       $model->templateCompilePath = implode(DIRECTORY_SEPARATOR, [_drupal8_civisetup_getPrivateFiles(), 'civicrm', 'templates_c']);
 
       // Compute default locale.
-      global $language;
-      $model->lang = \Civi\Setup\LocaleUtil::pickClosest($language->langcode, $model->getField('lang', 'options'));
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      $model->lang = \Civi\Setup\LocaleUtil::pickClosest($langcode, $model->getField('lang', 'options'));
     });
 
 function _drupal8_civisetup_getPublicFiles() {
