@@ -33,7 +33,7 @@ if (!defined('CIVI_SETUP')) {
     $cmsPath = $object->cmsRootPath();
 
     // Compute settingsPath.
-    $model->settingsPath = $cmsPath . DIRECTORY_SEPARATOR .     'civicrm.settings.php';
+    $model->settingsPath = $cmsPath . DIRECTORY_SEPARATOR . 'civicrm.settings.php';
 
     $model->templateCompilePath = 'FIXME';
 
