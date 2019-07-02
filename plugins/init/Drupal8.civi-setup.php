@@ -34,6 +34,10 @@ if (!defined('CIVI_SETUP')) {
       $siteDir = \Civi\Setup\DrupalUtil::getDrupalSiteDir($cmsPath);
       $model->settingsPath = implode(DIRECTORY_SEPARATOR, [$cmsPath, 'sites', $siteDir, 'civicrm.settings.php']);
 
+      if (($loadGenerated = \Drupal\Core\Site\Settings::get('civicrm_load_generated', NULL)) !== NULL) {
+        $model->loadGenerated = $loadGenerated;
+      }
+
       // Compute DSN.
       $connectionOptions = \Drupal::database()->getConnectionOptions();
       $model->db = $model->cmsDb = array(
