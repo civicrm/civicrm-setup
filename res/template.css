@@ -1,6 +1,64 @@
 body {
   background: #eee;
 }
+/* Header */
+.civicrm-setup-header{
+  height: 300px;
+  width: 100%;
+  display: block;
+}
+
+.civicrm-setup-header .title{
+  width: 25%;
+  position: absolute;
+  overflow: hidden;
+  float: left;
+  margin-left: 10%;
+  margin-top: 50px;
+  margin-right: 20%; 
+  display: inline-flex;
+}
+
+.civicrm-setup-header h1{
+  line-height: 35px;
+  color: #ddd;
+  position: relative;
+  left: 400px;
+  -webkit-animation: slide 1s forwards;
+  -webkit-animation-delay: 0.5s;
+  animation: slide 1s forwards;
+  animation-delay: 0.5s;
+
+}
+
+@-webkit-keyframes slide{
+    100% { left: 0; color:#555;}
+}
+
+@keyframes slide{
+    100% { left: 0; color: #555;}
+}
+
+  
+.civicrm-setup-header hr{
+  border-bottom: 2px solid #fff;
+  border-top: 2px solid #ddd;
+}
+
+.civicrm-setup-body .civicrm-logo {
+  float: right;
+  width: 30%;
+  display: grid;
+  margin-top: 50px;
+  margin-right: 10%;
+}
+
+.civicrm-setup-body .civicrm-logo img{
+  width: 100%;
+}
+
+
+/* Header End */
 
 .civicrm-setup-body #All {
   font-family: Arial, sans-serif;
@@ -13,16 +71,13 @@ body {
   max-width: 1200px;
 }
 
-.civicrm-setup-body .civicrm-logo {
-  float: right;
-}
-
 .civicrm-setup-body form {
-  margin: 0;
+  margin: 3%;
 }
 
-.civicrm-setup-body h1 {
+.civicrm-setup-body h2 {
   margin-top: 0;
+  display: inline-block;
 }
 
 .civicrm-setup-body li {
@@ -31,7 +86,7 @@ body {
 
 .civicrm-setup-body label span {
   float: left;
-  width: 14em;
+  width: 120px;
 }
 
 .civicrm-setup-body p.error {
@@ -101,9 +156,10 @@ body {
 
 .civicrm-setup-body .comp-box {
   height: 3.5em;
-  width: 30%;
+  width: 31%;
   display: inline-block;
   padding: 0.5em;
+  padding-top: 15px;
   margin: 0.25em;
   border: 1px dashed #aaa;
   background: #eee;
@@ -155,16 +211,49 @@ body {
   margin: 2em 0.5em;
 }
 .civicrm-setup-body input[type=submit] {
-  padding:5px 15px;
-  background:#44f;
+  padding:15px 25px;
+  background:#82C459;
   color: white;
   border:0 none;
   cursor:pointer;
   -webkit-border-radius: 5px;
   border-radius: 5px;
+  font-size: 20px;
 }
 .civicrm-setup-body input[type=submit]:hover {
-  background: #33e;
+  background: #60A237;
 }
 
 .civicrm-setup-body .settingsTable input[type=text] { width: 80%; }
+
+
+
+@media only screen and (max-width: 801px){
+  .civicrm-setup-body .comp-box{
+    width: 45%;
+  }
+}
+
+@media only screen and (max-width: 635px){
+  .civicrm-setup-header .title{
+    width: 45%;
+    margin-left: 5%;
+    margin-top: 30px;
+  }
+
+  .civicrm-setup-body .settingsTable{
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 95%;
+    margin: 10px 2% 10px 2%;
+  }
+
+}
+
+@media only screen and (max-width: 503px){
+  .civicrm-setup-body .comp-box{
+    width: 95%;
+  }
+}
+
