@@ -11,7 +11,7 @@ class SmartyUtil {
   public static function createSmarty($srcPath) {
     require_once 'CRM/Core/I18n.php';
 
-    $packagePath = implode(DIRECTORY_SEPARATOR, [$srcPath, 'packages']);
+    $packagePath = PackageUtil::getPath($srcPath);
     require_once $packagePath . DIRECTORY_SEPARATOR . 'Smarty' . DIRECTORY_SEPARATOR . 'Smarty.class.php';
 
     $smarty = new \Smarty();
