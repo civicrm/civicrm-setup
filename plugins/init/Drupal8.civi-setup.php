@@ -48,11 +48,13 @@ if (!defined('CIVI_SETUP')) {
       );
 
       // Compute cmsBaseUrl.
-      global $base_url, $base_path;
-      $model->cmsBaseUrl = $base_url . $base_path;
+      if (empty($model->cmsBaseUrl)) {
+        global $base_url, $base_path;
+        $model->cmsBaseUrl = $base_url . $base_path;
+      }
 
       // Compute general paths
-      $model->paths['civicrm.files']['url'] = implode(DIRECTORY_SEPARATOR, [$base_url, \Drupal\Core\StreamWrapper\PublicStream::basePath(), 'civicrm']);
+      $model->paths['civicrm.files']['url'] = implode('/', [$model->cmsBaseUrl, \Drupal\Core\StreamWrapper\PublicStream::basePath(), 'civicrm']);
       $model->paths['civicrm.files']['path'] = implode(DIRECTORY_SEPARATOR, [_drupal8_civisetup_getPublicFiles(), 'civicrm']);
 
       // Compute templateCompileDir.
@@ -64,9 +66,12 @@ if (!defined('CIVI_SETUP')) {
     });
 
 function _drupal8_civisetup_getPublicFiles() {
-  $filePublicPath = realpath(\Drupal\Core\StreamWrapper\PublicStream::basePath());
+  $filePublicPath = \Drupal\Core\StreamWrapper\PublicStream::basePath();
 
-  if (!CRM_Utils_File::isAbsolute($filePublicPath)) {
+  if (!$filePublicPath) {
+    throw new \Civi\Setup\Exception\InitException("Failed to identify public files path");
+  }
+  elseif (!CRM_Utils_File::isAbsolute($filePublicPath)) {
     $filePublicPath = \Drupal::root() . DIRECTORY_SEPARATOR . $filePublicPath;
   }
 
@@ -74,7 +79,7 @@ function _drupal8_civisetup_getPublicFiles() {
 }
 
 function _drupal8_civisetup_getPrivateFiles() {
-  $filePrivatePath = realpath(\Drupal\Core\StreamWrapper\PrivateStream::basePath());
+  $filePrivatePath = \Drupal\Core\StreamWrapper\PrivateStream::basePath();
 
   if (!$filePrivatePath) {
     $filePrivatePath = _drupal8_civisetup_getPublicFiles();
