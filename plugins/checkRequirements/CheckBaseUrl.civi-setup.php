@@ -21,7 +21,8 @@ if (!defined('CIVI_SETUP')) {
       return;
     }
 
-    if (PHP_SAPI === 'cli' && strpos($model->cmsBaseUrl, dirname($_SERVER['PHP_SELF'])) !== FALSE) {
+    $selfDir = dirname($_SERVER['PHP_SELF']);
+    if (PHP_SAPI === 'cli' && $selfDir !== '/' && strpos($model->cmsBaseUrl, $selfDir) !== FALSE) {
       $e->addError('system', 'cmsBaseUrl', "The \"cmsBaseUrl\" ($model->cmsBaseUrl) is unavailable or malformed. Consider setting it explicitly.");
       return;
     }

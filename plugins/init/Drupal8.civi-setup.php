@@ -17,7 +17,7 @@ if (!defined('CIVI_SETUP')) {
     }
 
     \Civi\Setup::log()->info(sprintf('[%s] Handle %s', basename(__FILE__), 'checkAuthorized'));
-    $e->setAuthorized(\Drupal::currentUser()->hasPermission('administer modules'));
+    $e->setAuthorized(\Civi\Setup\DrupalUtil::isDrush() || \Drupal::currentUser()->hasPermission('administer modules'));
   });
 
 \Civi\Setup::dispatcher()

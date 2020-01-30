@@ -4,6 +4,13 @@ namespace Civi\Setup;
 class DrupalUtil {
 
   /**
+   * @return bool
+   */
+  public static function isDrush() {
+    return PHP_SAPI === 'cli' && function_exists('drush_main');
+  }
+
+  /**
    * @param $cmsPath
    *
    * @return string
