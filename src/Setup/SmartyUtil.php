@@ -26,6 +26,7 @@ class SmartyUtil {
     // CRM-5308 / CRM-3507 - we need {localize} to work in the templates
     require_once implode(DIRECTORY_SEPARATOR, [$srcPath, 'CRM', 'Core', 'Smarty', 'plugins', 'block.localize.php']);
     $smarty->register_block('localize', 'smarty_block_localize');
+    $smarty->assign('gencodeXmlDir', "$srcPath/xml");
 
     return $smarty;
   }
