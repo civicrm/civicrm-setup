@@ -16,7 +16,7 @@ class PackageUtil {
 
     $candidates = [
       // TODO: Trace the code-path and allow reading $model for packages dir?
-      $civicrm_paths['civicrm.packages'] ?? NULL,
+      $civicrm_paths['civicrm.packages']['path'] ?? NULL,
       implode(DIRECTORY_SEPARATOR, [$srcPath, 'packages']),
       implode(DIRECTORY_SEPARATOR, [dirname($srcPath), 'civicrm-packages']),
     ];
